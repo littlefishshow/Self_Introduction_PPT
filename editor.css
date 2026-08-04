@@ -1,0 +1,201 @@
+.editor-toolbar {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(17, 19, 28, 0.9);
+  color: #f3f6ff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-sans);
+}
+
+body.presenter-clean .editor-toolbar,
+body.presenter-clean [data-editable]::before,
+body.presenter-clean [data-editable-text]::before,
+body.presenter-clean [data-editable].is-selected::after,
+body.presenter-clean [data-editable-text].is-selected::after {
+  display: none !important;
+}
+
+body.presenter-clean [data-editable],
+body.presenter-clean [data-editable-text] {
+  outline: none !important;
+}
+
+.editor-toolbar button {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.editor-toolbar button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.editor-toolbar .state {
+  font-size: 12px;
+  color: rgba(243, 246, 255, 0.74);
+  min-width: 70px;
+}
+
+.text-controls {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding-left: 6px;
+  margin-left: 4px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.text-controls.is-visible {
+  display: flex;
+}
+
+.text-controls label {
+  font-size: 11px;
+  color: rgba(243, 246, 255, 0.72);
+}
+
+.text-controls input[type="number"] {
+  width: 62px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.text-controls button[data-action="edit-text"] {
+  background: rgba(42, 199, 105, 0.16);
+  border-color: rgba(42, 199, 105, 0.4);
+}
+
+.editor-toolbar button[data-action="undo"] {
+  background: rgba(255, 204, 0, 0.16);
+  border-color: rgba(255, 204, 0, 0.34);
+}
+
+.edit-positioned {
+  position: absolute;
+  z-index: 6;
+}
+
+[data-editable-text] {
+  position: relative;
+}
+
+body.edit-mode .slide.is-active [data-editable-text] {
+  outline: 1px dashed rgba(42, 199, 105, 0.85);
+  outline-offset: 3px;
+  cursor: move;
+}
+
+body.edit-mode .slide.is-active [data-editable-text]:hover {
+  outline-color: rgba(255, 149, 0, 0.95);
+}
+
+body.edit-mode .slide.is-active [data-editable-text]::before {
+  content: attr(data-edit-id);
+  position: absolute;
+  top: -24px;
+  left: 0;
+  padding: 3px 7px;
+  border-radius: 8px;
+  background: rgba(17, 19, 28, 0.82);
+  color: #f3f6ff;
+  font-size: 10px;
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+body.edit-mode .slide.is-active [data-editable-text].is-selected {
+  outline: 2px solid rgba(42, 199, 105, 0.95);
+}
+
+body.edit-mode .slide.is-active [data-editable-text].is-selected::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: #2ac769;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: nwse-resize;
+}
+
+body.edit-mode .slide.is-active [data-editable-text].is-editing {
+  outline: 2px solid rgba(255, 204, 0, 0.95);
+  background: color-mix(in srgb, var(--surface) 86%, #fff4b8 14%);
+}
+
+body.edit-mode .slide.is-active [data-editable] {
+  position: absolute;
+  outline: 1px dashed rgba(58, 124, 255, 0.7);
+  outline-offset: 3px;
+  cursor: move;
+  z-index: 25;
+}
+
+body.edit-mode .slide.is-active [data-editable]:hover {
+  outline-color: rgba(255, 149, 0, 0.95);
+}
+
+body.edit-mode .slide.is-active [data-editable]::before {
+  content: attr(data-edit-id);
+  position: absolute;
+  top: -26px;
+  left: 0;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: rgba(17, 19, 28, 0.88);
+  color: #f3f6ff;
+  font-size: 11px;
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+body.edit-mode .slide.is-active [data-editable].is-selected {
+  outline: 2px solid rgba(255, 149, 0, 0.95);
+}
+
+body.edit-mode .slide.is-active [data-editable].is-selected::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: #ff9500;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: nwse-resize;
+}
+
+body.edit-mode .slide.is-active [data-editable] a,
+body.edit-mode .slide.is-active [data-editable] button {
+  pointer-events: none;
+}
+
+body.edit-mode .slide.is-active {
+  user-select: none;
+}

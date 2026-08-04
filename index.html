@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-themes="corporate-clean,tokyo-night,nord,minimal-white,catppuccin-mocha">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>任圣杰 - Interview Deck</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" id="theme-link" href="assets/themes/corporate-clean.css">
+<link rel="stylesheet" href="assets/animations.css">
+<link rel="stylesheet" href="style.css">
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      packages: {'[+]': ['ams']}
+    },
+    chtml: {matchFontHeight: false},
+    options: {skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']}
+  };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  function __initMermaid() {
+    if (!window.mermaid) return false;
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'loose',
+      fontFamily: "'Inter','Noto Sans SC',sans-serif",
+      flowchart: { curve: 'basis', htmlLabels: true, useMaxWidth: true, padding: 14, nodeSpacing: 44, rankSpacing: 46 },
+      themeVariables: {
+        primaryColor: '#eef3fb',
+        primaryBorderColor: '#1d4ed8',
+        primaryTextColor: '#0a2540',
+        lineColor: '#5b6b82',
+        fontSize: '15px'
+      }
+    });
+    return true;
+  }
+
+  const rendered = new WeakSet();
+  async function renderScope(scope) {
+    if (!window.mermaid) return;
+    const nodes = scope.querySelectorAll('.mermaid:not([data-mm-done])');
+    for (const el of nodes) {
+      if (rendered.has(el)) continue;
+      const src = el.getAttribute('data-src') || el.textContent;
+      const id = 'mm-' + Math.random().toString(36).slice(2);
+      try {
+        const { svg } = await mermaid.render(id, src.trim());
+        el.innerHTML = svg;
+        el.setAttribute('data-mm-done', '1');
+        rendered.add(el);
+      } catch (e) {
+        el.innerHTML = '<pre style="color:#dc2626;font-size:12px;white-space:pre-wrap">' + (e && e.message ? e.message : e) + '</pre>';
+      }
+    }
+  }
+  window.__renderMermaid = renderScope;
+  // initial pass for any diagram already on the active slide / preview mode
+  window.addEventListener('load', () => { __initMermaid(); renderScope(document); });
+</script>
+</head>
+<body class="tpl-interview">
+<div class="deck">
+
+  <section class="slide" data-title="Cover">
+    <div class="hero">
+      <div class="hero-copy">
+        <p class="kicker">interview deck / self intro</p>
+        <h1>任圣杰</h1>
+        <ul class="cover-points">
+          <li>
+            <strong>南京大学 硕士，机器学习与数据挖掘研究所（LAMDA） / 负责人：周志华，2024.9 - 2027.6</strong>
+            <!-- <span class="course-line">课程：深度学习、自然语言处理、计算机视觉、模式识别</span> -->
+          </li>
+          <li>
+            <strong>南京大学 学士，人工智能学院，2020.9 - 2024.6</strong>
+            <!-- <span class="course-line">课程：机器学习、概率论、数学分析、数据结构与算法</span> -->
+          </li>
+        </ul>
+        <div class="contact">
+          <span>南京大学 LAMDA</span>
+          <span>rensj@lamda.nju.edu.cn</span>
+          <span>(+86) 186-9842-3826</span>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <span class="label">一句话定位</span>
+        <ul class="points">
+          <li><strong>科研</strong>：多目标优化方向 7 篇论文，含 6 篇 CCF-A，4 篇独立一作</li>
+          <li><strong>工业实践</strong>：具备完整的 LLM 微调与线上部署实战经验，熟练掌握 Verl、LLaMA-Factory 训练框架，具备分布式 LLM 集群推理与高吞吐数据链路的搭建经验</li>
+          <li><strong>个人项目</strong>：持续跟进 Agent RL、投机解码 OPD 等前沿技术并进行复现和改进；了解Agent完整链路框架开发，维护个人 Agent 开源项目</li>
+        </ul>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">T 切主题 · S 演讲者视图 · ← → 翻页</span>
+      <span class="slide-number" data-current="1" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>大家好，我叫任圣杰，现在是南京大学 LAMDA 硕士在读，本科和硕士都在南京大学封面这一页我先用最简单的方式把教育背景交代清楚：硕士阶段在机器学习与数据挖掘研究所，也就是 LAMDA，负责人是周志华老师；本科阶段在人工智能学院</p>
+      <p>下一页我会先展开工业实践部分，重点介绍我在字节跳动 Data-抖音-Flow 推荐方向做的豆包应用 LLM4REC 工作</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="Doubao LLM4REC">
+    <div class="llmrec-layout">
+      <div class="llmrec-copy">
+        <span class="section-label">byte internship / llm4rec</span>
+        <h2>豆包应用 LLM4REC</h2>
+        <p class="llmrec-meta">字节跳动 · Data-抖音-Flow · 2025.11 - 至今</p>
+
+        <article class="llmrec-problem">
+          <span>项目难点</span>
+          <p>用户主动发送的消息是豆包理解兴趣、驱动推荐和创作激发的核心信号，但单轮消息常常上下文残缺、噪声密集、意图模糊</p>
+        </article>
+
+        <div class="llmrec-work-grid">
+          <a class="llmrec-work-card" href="#/5" aria-label="跳转到第 5 页：Doubao Creation Memory">
+            <b>Doubao Creation Memory</b>
+            <p>从每日图文 / 视频创作消息中抽取兴趣，构建层次化用户记忆</p>
+          </a>
+          <a class="llmrec-work-card" href="#/7" aria-label="跳转到第 7 页：Generative Suggestion Recommendation">
+            <b>Generative Suggestion Recommendation</b>
+            <p>基于用户记忆生成个性化主动创作建议，激发创作心智</p>
+          </a>
+          <a class="llmrec-work-card" href="#/8" aria-label="跳转到第 8 页：AI Creator Productivity">
+            <b>AI Creator Productivity</b>
+            <p>从海量创作数据挖掘可迁移 Skill，构建生成、评估、改进闭环</p>
+          </a>
+          <a class="llmrec-work-card" href="#/9" aria-label="跳转到第 9 页：豆包创作社区推荐">
+            <b>豆包创作社区推荐</b>
+            <p>迭代社区精排模型，补充用户记忆、候选与行为特征</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="llmrec-scenes">
+        <figure>
+          <img src="assets/images/doubao-creation-feed.png" alt="豆包创作社区推荐场景截图">
+          <figcaption>创作社区：内容消费与创作入口</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/images/doubao-suggestion-entry.png" alt="豆包主动创作建议场景截图">
+          <figcaption>对话页：主动创作建议承接</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · 豆包应用 LLM4REC</span>
+      <span class="slide-number" data-current="2" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>这一页先介绍我的工业实践主线：字节跳动 Data-Flow-AI 推荐方向，豆包应用 LLM4REC这个场景的关键输入不是传统推荐里的点击序列，而是用户主动发给豆包的创作消息它们价值很高，因为能直接反映用户想创作什么；但难点也很明显，单轮消息经常上下文不完整、噪声多、意图表达模糊</p>
+      <p>围绕这个问题，我的工作主要分成四条线第一是 Doubao Creation Memory，把每日图文和视频创作消息沉淀成层次化用户记忆第二是 Generative Suggestion Recommendation，基于这些记忆生成主动创作建议第三是 AI Creator Productivity，从海量创作数据中挖掘可复用的创作 Skill第四是豆包创作社区推荐，把这些能力接入精排模型和推荐链路</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="R-Agent">
+    <div class="ragent-v2">
+      <header class="ragent-v2-head" data-anim="fade-down">
+        <div>
+          <div class="ragent-head">
+            <span class="section-label">personal project / r-agent</span>
+            <a class="ragent-github" href="https://github.com/littlefishshow/R-Agent" target="_blank" rel="noreferrer">GitHub ↗</a>
+          </div>
+          <h2>R-Agent</h2>
+        </div>
+        <div class="ragent-motivation">
+          <p><strong>通用问答式 LLM 的调研痛点</strong>：<span>指标不全</span><span>上下文不可控</span><span>细节缺失</span><span>追问繁琐且易发散</span><span>难沉淀学习笔记</span></p>
+          <p><strong>面向个人科研工作流</strong>：构建<strong>本地可控的研究助理工作台</strong>，覆盖<span>论文调研</span><span>论文精读</span><span>仓库 / 代码定位</span><span>自动实验</span></p>
+        </div>
+      </header>
+
+      <div class="ragent-v2-body">
+        <section class="ragent-feature-zone">
+          <div class="ragent-zone-label"><span>CORE CAPABILITIES</span></div>
+          <div class="ragent-feature-grid anim-stagger-list" data-anim-target>
+            <a class="ragent-feature" href="#/10" aria-label="跳转到第 10 页：完整 Agent Loop">
+              <div class="ragent-feature-no">01</div>
+              <div class="ragent-feature-title">
+                <span class="ragent-feature-mark">EXECUTE</span>
+                <h3>完整 Agent Loop</h3>
+              </div>
+              <div class="ragent-mini-flow">
+                <span>目标</span><i>→</i><span>决策</span><i>→</i><span>工具</span><i>→</i><span>验证</span>
+              </div>
+              <p>动态注册文件、Shell、Python、Web、Memory、Todo 与 Delegate；大输出转 artifact、长上下文自动压缩，让长任务持续推进</p>
+            </a>
+
+            <a class="ragent-feature" href="#/11" aria-label="跳转到第 11 页：受控自动实验闭环">
+              <div class="ragent-feature-no">02</div>
+              <div class="ragent-feature-title">
+                <span class="ragent-feature-mark">AUTORESEARCH</span>
+                <h3>受控自动实验闭环</h3>
+              </div>
+              <div class="ragent-loop">
+                <span>Plan</span><i>→</i><span>Attempt</span><i>→</i><span>Conclude</span><i>↺</i>
+              </div>
+              <p>自动改代码、运行 train / eval、读取 metrics、保留改进与总结失败；预算、超时、monitor / stop 和固定评测共同约束实验边界</p>
+            </a>
+
+            <a class="ragent-feature" href="#/12" aria-label="跳转到第 12 页：端到端科研链路">
+              <div class="ragent-feature-no">03</div>
+              <div class="ragent-feature-title">
+                <span class="ragent-feature-mark">RESEARCH</span>
+                <h3>端到端科研链路</h3>
+              </div>
+              <div class="ragent-research-flow">
+                <span><b>Scout</b><small>多源发现与排序</small></span>
+                <i>→</i>
+                <span><b>Reader</b><small>图表与研究笔记</small></span>
+                <i>→</i>
+                <span><b>Repo</b><small>方法定位到代码</small></span>
+              </div>
+              <p>不止生成摘要，而是围绕研究价值、实验可信度、可复现性和关键实现路径形成可复用判断</p>
+            </a>
+
+            <a class="ragent-feature" href="#/12" aria-label="跳转到第 12 页：GUI 交互与 Cockpit">
+              <div class="ragent-feature-no">04</div>
+              <div class="ragent-feature-title">
+                <span class="ragent-feature-mark">EVOLVE</span>
+                <h3>可 DIY、拥有 GUI 交互</h3>
+              </div>
+              <div class="ragent-capability-row">
+                <span>DIY Tools</span><span>划词解释</span><span>Cockpit</span>
+              </div>
+              <p>Agent 可交互式新增并热加载工具，把稳定流程沉淀为 Skill；GUI 支持划词提问和分支对话</p>
+            </a>
+          </div>
+        </section>
+
+        <div class="ragent-gallery anim-fade-right" data-anim="fade-right">
+          <a href="#ragent-cli-zoom">
+            <img src="assets/images/r-agent-cli.png" alt="R-Agent CLI 示例截图">
+            <span><b>CLI</b> · 树状 Todo、子任务与工具执行状态</span>
+          </a>
+          <a href="#ragent-gui-zoom">
+            <img src="assets/images/r-agent-gui.png" alt="R-Agent GUI 示例截图">
+            <span><b>Cockpit</b> · 论文阅读、对话分支与文件上下文</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">个人项目 · R-Agent</span>
+      <span class="slide-number" data-current="3" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>这一页介绍我的个人项目 R-Agent它首先解决科研调研中使用通用问答式 LLM 的痛点：推荐指标不全、上下文不可控、关键细节缺失；为了补全信息要频繁追问，但追问又容易发散、不连贯，最终也难以沉淀为可复用的学习笔记</p>
+      <p>我把 R-Agent 做成本地可控的研究助理工作台，重点不是聊天，而是可执行闭环它维护 messages 上下文，通过工具注册表连接文件、命令、Web、Memory、Skill、Todo、Delegate 和 AutoResearch科研链路上，我把发现、精读、代码溯源沉淀成分层 Skill；实验链路上，实现 Plan、Attempt、Conclude 的自动实验运行时；同时通过自演进机制和浏览器 Cockpit 支撑长链路任务和可视化审计</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="Multi-objective Optimization">
+    <div class="moo-page">
+      <header class="moo-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">research / multi-objective optimization</span>
+          <h2>多目标优化</h2>
+        </div>
+        <p>在相互冲突的目标之间寻找<strong>帕累托最优</strong>折中方案，让效果、成本、多样性与安全约束共同成立</p>
+      </header>
+
+      <div class="moo-row moo-row-applications">
+        <a class="moo-visual moo-pareto anim-fade-left" data-anim="fade-left" href="#moo-pareto-zoom">
+          <img src="assets/images/multi-objective-pareto-frontier.jpeg" alt="多目标优化帕累托前沿概念图">
+          <span>帕累托前沿 · 点击放大</span>
+        </a>
+        <section class="moo-applications anim-stagger-list" data-anim-target>
+          <div class="moo-applications-label">HOW I APPLY IT</div>
+          <details class="moo-alignment-detail">
+            <summary class="moo-app moo-alignment-summary">
+              <span>01</span>
+              <div>
+                <h3>大模型对齐</h3>
+                <p><b>冲突：</b>Prompt 质量、多样性、用户偏好与安全成本无法同时单独最优</p>
+                <p><b>做法：</b>构造帕累托 DPO 样本对，寻找不牺牲任一核心指标的均衡参数</p>
+              </div>
+              <em class="moo-app-expand">+</em>
+            </summary>
+          </details>
+          <div class="moo-alignment-body">
+            <div class="moo-alignment-toolbar">
+              <strong>大模型对齐 · 多目标 RLHF 调研</strong>
+              <button type="button" data-moo-alignment-close>收起调研 ×</button>
+            </div>
+            <div class="moo-alignment-grid">
+              <article>
+                <b>协同优化</b>
+                <p>两个模型优化目标不同，但 rollout 数据来自对方，用对方采样轨迹校准自身目标，形成互相供数、互相约束的协同优化。</p>
+              </article>
+              <article>
+                <b>优势函数融合</b>
+                <p>优势不是简单相加：关注 <code>A = Σ w_i A_i</code> 的融分公式，也可用几何平均等非线性融合，惩罚“偏科”的奖励项。</p>
+              </article>
+              <article>
+                <b>优化方向约束</b>
+                <p>用惩罚函数限制更新方向，防止模型为了单一奖励过度偏离；约束项可以和 KL、margin 或安全奖励共同工作。</p>
+              </article>
+              <article>
+                <b>归一化顺序</b>
+                <p>先对各目标分别计算相对优势，再加权求和，与先融合奖励再归一化会得到不同训练信号；相关方向可参考 NVIDIA GDPO。</p>
+              </article>
+              <article>
+                <b>Projection Optimization</b>
+                <p>把优化目标限制在凸包内，将当前奖励向量投影到凸包得到投影点 <code>d</code>，再由 <code>d</code> 推出对应权重。</p>
+              </article>
+              <article>
+                <b>Prompt 条件偏好</b>
+                <p>不同问题有不同价值偏好，奖励权重应随 Prompt 调整；例如 ArmoRM 用路由/混合方式表达样本级奖励偏好。</p>
+              </article>
+            </div>
+            <div class="moo-alignment-refs">
+              <span>NVIDIA GDPO</span>
+              <span>Projection Optimization: A General Framework for Multi-Objective and Multi-Group RLHF</span>
+              <span>ArmoRM</span>
+            </div>
+          </div>
+          <article class="moo-app">
+            <span>02</span>
+            <div>
+              <h3>检索与推荐</h3>
+              <p><b>冲突：</b>召回、点击、内容多样性、重复率和审核通过率存在拉扯</p>
+              <p><b>做法：</b>联合调整召回权重、精排函数和打散策略，兼顾透出与生态健康</p>
+            </div>
+          </article>
+          <article class="moo-app">
+            <span>03</span>
+            <div>
+              <h3>智能 Agent 决策</h3>
+              <p><b>冲突：</b>任务完成率、规划开销和工具调用次数需要权衡；最优方案权衡</p>
+              <p><b>做法：</b>以多目标强化学习选择策略、协同优化、self-Evo harness 优化</p>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <div class="moo-row moo-row-publications">
+        <a class="moo-visual moo-algorithm anim-fade-left" data-anim="fade-left" href="#moo-algorithm-zoom">
+          <img src="assets/images/multi-objective-evolution-loop.jpeg" alt="多目标演化算法循环示意图">
+          <span>演化搜索循环 · 点击放大</span>
+        </a>
+        <section class="moo-publications" data-anim="fade-up">
+          <div class="moo-publications-head">
+            <div>
+              <span>PUBLICATIONS</span>
+              <strong>7 篇多目标优化论文</strong>
+            </div>
+            <div class="moo-pub-stats"><b>6</b> CCF-A <i>·</i><b>4</b> 独立一作</div>
+          </div>
+          <div class="moo-publication-summary">
+            <article><b>4</b><span>独立一作</span></article>
+            <article><b>6</b><span>CCF-A</span></article>
+            <article><b>AAAI · IJCAI · PPSN</b><span>发表会议</span></article>
+          </div>
+          <details class="moo-paper-list">
+            <summary>展开全部论文列表 <span>+</span></summary>
+            <ol>
+              <li class="moo-paper-list-toolbar"><button type="button" data-moo-paper-close>收起论文列表 ×</button></li>
+              <li><b>Not Just for Archiving: Provable Benefits of Reusing the Archive in Evolutionary Multi-objective Optimization</b><span>AAAI'26 · 一作</span></li>
+              <li><b>A Theoretical Perspective on Why Stochastic Population Update Needs an Archive in Evolutionary Multi-objective Optimization</b><span>IJCAI'25 · 一作</span></li>
+              <li><b>A First Running Time Analysis of the Strength Pareto Evolutionary Algorithm 2 (SPEA2)</b><span>PPSN'24 · 一作</span></li>
+              <li><b>Maintaining Diversity Provably Helps in Evolutionary Multimodal Optimization</b><span>IJCAI'24 · 一作</span></li>
+              <li><b>One for Exploration and Another for Exploitation: A Dual-Population MOEA Framework with Provable Benefits</b><span>IJCAI'26 · 二作</span></li>
+              <li><b>Theoretical Analysis of Multi-objective Evolutionary Algorithms on Integer Spaces with Local Optima</b><span>IJCAI'26 · 二作</span></li>
+              <li><b>An Archive Can Bring Provable Speed-ups in Multi-objective Evolutionary Algorithms</b><span>IJCAI'24 · 二作</span></li>
+            </ol>
+          </details>
+        </section>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">科研 · 多目标优化</span>
+      <span class="slide-number" data-current="4" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>多目标优化研究的是多个相互冲突目标之间的平衡它输出的不是单一最优解，而是一组帕累托最优折中方案这个思路和我在工业实践、Agent 系统里遇到的问题高度一致：我们既想提升效果，又必须兼顾多样性、成本、时延和安全</p>
+      <p>这页只保留三个最直接的迁移场景大模型对齐中，可以同时兼顾 Prompt 质量、多样性与用户偏好；推荐中，可以在核心指标之外控制同质化和风险；Agent 决策中，可以在任务完成、规划成本与响应速度间权衡论文清单默认完全收起，按需展开查看全部 7 篇的完整标题与发表信息</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="Doubao Creation Memory">
+    <div class="creation-memory-page">
+      <header class="creation-memory-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">byte internship / doubao creation memory</span>
+          <h2><strong>Doubao Creation Memory</strong></h2>
+        </div>
+        <p><strong>项目描述：</strong>将用户每日主动发送的消息归纳为层次化 Memory，作为用户兴趣表征，辅助推荐、创作激发等下游任务</p>
+      </header>
+
+      <div class="memory-v11-layout">
+        <div class="memory-v11-top">
+          <a class="memory-v11-pipeline anim-fade-left" data-anim="fade-left" href="#creation-memory-pipeline-zoom">
+            <img src="assets/images/image_1785070442.png" alt="Doubao Creation Memory 从用户每日消息到短期和长期记忆的处理流程">
+            <span>Memory overall pipeline · 点击放大</span>
+          </a>
+          <section class="memory-v11-right anim-stagger-list" data-anim-target>
+            <article class="memory-v11-stage-card">
+              <span>01 · SUMMARY</span>
+              <h3>从每日主动消息中抽取可用创作兴趣</h3>
+              <div class="memory-v11-stage-points">
+                <p><b>意图筛选</b><span>使用意图识别模型筛出图片 / 视频创作消息，排除非创作型请求</span></p>
+                <p><b>信息提取</b><span>将每日、多轮相同意图的消息合并为单个兴趣点，降低重复表达影响</span></p>
+                <p><b>噪声过滤</b><span>过滤工具向、恶搞向、政治向兴趣，保留可服务推荐和创作激发的偏好信号</span></p>
+              </div>
+            </article>
+
+            <article class="memory-v11-stage-card">
+              <span>02 · MERGE</span>
+              <h3>将局部兴趣聚合为稳定的高阶偏好</h3>
+              <div class="memory-v11-stage-points">
+                <p><b>兴趣聚类路由</b><span>按照 RQ-Kmeans 码本路由，并根据 cluster 大小动态调整分类粒度</span></p>
+                <p><b>高阶兴趣归纳</b><span>将相邻或相关兴趣凝练为代表性更强、泛化性更好的高阶兴趣点</span></p>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <section class="memory-v11-production" data-anim="fade-up">
+          <div>
+            <span>PRODUCTION PIPELINE</span>
+            <h3>搭建日增创作消息的高吞吐工程链路</h3>
+          </div>
+          <ol>
+            <li><b>数据生产</b><span>千万级日增消息</span></li>
+            <li><b>消息队列</b><span>削峰与异步消费</span></li>
+            <li><b>触发调度</b><span>高并发任务编排</span></li>
+            <li><b>集群化 LLM 推理</b><span>多实例稳定产出</span></li>
+            <li><b>Abase 存储</b><span>Memory 在线消费</span></li>
+          </ol>
+        </section>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · Doubao Creation Memory · <a class="footer-link" href="#/2">返回第 2 页</a></span>
+      <span class="slide-number" data-current="5" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>这一页展开 Doubao Creation Memory核心目标是把用户每天主动发出的创作消息，从上下文不完整、表达重复且夹杂噪声的原始信号，转成层次化、可复用的用户兴趣表征</p>
+      <p>Summary 阶段先用意图模型筛选图文和视频创作消息，合并相同意图，并过滤工具、恶搞、政治等非目标兴趣每个兴趣点统一记录风格、主题、细节、IP、用途和 Embedding，让兴趣既可解释，也能直接进入下游模型</p>
+      <p>在 Merge 阶段，RQ-Kmeans 码本负责按兴趣点聚合，并根据 cluster 大小自适应调整分类粒度；Merge LLM 再把局部兴趣归纳为更高阶、兼具代表性和泛化性的偏好工程上，整条链路覆盖千万量级日增消息，通过数据生产、消息队列、触发调度、集群 LLM 推理与 Abase 存储持续稳定产出</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="Creation Memory Training & Impact">
+    <div class="creation-training-page">
+      <header class="creation-training-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">doubao creation memory / training & impact</span>
+          <h2>Memory LLM Post-Training & Eval</h2>
+        </div>
+        <p>先用<strong>相关性 + 个性化</strong>筛出蒸馏数据，再以 GRPO 将生成质量继续对齐真实业务目标</p>
+      </header>
+
+      <div class="training-v18-layout">
+        <section class="training-v26-main">
+          <article class="training-v26-distill">
+            <div class="training-v26-head">
+              <span>01 · REJECTION SAMPLING + IN-CONTEXT DISTILLATION</span>
+              <h3>拒绝采样 In-Context Distillation</h3>
+              <p>相关性由 LLM-as-Judge 打分，个性化由主动创作精排分过滤；筛出的可信样本进入两阶段蒸馏</p>
+            </div>
+            <a href="#creation-distillation-zoom">
+              <img src="assets/images/image_1785067942.png" alt="两阶段 In-Context Distillation 从闭源模型蒸馏到服务小模型的流程">
+              <em>点击放大流程图</em>
+            </a>
+          </article>
+
+          <article class="training-v26-grpo" data-anim="fade-up">
+            <div class="training-v26-head">
+              <span>02 · POLICY OPTIMIZATION</span>
+              <h3>Constrained Reward GRPO</h3>
+              <p>同一 Prompt 采样 \(G\) 条回答，HCRS 先构造奖励 \(R_i\)，再用组内相对奖励形成优势</p>
+            </div>
+            <div class="training-v26-formula-grid">
+              <section class="training-v26-objective">
+                <span>GRPO Objective + Group Advantage</span>
+                <div class="training-v26-objective-stack">
+                  <div class="display-math">\[
+                    \mathcal L=-\frac1{\sum_iT_i}\sum_{i,t}\Big[\min\big(\rho_{i,t}\hat A_i,\operatorname{clip}(\rho_{i,t},1-\epsilon,1+\epsilon)\hat A_i\big)-\beta D_{\mathrm{KL}}\big(\pi_\theta\parallel\pi_{\mathrm{ref}}\big)\Big]
+                  \]</div>
+                  <div class="display-math">\[
+                    \hat A_i=\frac{R_i-\bar R}{\sqrt{\frac1G\sum_k(R_k-\bar R)^2+10^{-8}}}
+                  \]</div>
+                </div>
+              </section>
+              <section class="training-v26-reward-formula">
+                <span>Reward Function</span>
+                <div class="display-math">\[
+                  R = r_1 \cdot \left(w_2 \operatorname{Norm}(r_2) + w_3 \operatorname{Norm}(r_3)\right)
+                \]</div>
+              </section>
+            </div>
+            <div class="training-v26-reward-items">
+                <p><b>\(r_1\)</b><span>规则约束：格式、错误字符、重复与长度</span></p>
+                <p><b>\(r_2\)</b><span>相关性：LLM-as-Judge 判断兴趣是否贴合输入</span></p>
+                <p><b>\(r_3\)</b><span>个性化：主动创作精排模型分数</span></p>
+            </div>
+          </article>
+        </section>
+
+        <section class="training-v18-impact" data-anim="fade-up">
+          <div>
+            <span>CREATION MEMORY UE SEQUENCE MODELING</span>
+            <strong>Short-Term Memory → MLLM-Emb → Embedding Sequence → 社区精排模型</strong>
+          </div>
+          <article><b>+0.1751%</b><span>创作高活用户 · LT3</span></article>
+          <article><b>+0.0881%</b><span>做同款展示 · LT3</span></article>
+          <article><b>+0.2025%</b><span>创作发消息 · LT7</span></article>
+        </section>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · Creation Memory Training & Impact</span>
+      <span class="slide-number" data-current="6" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>第六页的起点是数据：训练集不是直接使用模型生成结果，而是先做拒绝采样第一维是相关性，由 LLM-as-Judge 判断兴趣总结与原始输入是否相关、是否有代表性；第二维是个性化，把改写后的兴趣点接入主动创作精排，用精排分过滤低价值样本这些可信样本会被组织为 In-Context Distillation 所需的 few-shot 示例</p>
+      <p>蒸馏采用两阶段路径：先让中等规模模型吸收闭源 Teacher 的推理能力，再蒸馏到服务侧小模型，以兼顾效果与线上成本随后用 GRPO 做业务对齐：同一 Prompt 采样多条回答，HCRS 为每条回答计算奖励，奖励再被转换为组内相对优势并进入 GRPO 目标</p>
+      <p>HCRS 中，规则奖励守住格式、长度和去重等质量底线；相关性奖励衡量内容贴合；个性化奖励直接使用主动创作精排信号业务侧，短期 Creation Memory 经豆包社区 MLLM-Emb 转为 Embedding 序列并输入精排模型，最终带来三项线上指标提升</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="Generative Suggestion Recommendation">
+    <div class="suggestion-page">
+      <header class="suggestion-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">byte internship / generative suggestion recommendation</span>
+          <h2>Generative Suggestion Recommendation</h2>
+        </div>
+        <p>基于 Doubao Creation Memory 生成个性化主动创作消息，注入推荐候选池并在线分发，激发用户创作心智</p>
+      </header>
+
+      <div class="suggestion-layout">
+        <main class="suggestion-main">
+          <a class="suggestion-dpo-card" href="#suggestion-dpo-zoom" data-anim="fade-right">
+            <img src="assets/images/image-4.png" alt="Generative Suggestion Recommendation DPO 训练示例图">
+            <span>DPO preference construction · 点击放大</span>
+          </a>
+
+          <section class="suggestion-narrative">
+            <article class="suggestion-motivation" data-anim="fade-left">
+            <div class="suggestion-block-head">
+              <span>WHY GENERATE</span>
+              <h3>从固定 PGC 候选走向千人千面</h3>
+            </div>
+            <div class="suggestion-pain-grid">
+              <article><b>兴趣覆盖不足</b><span>主要候选约 3w 条 PGC 创作消息，面对 500w 日创作用户覆盖不足</span></article>
+              <article><b>热度偏差</b><span>头部 1% gid 承担约 70% 分发量，长尾兴趣难以自然透出</span></article>
+              <article><b>兴趣泛化</b><span>Suggestion 需要在基础兴趣上延申发散，而召回更偏语义相关或宽泛候选</span></article>
+            </div>
+            </article>
+
+            <article class="suggestion-method" data-anim="fade-left">
+              <span>01 · INTEREST SELECTION</span>
+              <h3>先选对用户此刻值得探索的兴趣</h3>
+              <ul>
+                <li>新用户用 <strong>UCB Boost</strong> 平衡 cluster 兴趣探索与利用</li>
+                <li>兴趣过多时，用回访兴趣与未反应兴趣构造正负样本，和用户画像做对比学习，得到共鸣打分器</li>
+              </ul>
+            </article>
+
+            <article class="suggestion-method" data-anim="fade-left">
+              <span>02 · SUGGESTION GENERATION</span>
+              <h3>基于采样兴趣生成 Prompt 与展示文案</h3>
+              <ul>
+                <li>使用拒绝采样和两阶段 In-Context Distillation 训练生成模型</li>
+                <li>自采样样本，围绕生图质量、多样性、用户偏好构造帕累托偏好对并做 DPO 对齐</li>
+              </ul>
+            </article>
+          </section>
+        </main>
+
+        <aside class="suggestion-bottom">
+          <section class="suggestion-metrics" data-anim="fade-up">
+            <article>
+              <span>创作发消息 · LT7</span>
+              <b>+0.1487%</b>
+            </article>
+            <article>
+              <span>点击渗透</span>
+              <b>+3.65%</b>
+            </article>
+          </section>
+
+          <section class="suggestion-serving" data-anim="fade-up">
+            <span>END-TO-END SERVING LOOP</span>
+            <ol>
+              <li>生成式候选</li>
+              <li>特征拼接写入 Abase</li>
+              <li>User 上下文独立召回</li>
+              <li>Info 落表与安审过滤</li>
+              <li>精排打分</li>
+              <li>打散后线上透出</li>
+            </ol>
+          </section>
+
+          <details class="suggestion-example" data-anim="fade-up">
+            <summary>展开生成示例 <span>+</span></summary>
+            <div class="suggestion-example-body">
+              <button type="button" data-suggestion-example-close>收起示例 ×</button>
+              <div>
+                <p><b>Title</b> 生成阳光下草地上的春日野餐特写</p>
+                <p><b>Desc</b> 一张清新治愈的春日野餐场景摄影作品，采用特写镜头捕捉主体是一个精致的白色野餐篮，正被轻柔地放置在一片柔软的翠绿色草地之上，旁边点缀着几朵盛开的粉色郁金香柔和的午后阳光从侧面洒下，为整个画面带来温暖明亮的基调，并在篮子的木质边缘和花朵的露珠上形成微光背景被巧妙地虚化，隐约可见远处的树林和蓝天白云使用 85mm 人像镜头拍摄，f/1.8 大光圈创造出梦幻的浅景深效果，使焦点完全集中在野餐篮和鲜花上，画面细节丰富，质感细腻，充满生活气息与自然之美</p>
+              </div>
+              <a href="#suggestion-example-zoom">
+                <img src="assets/images/image-2.png" alt="春日野餐创作建议示例图">
+                <em>示例图 · 点击放大</em>
+              </a>
+            </div>
+          </details>
+        </aside>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · Generative Suggestion Recommendation · <a class="footer-link" href="#/2">返回第 2 页</a></span>
+      <span class="slide-number" data-current="7" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>第七页介绍 Generative Suggestion Recommendation它和前面的 Creation Memory 是连续的：Memory 负责把用户创作兴趣沉淀出来，这一页则负责把这些兴趣变成能被推荐系统分发的主动创作建议</p>
+      <p>项目动机主要有三点第一，固定 PGC 候选数量有限，难以覆盖几百万日创作用户的个性化兴趣第二，分发存在明显热度偏差，头部 gid 占据大部分流量第三，Suggestion 推荐不只是语义相关，还要能基于基础兴趣做延申和发散，所以需要生成式候选</p>
+      <p>方法上先做 Interest Selection：新用户用 UCB Boost 平衡探索和利用；兴趣很多时，用回访兴趣和未反应兴趣构造正负样本，和用户画像做对比学习，得到共鸣打分器随后进入 Suggestion Generation：围绕采样兴趣生成 Prompt 和展示文案，用拒绝采样、两阶段 In-Context Distillation 训练，再通过多目标帕累托偏好对做 DPO 对齐最后，生成候选写入 Abase，推荐服务侧独立召回、安审过滤、精排打分和打散透出，形成端到端闭环</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="AI Creator Productivity">
+    <div class="creator-page">
+      <header class="creator-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">byte internship / ai creator productivity</span>
+          <h2>AI Creator Productivity</h2>
+        </div>
+        <p>从海量创作中挖掘可迁移的创作 Skill，构建<strong>生成 → 评估 → 改进</strong>的自演化闭环</p>
+      </header>
+
+      <div class="creator-layout">
+        <aside class="creator-overview">
+          <a class="creator-loop-visual" href="#creator-loop-zoom" data-anim="fade-right">
+            <img src="assets/images/edited_image_125253.png" alt="AI Creator Productivity 系统总览闭环图">
+            <span>系统总览闭环图 · 点击放大</span>
+          </a>
+
+          <section class="creator-metrics" data-anim="fade-up">
+            <article><b>86 / 2490</b><span>Skill / Variant 数</span></article>
+            <article><b>4.21 / 4.32</b><span>生成图 vs 用户图 · 6 维均分</span></article>
+            <article><b>100,000+</b><span>每日候选池增量</span></article>
+            <article><b>0.203 → 0.792</b><span>user_like_score</span></article>
+          </section>
+        </aside>
+
+        <main class="creator-main">
+          <section class="creator-pipeline anim-stagger-list" data-anim-target>
+            <article>
+              <span>01 · MINING</span>
+              <h3>沉淀用户 skill 库</h3>
+              <p><b>数据筛选</b> 每日筛选 5,000 创作未分发消息、清理数据集、保留最终成图与热度信号</p>
+              <p><b>Skill 路由</b> 由 LLM 进行粗粒度路由到 Skill 大类，Variant 通过 RQ-Kmeans 聚类固定</p>
+              <p><b>Skill 更新</b> LLM 直接更新 variant 并给出 skill 需要的增量部分，随后对 skill 增量部分一起进行聚合</p>
+            </article>
+            <article>
+              <span>02 · USING</span>
+              <h3>使用 skill 生图</h3>
+              <p><b>用户使用</b> 用户给出创作要求，系统路由选择 Skill 与 Variant</p>
+              <p><b>可控迁移</b> 支持显式 slots 模版，保留风格锚点，替换主体、构图、文案和场景</p>
+              <p><b>批量产出</b> 直接根据 skill 和 variant 生产，每日量产 100,000 条 Prompt，可直接接 Ark 生图</p>
+            </article>
+            <article>
+              <span>03 · EVALUATING</span>
+              <h3>判别器评估和反馈</h3>
+              <p><b>评估方式</b> 生成图与用户真图混合盲池，中性编号，避免看来源作弊</p>
+              <p><b>评分维度</b> 质量、构图、色彩、细节、文字排版、投产 readiness</p>
+              <p><b>回流改进</b> 判别器反馈继续回流改进 skill；user_like_score 从 0.203 提升到 0.792</p>
+            </article>
+          </section>
+
+          <section class="creator-innovations" data-anim="fade-up">
+            <article>
+              <i>↻</i>
+              <h3>自演化闭环</h3>
+              <p>不是一次性写 Prompt，而是挖掘、生成、盲评、回流 report；每轮 wave 都能自动触发再挖掘和二次精修</p>
+            </article>
+            <article>
+              <i>◇</i>
+              <h3>Skill × Variant 分层</h3>
+              <p>Skill 只学跨题材通用能力；Variant 身份由后端聚类固定，避免 LLM 因画风、主体差异乱建分类</p>
+            </article>
+            <article>
+              <i>⚡</i>
+              <h3>工程化规模控制</h3>
+              <p>字符 3-gram 相似聚类 + 18 条 / 16000 字符预算装箱，多层并发把“一簇一次”压到 batch 级请求</p>
+            </article>
+          </section>
+
+          <details class="creator-challenges" data-anim="fade-up">
+            <summary>展开困难点与应对 <span>+</span></summary>
+            <div class="creator-challenge-body">
+              <button type="button" data-creator-challenge-close>收起困难点 ×</button>
+              <article><b>Variant 身份漂移</b><span>用后端 RQKmeans cluster 码本固定 Variant ID，LLM 不允许输出 Variant 字段</span></article>
+              <article><b>Skill 层写冲突</b><span>第 3 轮引入 Skill 总编，聚合建议后一次性写回；同一 Skill 只写一次</span></article>
+              <article><b>挖掘 LLM 调用爆炸</b><span>相似度聚类 + 预算装箱，把“一簇一次”压缩到 batch 级调用</span></article>
+              <article><b>判别成本高 & 易被作弊</b><span>图片压缩后输入，中性编号盲评，仅离线 workers=2 跑，避免限流</span></article>
+              <article><b>多样性不足</b><span>Python 抽 transfer_context，使用 migration_content 追踪迁移轴，不加额外 LLM 调用</span></article>
+            </div>
+          </details>
+        </main>
+      </div>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · AI Creator Productivity · <a class="footer-link" href="#/2">返回第 2 页</a></span>
+      <span class="slide-number" data-current="8" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>第八页介绍 AI Creator Productivity这个项目解决的是如何从海量创作数据里自动挖掘可迁移的创作能力，并且让这些能力可以被生成、评估和持续改进</p>
+      <p>整体链路分三段Mining 面向每日十万级候选池，先清洗图片创作数据，保留最终成图、cluster 和热度信号，再让 LLM 只判断“这是哪类生产力任务”，沉淀成 86 个 Skill 和 2490 个 VariantUsing 阶段把这些能力转成可生图 Prompt，既能自动选择 Skill/Variant，也能通过 slots 控制主体、构图、文案和场景Evaluating 阶段把生成图和用户真图混进盲池，用判别器从 6 个维度打分并猜来源，把 user_like_score 从 0.203 提升到 0.792</p>
+      <p>创新点主要有三块：第一是自演化闭环，不是一次性写 Prompt，而是挖掘、生成、盲评、回流 report；第二是 Skill × Variant 分层，Skill 学通用生产力能力，Variant 身份由后端聚类固定，避免 LLM 因主体和画风变化乱建分类；第三是工程化规模控制，用字符 3-gram 相似聚类、预算装箱和多层并发，把 LLM 请求从“一簇一次”压缩到 batch 级别</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="Creation Community Ranking">
+    <div class="ranking-page">
+      <header class="ranking-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">byte internship / creation community ranking</span>
+          <h2>豆包创作社区推荐</h2>
+        </div>
+        <p>围绕豆包创作社区精排模型，主导完成 <strong>4 次结构 / 目标级 LR 上线</strong>，从特征交叉、任务依赖、消费深度和用户序列兴趣四个维度系统升级精排模型</p>
+      </header>
+
+      <section class="ranking-context" data-anim="fade-up">
+        <span>BASELINE: DCN + DNN</span>
+        <p>痛点：下游稀疏互动目标学习不足、特征交叉浅、缺少停留时长等深度消费刻画、缺少用户历史行为序列建模</p>
+      </section>
+
+      <div class="ranking-timeline" data-anim="fade-up">
+        <article><b>DCN + DNN</b><span>精排基线</span></article>
+        <i>→</i>
+        <article><b>① DBMTL + EMSNet + MMCN</b><span>稀疏目标 + 高阶交叉</span></article>
+        <i>→</i>
+        <article><b>② MMoE</b><span>多任务 Scaling</span></article>
+        <i>→</i>
+        <article><b>③ Staytime</b><span>消费深度目标</span></article>
+        <i>→</i>
+        <article><b>④ MLLM UE 序列</b><span>个性化序列兴趣</span></article>
+      </div>
+
+      <section class="ranking-accordion anim-stagger-list" data-anim-target>
+        <details class="ranking-module">
+          <summary>
+            <span class="ranking-module-no">01</span>
+            <span class="ranking-module-title">结构升级 · DBMTL 漏斗建模 + EMSNet 特征提取 + MMCN 高阶交叉</span>
+            <span class="ranking-module-line">用上游行为显式辅助下游稀疏目标，并用更深的交叉主干替代浅层 shared bottom</span>
+            <span class="ranking-badges"><b>大盘创作 LT7 +0.054%</b><b>点击封面做同款 +1.15%</b><b>发消息 LT7 +0.60%</b></span>
+          </summary>
+          <div class="ranking-module-body">
+            <a class="ranking-figure" href="#ranking-dbmtl-zoom">
+              <img src="assets/images/ppt_assets_fig1_dbmtl_emsnet_mmcn.png" alt="DBMTL EMSNet MMCN 精排整体结构图">
+              <em>结构图 · 点击放大</em>
+            </a>
+            <div class="ranking-detail-grid">
+              <article>
+                <h3>三点结构改动</h3>
+                <p><b>DBMTL</b> 建模 click → generate 漏斗依赖，缓解下游任务样本选择偏差与数据稀疏</p>
+                <p><b>EMSNet</b> 多 head gate 自适应缩放 embedding，兼顾 SENet 的 slot 选择和 DCN-M 的高效性</p>
+                <p><b>MMCN</b> 以交叉残差机制扩展主 Tower，保证 scaling up 的表达能力与稳定性</p>
+              </article>
+              <article class="ranking-formula">
+                <h3>关键公式</h3>
+                <div class="display-math">\[
+                  \begin{aligned}
+                  h_{down}&=\operatorname{concat}\big(f_{shared},\operatorname{Proj}(h_{up})\big)\\
+                  \hat y_{down}&=\operatorname{Tower}_{down}(h_{down})
+                  \end{aligned}
+                \]</div>
+                <div class="display-math">\[
+                  \begin{aligned}
+                  x_{l+1}&=x_0\odot(W_lx_l+b_l)\\
+                  &\quad+\sum_{k=0}^{l}x_k
+                  \end{aligned}
+                \]</div>
+                <p>离线 UAUC：click +1.18%、generate +1.67%、share +2.64%、download +2.67%，稀疏目标提升更明显</p>
+              </article>
+            </div>
+          </div>
+        </details>
+
+        <details class="ranking-module">
+          <summary>
+            <span class="ranking-module-no">02</span>
+            <span class="ranking-module-title">多任务 Scaling · MMoE 多专家 + 特征消偏</span>
+            <span class="ranking-module-line">将单一 MMCN 主干扩展为 4-Expert MMoE，用 gate 缓解多任务冲突和特殊特征偏差</span>
+            <span class="ranking-badges"><b>人均点击做同款 +0.54%</b><b>创作成功次数 +0.61%</b><b>人均采纳 +0.94%</b></span>
+          </summary>
+          <div class="ranking-module-body">
+            <a class="ranking-figure" href="#ranking-mmoe-zoom">
+              <img src="assets/images/ppt_assets_fig2_mmoe.png" alt="MMoE 多专家精排结构图">
+              <em>结构图 · 点击放大</em>
+            </a>
+            <div class="ranking-detail-grid">
+              <article>
+                <h3>Scaling 方案</h3>
+                <p>单共享主干 MMCN → <b>4 个 MMCN Expert</b>，参数量 18.32M → 34.8M</p>
+                <p>Expert 维度为 [1536, 768, 510, 255, 126]，cross / reduce 使用 \(4\cdot\tanh(x/4)\) 稳定激活</p>
+                <p>Gate 输入使用 uid、年龄、城市、gid、author、quality 等消偏泛化特征，每特征单独切片</p>
+              </article>
+              <article class="ranking-formula">
+                <h3>关键公式</h3>
+                <div class="display-math">\[
+                  \begin{aligned}
+                  g^k(x)&=\operatorname{Softmax}(W_g^k x_{debias})\\
+                  y^k&=\sum_{i=1}^{n}g_i^k(x)\cdot E_i(x)
+                  \end{aligned}
+                \]</div>
+                <p>消融显示 gate 输入换成 expert 同源输入后 AUC / UAUC 全面下降；简化 EMSNet / DCN 底座后 UAUC 下降 1% - 3%</p>
+              </article>
+            </div>
+          </div>
+        </details>
+
+        <details class="ranking-module">
+          <summary>
+            <span class="ranking-module-no">03</span>
+            <span class="ranking-module-title">新增消费深度目标 · 作品详情页 Staytime</span>
+            <span class="ranking-module-line">新增详情页停留时长回归目标，用 WCE 分桶把回归转分类，刻画内容黏性和深度兴趣</span>
+            <span class="ranking-badges"><b>详情页停留 +3.16%</b><b>新发布公开作品 +15.55%</b><b>>5s 视频 vv +5.81%</b></span>
+          </summary>
+          <div class="ranking-module-body">
+            <a class="ranking-figure" href="#ranking-staytime-zoom">
+              <img src="assets/images/ppt_assets_fig3_staytime_wce.png" alt="Staytime 回归目标和 WCE 分桶结构图">
+              <em>结构图 · 点击放大</em>
+            </a>
+            <div class="ranking-detail-grid">
+              <article>
+                <h3>目标与 Serving</h3>
+                <p>复用现有精排样本 / 模型 / 特征，新增 <b>template_staytime</b> 目标塔</p>
+                <p>WCE Loss 将停留时长离散化为有序分桶分类，提升对长尾时长与消费深度的表达</p>
+                <p>视频作品按时长分生效；图片作品按视频时长中位数给固定分，降低图片时长噪声</p>
+              </article>
+              <article class="ranking-formula">
+                <h3>关键公式</h3>
+                <div class="display-math">\[
+                  \begin{aligned}
+                  \operatorname{base}&=1+\frac{staytime}{scale}\\
+                  \alpha&=\frac{\log(kernel)}{\log(\max(\operatorname{base}))}
+                  \end{aligned}
+                \]</div>
+                <div class="display-math">\[
+                  score=\begin{cases}
+                  \operatorname{base}^{\alpha},& \text{video}\\
+                  1.372^{\alpha},& \text{image fixed}
+                  \end{cases}
+                \]</div>
+                <p>离线 staytime 回归 AUC 0.80933；加入后 Top50 生视频作品占比 12% → 24%</p>
+              </article>
+            </div>
+          </div>
+        </details>
+
+        <details class="ranking-module">
+          <summary>
+            <span class="ranking-module-no">04</span>
+            <span class="ranking-module-title">序列建模 · MLLM UE 序列 + Target Attention + 直方图分桶</span>
+            <span class="ranking-module-line">引入近 30 天做同款 / 互动序列，用 Target Attention 聚合相关历史行为并补充相似度分布特征</span>
+            <span class="ranking-badges"><b>详情页停留 +1.36%</b><b>人均点击模版 +2.10%</b><b>公开作品渗透 +1.70%</b></span>
+          </summary>
+          <div class="ranking-module-body">
+            <a class="ranking-figure" href="#ranking-mllm-zoom">
+              <img src="assets/images/ppt_assets_fig4_mllm_ue_seq.png" alt="MLLM UE 序列 Target Attention 与 Histogram Learning 结构图">
+              <em>结构图 · 点击放大</em>
+            </a>
+            <div class="ranking-detail-grid">
+              <article>
+                <h3>个性化兴趣建模</h3>
+                <p>新增用户近 30 天做同款序列与互动序列，截断 50 条，接入 MLLM embedding 和 Side Info</p>
+                <p>Target Attention 直接用作品多模态 UE 作 Query、序列 MLLM 作 Key、Side Info 作 Value</p>
+                <p>Histogram Learning 将 cosine 相似度分到 10 个桶，刻画用户兴趣分布的宏观形态</p>
+              </article>
+              <article class="ranking-formula">
+                <h3>关键公式</h3>
+                <div class="display-math">\[
+                  \begin{aligned}
+                  \alpha&=\operatorname{Softmax}\big(\gamma\cdot(K_{mllm}\cdot Q_{mllm})\big)\\
+                  V_{att}&=\sum_{i=1}^{L}\alpha_iV_{seq,i}
+                  \end{aligned}
+                \]</div>
+                <div class="display-math">\[
+                  \begin{aligned}
+                  H_{freq}&=\operatorname{HistogramCount}(\operatorname{Sim}_{cos},\,bins=10)\\
+                  E_{hist}&=\operatorname{MLP}\big(\operatorname{OneHotEmbedding}(H_{freq})\big)
+                  \end{aligned}
+                \]</div>
+                <p>V1 仅 DIN → V2 DIN + 直方图分桶逐级提升，离线 AUC diff +0.13% - +0.39%</p>
+              </article>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="ranking-bottom" data-anim="fade-up">
+        <strong>推荐系统迭代理解</strong>
+        <span>从 <strong>目标空间</strong>、<strong>特征空间</strong>、<strong>模型结构</strong> 三个维度对推荐系统进行<strong>系统性优化</strong></span>
+      </section>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · 创作社区推荐精排 · <a class="footer-link" href="#/2">返回第 2 页</a></span>
+      <span class="slide-number" data-current="9" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>这一页汇总我在豆包创作社区推荐精排方向的模型贡献基线是 DCN + DNN，主要问题包括下游稀疏互动目标学不好、特征交叉较浅、缺少停留时长这类深度消费目标，以及没有充分建模用户历史行为序列</p>
+      <p>我把这部分工作组织为四次上线：第一次是 DBMTL、EMSNet 和 MMCN，用结构升级解决稀疏目标和高阶交叉；第二次是 MMoE 多专家和特征消偏，把单主干扩展成多任务 scaling；第三次新增详情页 Staytime，用 WCE 分桶刻画消费深度；第四次引入 MLLM UE 序列和注意力分桶，把用户近 30 天行为序列转成个性化兴趣表达</p>
+      <p>默认状态下这页只展示主线、每次上线的一句话结论和核心收益面试官如果追问某一块，可以展开对应模块，里面有结构图、公式和更细节的实验结论</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="R-Agent Loop">
+    <div class="al2-page">
+      <header class="al2-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">personal project / r-agent architecture</span>
+          <h2>Agent Loop</h2>
+        </div>
+        <p><strong>一个可控的本地研究型 Agent</strong>：Agent Loop 驱动，上下文治理、工具隔离、安全边界、父子任务四位一体</p>
+      </header>
+
+      <main class="al2-main">
+        <section class="al2-loop" data-anim="fade-right">
+          <div class="al2-loop-bar">
+            <span class="al2-loop-title">核心：一个带工具调用的可控循环</span>
+            <button type="button" class="al2-open-btn" data-panel="loop">查看完整流程 ▸</button>
+          </div>
+          <div class="al2-loop-canvas">
+            <div class="mermaid al2-diagram" data-src="flowchart LR
+  U([用户输入]):::io --> CTX[上下文治理<br/>压缩历史 · 大输出落盘]:::key
+  CTX --> LLM{{LLM 决策}}:::llm
+  LLM -->|直接答复| DONE([收敛 · 输出结果]):::io
+  LLM -->|需要工具| TOOL[工具执行<br/>隔离子进程 + 超时]:::key
+  TOOL --> APP[回填结果到上下文]
+  APP --> CTX
+  classDef io fill:#0a2540,stroke:#0a2540,color:#ffffff;
+  classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
+  classDef llm fill:#1d4ed8,stroke:#1d4ed8,color:#ffffff;"></div>
+          </div>
+          <div class="al2-points">
+            <article><b>迭代预算三段式</b><span>软提醒提示收敛 → 禁工具强制收尾 → 截断标记保留上下文可续跑</span></article>
+            <article><b>工具两条执行路径</b><span>delegate 由父进程同步调度；其余工具 fork 子进程 + 超时，崩溃不拖垮主循环</span></article>
+            <article><b>每轮先治理上下文</b><span>估算 token 超阈值自动压缩，工具大输出即时落盘 artifact</span></article>
+          </div>
+        </section>
+
+        <section class="al2-pillars anim-stagger-list" data-anim-target>
+          <button type="button" class="al2-pillar" data-panel="ctx">
+            <span class="al2-pillar-ico">🗜️</span>
+            <span class="al2-pillar-txt">
+              <b>上下文管理</b>
+              <em>长任务不爆窗口：请求前压缩历史，工具大输出落盘</em>
+            </span>
+            <span class="al2-pillar-go">展开 ▸</span>
+          </button>
+          <button type="button" class="al2-pillar" data-panel="tools">
+            <span class="al2-pillar-ico">🧰</span>
+            <span class="al2-pillar-txt">
+              <b>Tools 管理</b>
+              <em>动态注册 + 热重载 + 隔离执行，工具是一等公民</em>
+            </span>
+            <span class="al2-pillar-go">展开 ▸</span>
+          </button>
+          <button type="button" class="al2-pillar" data-panel="safety">
+            <span class="al2-pillar-ico">🛡️</span>
+            <span class="al2-pillar-txt">
+              <b>Safety 边界</b>
+              <em>高危拦截 + 人类审批 + 工作区沙箱 + 子 Agent 收权</em>
+            </span>
+            <span class="al2-pillar-go">展开 ▸</span>
+          </button>
+          <button type="button" class="al2-pillar" data-panel="todo">
+            <span class="al2-pillar-ico">🌳</span>
+            <span class="al2-pillar-txt">
+              <b>Todo / Delegate 父子管理</b>
+              <em>父 Agent 维护看板，子 Agent 并行领任务、隔离归档</em>
+            </span>
+            <span class="al2-pillar-go">展开 ▸</span>
+          </button>
+        </section>
+      </main>
+
+      <section class="al2-chips" data-anim="fade-up">
+        <span class="al2-chips-label">其他能力</span>
+        <button type="button" data-panel="file">📁 文件</button>
+        <button type="button" data-panel="memory">🧠 Memory</button>
+        <button type="button" data-panel="web">🌐 Web</button>
+        <button type="button" data-panel="skill">📚 Skill</button>
+        <button type="button" data-panel="artifact">🗂️ Artifact</button>
+        <button type="button" data-panel="autoresearch">🧪 AutoResearch</button>
+        <button type="button" data-panel="cockpit">🖥️ Cockpit GUI</button>
+      </section>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">个人项目 · R-Agent Agent Loop · <a class="footer-link" href="#/3">返回第 3 页</a></span>
+      <span class="slide-number" data-current="10" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>这一页讲 R-Agent 的架构它不是一问一答壳子，而是一个带迭代预算、上下文治理、工具隔离执行和强制收尾的 Agent Loop中间这张主图先让大家看懂：用户输入进来，每轮先治理上下文，再让 LLM 决策，需要时调用真实工具、回填结果，直到收敛或强制收尾点“查看完整流程”能看到含预算判断、重试和中断的完整循环</p>
+      <p>右边四个支柱是判断一个 Agent 好不好用的四件事：上下文管理让长任务不爆窗口；Tools 管理让工具可注册、可热重载、可隔离执行；Safety 边界负责高危命令拦截和人类审批；Todo / Delegate 把复杂任务拆成父子 Agent 协作每一张点开都是一个大页面，配子流程图讲清楚</p>
+      <p>底部的 chip 是支撑能力：文件、Memory、Web、Skill、Artifact、AutoResearch、Cockpit GUI收尾一句：R-Agent 的差异化在于可控、可审计、可复用</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="AutoResearch">
+    <div class="ar-page">
+      <header class="ar-head" data-anim="fade-down">
+        <div class="ar-head-main">
+          <span class="section-label">R-AGENT · AUTORESEARCH</span>
+          <!-- <span class="ar-eyebrow">● R-AGENT · AUTORESEARCH V3</span> -->
+          <h2>AutoResearch：一个<i>可控 · 可验证 · 可复盘</i>的自动研究循环</h2>
+        </div>
+        <div class="ar-pills">
+          <span>Plan · Attempt · Conclude</span>
+          <span>任务 DAG</span>
+          <span>分层记忆 L0–L4</span>
+          <span>预算 + 心跳</span>
+          <!-- <span>验证闸门</span> -->
+          <span>Artifact 档案</span>
+        </div>
+      </header>
+
+      <div class="ar-body">
+        <!-- 左栏：分层记忆 -->
+        <section class="ar-col ar-memory" data-anim="fade-right">
+          <div class="ar-col-head"><span class="ar-ico">🗂</span><h3>分层记忆 · 越上越神圣</h3></div>
+          <div class="ar-mem-tower">
+            <article class="ar-mem l0"><span class="ar-mem-tag">L0</span><div><b>宪法 CONSTITUTION</b><em>program.md</em><p>题目 / 规则 / 完成标准 · 只有用户能改</p></div></article>
+            <article class="ar-mem l1"><span class="ar-mem-tag">L1</span><div><b>信念 BELIEF</b><em>program.md</em><p>当前解题直觉 · Planner 可演化</p></div></article>
+            <article class="ar-mem l2"><span class="ar-mem-tag">L2</span><div><b>项目态</b><em>project.md</em><p>摘要 / 计划 / 短期结论 · 仅父进程写</p></div></article>
+            <article class="ar-mem l3"><span class="ar-mem-tag">L3</span><div><b>细节草稿</b><em>.auto/*.md</em><p>survey / plan / run 报告 / 失败日志</p></div></article>
+            <article class="ar-mem l4"><span class="ar-mem-tag">L4</span><div><b>原始档案</b><em>.autoresearch/artifacts/</em><p>辩论全文 / 原始输出 / trace 快照</p></div></article>
+          </div>
+          <div class="ar-digest">✦ 父进程只保留 <b>digest 摘要</b>，长上下文落 artifact —— 让长期循环<b>永远不爆上下文</b></div>
+        </section>
+
+        <!-- 中栏：核心循环流程图 -->
+        <section class="ar-col ar-loop" data-anim="fade-up">
+          <div class="ar-col-head"><span class="ar-corner">CORE LOOP</span><h3>核心循环 · 计划 → 尝试 → 复盘</h3></div>
+          <div class="ar-loop-canvas al2-modal-diagram" data-ar-zoom>
+            <div class="mermaid" data-src="flowchart TD
+    Init[&quot;▢ Init · 只跑一次<br/>扫描项目 → 写 survey.md&quot;]:::init
+    Plan[&quot;🧠 Plan · 计划<br/>发散派+务实派 → LEADER 拍板出 DAG&quot;]:::plan
+    Attempt[&quot;🔨 Attempt · 执行<br/>写 train/** → 编译+冒烟 → 跑 eval 读 metrics&quot;]:::attempt
+    Conclude[&quot;📌 Conclude · 复盘<br/>结算 best/Pareto → 写 lessons → 压缩上下文&quot;]:::conclude
+    Decision{&quot;◇ 下一步?<br/>纯代码判断&quot;}:::dec
+    Init --> Plan --> Attempt --> Conclude --> Decision
+    Decision -->|&quot;达标 / 预算耗尽 / STOP&quot;| Pause([&quot;⏸ Pause · 等你看&quot;]):::pause
+    Decision -->|&quot;还有 ready 任务&quot;| Attempt
+    Decision -->|&quot;失败 / 平台期 / DAG 耗尽&quot;| Plan
+    classDef init fill:#eef0f4,stroke:#334155,stroke-width:1px,color:#1d2333;
+    classDef plan fill:#f0edfc,stroke:#6d5ae6,stroke-width:2px,color:#1d2333;
+    classDef attempt fill:#eef6f4,stroke:#0f9d8f,stroke-width:2px,color:#1d2333;
+    classDef conclude fill:#fbf1e4,stroke:#d98324,stroke-width:2px,color:#1d2333;
+    classDef dec fill:#ffffff,stroke:#334155,stroke-width:2px,color:#1d2333;
+    classDef pause fill:#fdeceb,stroke:#c2454a,stroke-width:2px,color:#1d2333;"></div>
+          </div>
+          <div class="ar-loop-notes">
+            <span class="plan"><b>计划</b>发散+务实派辩论出 DAG</span>
+            <span class="attempt"><b>执行</b>只改 train/**，验证过才算完</span>
+            <span class="conclude"><b>复盘</b>结算 Pareto，best 复考才升 VERIFIED</span>
+          </div>
+        </section>
+
+        <!-- 右栏：工程护栏 -->
+        <section class="ar-col ar-guard" data-anim="fade-left">
+          <div class="ar-col-head"><span class="ar-ico">🛡</span><h3>工程护栏</h3><span class="ar-corner-sm">tool_guard</span></div>
+          <table class="ar-tool-table">
+            <thead><tr><th>能力</th><th>Plan</th><th>Attempt</th><th>Conclude</th></tr></thead>
+            <tbody>
+              <tr><td>读 / 搜文件</td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+              <tr><td>写文件</td><td class="no">✕</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+              <tr><td>跑命令</td><td class="no">✕</td><td class="ok">✓</td><td class="no">✕</td></tr>
+              <tr><td>查技能 / 派子任务</td><td class="ok">✓</td><td class="ok">✓</td><td class="no">✕</td></tr>
+            </tbody>
+          </table>
+          <p class="ar-guard-note"><b>动嘴 · 动手 · 算账</b>三权分立——越权调用被 <code>tool_guard</code> 当场拒绝</p>
+          <div class="ar-gate-grid">
+            <article><b>💰 预算账本</b><span>触顶先 degrade 0.8 降级、再暂停，而非硬停</span></article>
+            <article><b>❤️ 心跳监控</b><span>show 只读 monitor.json，0 次 LLM，成本≈0</span></article>
+            <article><b>✅ 完成判定</b><span>读 metrics 对照 z≤0.001，代码算不靠自评</span></article>
+            <article><b>⏱️ 硬超时</b><span>每次调用套 deadline，卡住记入 inflight</span></article>
+          </div>
+          <div class="ar-insp-head"><span class="ar-ico-sm">🔍</span>四个检查员<span class="ar-corner-sm">autoresearch3</span></div>
+          <div class="ar-insp-grid">
+            <article><b>🪪 Passport</b><span>贴身份证：UNVERIFIED / VERIFIED / CANNOT_VERIFY</span></article>
+            <article><b>🩺 State Check</b><span>状态文件体检 + revision，安全才续跑</span></article>
+            <article><b>🚨 Anomalies</b><span>缺输出 / 停滞 / 超时 → 拦 verified</span></article>
+            <article><b>🔁 Reproduce</b><span>best 复考 eval，分数对得上才算数</span></article>
+          </div>
+        </section>
+      </div>
+
+      <footer class="ar-footer" data-anim="fade-up">
+        <div class="ar-footer-quote"><b>LLM 负责创造性</b>（提出与实现假设）｜ <b>框架负责边界、验证、预算、状态与复盘</b></div>
+        <div class="ar-footer-safe">🔐 只改 <code>train/**</code>，默认 <b>artifact_only</b> 不自动 commit——好结果可回溯，坏结果可回滚</div>
+      </footer>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">个人项目 · R-Agent AutoResearch · <a class="footer-link" href="#/3">返回第 3 页</a></span>
+      <span class="slide-number" data-current="11" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>这一页讲 R-Agent 里的 AutoResearch，它是一个可控、可验证、可复盘的自动研究循环核心不是一次性 Prompt，而是把一个项目做成持续运行的"计划 → 尝试 → 复盘"闭环，所有状态都文件化、预算受控、随时可中断、可观测</p>
+      <p>左栏是分层记忆 L0 到 L4，越上越神圣：L0 宪法只有用户能改，往下依次是信念、项目态、细节草稿、原始档案父进程只保留 digest 摘要，长内容落 artifact，所以长期循环永远不爆上下文</p>
+      <p>中栏是核心循环流程图：Init 只跑一次，之后 Plan 只动嘴出 DAG、Attempt 唯一动手只改 train、Conclude 当账房结算，最后由纯代码判断下一步——达标就暂停、有就绪任务回 Attempt、失败或平台期回 Plan点图可以放大看右栏是工程护栏：阶段工具白名单做到动嘴动手算账三权分立，加上预算、心跳、完成判定、硬超时四道机械闸门，以及 Passport、State Check、Anomalies、Reproduce 四个检查员一句话：LLM 负责创造性，框架负责边界、验证、预算和下一步决策</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-title="Research Workflow & Cockpit">
+    <div class="rw-page">
+      <header class="rw-head" data-anim="fade-down">
+        <div class="rw-head-main">
+          <span class="section-label">personal project / r-agent · research cockpit</span>
+          <h2>Academic Research Pipeline · GUI Interactive Thinking Interface</h2>
+          <p>分层 Skill 沉淀端到端科研链路（发现 → 精读 → 代码溯源）；Cockpit 让研究上下文 <b>可读、可分叉、可审计</b></p>
+        </div>
+      </header>
+
+      <div class="rw-body">
+        <!-- 左栏：学术调研工作流 -->
+        <section class="rw-col rw-flow" data-anim="fade-right">
+          <div class="rw-col-head"><h3>学术调研工作流</h3><span class="rw-col-sub">分层 Skill · 端到端科研链路</span></div>
+          <div class="rw-flow-steps">
+            <span class="s1"><b>发现</b>找对论文</span>
+            <i>→</i>
+            <span class="s2"><b>精读</b>读懂方法</span>
+            <i>→</i>
+            <span class="s3"><b>代码溯源</b>定位实现</span>
+          </div>
+          <div class="rw-cards">
+            <article class="rw-card c1">
+              <div class="rw-card-body">
+                <div class="rw-card-title"><b>Research Scout</b><em>｜发现</em><span class="rw-skill">Skill</span></div>
+                <p>面向一个研究方向建立候选池，从 <b>arXiv / OpenReview / HF Papers</b> 等来源收集论文，并按已读历史去重</p>
+                <ul>
+                  <li><b>多维筛选：</b>同时看引用、社区热度、代码可用性与任务相关性</li>
+                  <li><b>输出形态：</b>候选清单带推荐理由、阅读优先级和未读/已读状态</li>
+                </ul>
+              </div>
+            </article>
+            <article class="rw-card c2">
+              <div class="rw-card-body">
+                <div class="rw-card-title"><b>Paper Reader</b><em>｜精读</em><span class="rw-skill">Skill</span></div>
+                <p>基于 <b>PyMuPDF 文本抽取 + 页面渲染</b> 保留公式、图表和版面，围绕研究判断而不是摘要复述做精读</p>
+                <ul>
+                  <li><b>笔记结构：</b>动机、方法机制、实验可信度、局限与可复现性</li>
+                  <li><b>交互能力：</b>划词提问、高亮唤回、子窗口追问，不污染主线阅读上下文</li>
+                </ul>
+              </div>
+            </article>
+            <article class="rw-card c3">
+              <div class="rw-card-body">
+                <div class="rw-card-title"><b>Repo Reader</b><em>｜代码溯源</em><span class="rw-skill">Skill</span></div>
+                <p>把论文中的方法模块映射到真实仓库，做「<b>方法概念 → 类 / 函数 / 配置</b>」的定位式阅读</p>
+                <ul>
+                  <li><b>溯源路径：</b>先读 README / config / train 入口，再定位核心模块</li>
+                  <li><b>输出形态：</b>方法到实现的对应表，标出关键文件、调用链和可复现实验入口</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- 右栏：可视化 Cockpit -->
+        <section class="rw-col rw-cockpit" data-anim="fade-left">
+          <div class="rw-col-head"><span class="rw-ico">🖥️</span><h3>可视化 Cockpit</h3><span class="rw-col-sub">可读 · 可分叉 · 可审计的本地工作台</span></div>
+          <figure class="rw-wire al2-modal-diagram" data-ar-zoom>
+            <div class="rw-wire-visual">
+              <img src="assets/images/cockpit-wireframe.png" alt="三栏 Cockpit 界面线框：树状问题链 / PDF 精读区 / 文件工作台">
+              <span class="rw-hot h1">①</span>
+              <span class="rw-hot h2">②</span>
+              <span class="rw-hot h3">③</span>
+            </div>
+            <figcaption>
+              <span><b>① 树状问题链</b><em>主线 / 文件 / 划词子问题</em></span>
+              <span><b>② PDF/Markdown 精读区</b><em>划词提问 / 高亮 / 唤回</em></span>
+              <span><b>③ 论文文件工作台</b><em>outputs/papers 即取即读</em></span>
+            </figcaption>
+          </figure>
+          <div class="rw-tags">
+            <article><b>🌳 树状问题链</b><span>主线 / 文件 / 划词子问题各自独立上下文，可 fork·setback</span></article>
+            <article><b>📄 PDF 精读层</b><span>PyMuPDF 渲染保留公式版面，划词即提问 / 高亮 / 唤回</span></article>
+            <article><b>✂️ 划词五动作</b><span>提问·翻译·解释·总结·笔记，选中文本即触发</span></article>
+            <article><b>📝 Markdown 笔记</b><span>KaTeX 公式 + 表格 + 图片，预览 / 编辑双模式</span></article>
+            <article><b>🪟 子窗口分支</b><span>旁支追问开独立浮窗，写入独立 context.json 不污染主线</span></article>
+            <article><b>🔌 Tools 开关</b><span>按会话控制是否携带工具上下文，纯学习 / 可审计切换</span></article>
+            <article><b>💰 Token 用量核算</b><span>父子会话分别统计用量，长任务成本可见</span></article>
+            <article><b>🗂️ 论文文件工作台</b><span>直接映射 outputs/papers，上传 / 复制 / 下载即取即读</span></article>
+          </div>
+        </section>
+      </div>
+
+      <footer class="rw-footer" data-anim="fade-up">
+        <img class="rw-footer-ico" src="assets/images/cli-gui-engine.png" alt="CLI 与 GUI 共用同一内核">
+        <p>同一套上下文引擎：<b>终端里能自动跑，GUI 里能看清每一步</b>、随时分叉、精读到代码</p>
+      </footer>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">个人项目 · 学术调研工作流 × Cockpit · <a class="footer-link" href="#/3">返回第 3 页</a></span>
+      <span class="slide-number" data-current="12" data-total="12"></span>
+    </div>
+    <aside class="notes">
+      <p>这一页把两件事放到一起：学术调研工作流，和可视化 Cockpit它们共用 R-Agent 同一套上下文引擎——终端里能自动跑，GUI 里能看清每一步</p>
+      <p>左栏是分层 Skill 沉淀的端到端科研链路：发现 → 精读 → 代码溯源Research Scout 负责从 arXiv、OpenReview、HF Papers 发现论文，指标覆盖引用、热度、代码可用性，还能按已读历史去重；Paper Reader 用 PDF 解析加图表截取精读，产出动机、方法、实验可信度、可复现性四段中文笔记；Repo Reader 完成从论文方法到代码实现的定位式阅读</p>
+      <p>右栏是 Cockpit：一张三栏界面——左边树状问题链、中间 PDF/Markdown 精读区加划词气泡菜单、右边论文文件工作台功能标签墙列了八项实际能力：树状问题链、PDF 精读层、划词五动作、Markdown 笔记、子窗口分支、Tools 开关、Token 用量核算、论文文件工作台这张线框图可以点开放大讲</p>
+    </aside>
+  </section>
+
+  <div class="al2-modal" id="al2-panel-loop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">MAIN LOOP</span><h3>Agent Loop · 完整循环流程</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-wide">
+        <div class="al2-modal-diagram"><div class="mermaid" data-src="flowchart TD
+  U([用户输入]) --> SAN[修复上轮悬空 tool_call]
+  SAN --> LOOP([进入 _loop])
+  LOOP --> BUD{迭代预算<br/>还有额度?}
+  BUD -->|否| FORCE[强制收尾<br/>禁用工具出总结]:::key
+  FORCE --> TR[标记截断<br/>保留上下文可续跑]
+  TR --> OUT([返回结果])
+  BUD -->|是| SOFT{接近上限?}
+  SOFT -->|是| WARN[注入软提醒<br/>提示收敛]
+  SOFT -->|否| SCH[按白/黑名单过滤工具]
+  WARN --> SCH
+  SCH --> COMP[估算 token<br/>超 0.8 则压缩]:::key
+  COMP --> CALL[调用 LLM<br/>失败指数退避重试]
+  CALL --> HAS{返回工具调用?}
+  HAS -->|否| FIN[输出自然语言答复]
+  FIN --> OUT
+  HAS -->|是| GUARD[安全校验 + 注入 session]
+  GUARD --> KIND{工具类型}
+  KIND -->|delegate| DEL[父调度器 同步执行]:::key
+  KIND -->|其它工具| ISO[隔离子进程 + 超时]:::key
+  DEL --> PER[大输出落盘 artifact]
+  ISO --> PER
+  PER --> APP[追加结果 · 本轮超限则外置]
+  APP --> INC[iteration + 1]
+  INC --> BUD
+  classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;"></div></div>
+        <div class="al2-modal-notes">
+          <h4>一句话</h4>
+          <p>R-Agent 不是“一问一答的壳子”，而是一个<b>有预算、会治理上下文、把工具隔离执行、并且一定会收尾</b>的循环</p>
+          <h4>怎么读这张图</h4>
+          <ul>
+            <li><b>先看预算</b>：每轮开头判断迭代次数还够不够快用完先“软提醒”让模型收敛；真用完就“强制收尾”——禁用工具、只出文字总结，并标记截断，<b>上下文完整保留，加预算即可续跑，不用重发问题</b></li>
+            <li><b>再治理上下文</b>：请求前估算 token，超过 0.8 阈值就压缩历史</li>
+            <li><b>调 LLM</b>：瞬时错误会指数退避重试返回若没有工具调用，就直接输出答复、结束</li>
+            <li><b>有工具调用</b>：先安全校验，再按类型分流——`delegate` 由父进程同步调度，其余工具在隔离子进程里跑并带超时大输出落盘成 artifact，然后回填、迭代继续</li>
+          </ul>
+          <div class="al2-code">core/agent.py · run_conversation → _loop</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-ctx" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">① 上下文管理</span><h3>长任务不爆窗口</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body">
+        <div class="al2-modal-diagram al2-modal-diagram-context"><div class="mermaid" data-src="flowchart TD
+  START([每轮进入 LLM 前<br/>统一做上下文体检]):::start
+  EST[估算 messages + tools token<br/>中文 / JSON 适度高估]:::step
+  CHECK{窗口占用 ≥ 0.8?}:::decision
+  KEEP[保留最近 16 条完整消息<br/>不拆 tool_call / tool_result]:::step
+  SUM[早期历史合并为 system 摘要<br/>用户重点 · 决策 · 工具结果]:::compress
+  TARGET[压缩目标：窗口占用回到 0.55]:::compress
+  OUT[工具输出进入上下文前<br/>先做体积检查]:::step
+  ONE{单条输出 > 80k?}:::decision
+  ROUND{本轮聚合 > 160k?}:::decision
+  STORE[落盘 tool_outputs artifact<br/>上下文只留摘要 + 路径]:::artifact
+  LARGEST[从最大输出开始外置<br/>直到回到安全水位]:::artifact
+  READ[artifact_inspect / search / slice<br/>按需有界读回]:::key
+
+  START --> EST --> CHECK
+  CHECK -->|否| OUT
+  CHECK -->|是| KEEP --> SUM --> TARGET --> OUT
+  OUT --> ONE
+  ONE -->|是| STORE --> READ
+  ONE -->|否| ROUND
+  ROUND -->|是| LARGEST --> READ
+  ROUND -->|否| READ
+
+  classDef start fill:#0a2540,stroke:#0a2540,color:#ffffff;
+  classDef step fill:#eef3fb,stroke:#1d4ed8,color:#0a2540,stroke-width:1.5px;
+  classDef decision fill:#ffffff,stroke:#64748b,color:#0a2540,stroke-width:2px;
+  classDef compress fill:#f0edfc,stroke:#6d5ae6,color:#0a2540,stroke-width:2px;
+  classDef artifact fill:#eef6f4,stroke:#0f9d8f,color:#0a2540,stroke-width:2px;
+  classDef key fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;"></div></div>
+        <div class="al2-modal-notes">
+          <h4>要解决什么</h4>
+          <p>对话越长、工具输出越大，上下文就越容易被撑爆R-Agent 用<b>两条线</b>治理它</p>
+          <h4>请求前压缩</h4>
+          <ul>
+            <li>估算 <code>messages + tools</code> 的 token（对中文/JSON 适度高估更安全）</li>
+            <li>占用达到 <b>0.8</b> 就压缩：把较早历史合并成一条 system 摘要（用户重点 / 助手决策 / 工具结果 / 系统信息），压到 <b>0.55</b></li>
+            <li><b>只压旧的</b>：保留最近 16 条完整消息，且保证一次工具调用和它的结果作为整体，不切成“孤儿”</li>
+          </ul>
+          <h4>工具输出后外置</h4>
+          <ul>
+            <li>单条输出 &gt; <b>80k</b> 字符就落盘，上下文只留摘要和路径；本轮聚合 &gt; <b>160k</b> 时从最大项开始外置</li>
+            <li>之后用 <code>artifact_inspect / search / slice</code> 有界读回，绝不整块塞回上下文</li>
+          </ul>
+          <div class="al2-code">core/context_control.py · core/context/tool_result_storage.py</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-tools" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">② Tools 管理</span><h3>工具是可审计的一等公民</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body">
+        <div class="al2-modal-diagram"><div class="mermaid" data-src="flowchart LR
+  R[注册表 ToolRegistry] --> S[每个工具 = schema + handler]
+  S --> RL[检测文件变化<br/>热重载工具面]
+  RL --> EX[隔离子进程执行]:::key
+  EX --> TO{超时 / 崩溃?}
+  TO -->|是| KILL[kill 子进程<br/>返回结构化错误]:::bad
+  TO -->|否| OK[正常返回结果]:::ok
+  KILL --> MAIN[主循环不受影响]
+  OK --> MAIN
+  classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
+  classDef bad fill:#fde8e8,stroke:#dc2626,color:#991b1b;
+  classDef ok fill:#e6f6ef,stroke:#0e9f6e,color:#065f46;"></div></div>
+        <div class="al2-modal-notes">
+          <h4>注册与热重载</h4>
+          <ul>
+            <li>每个工具就是一条 OpenAI function schema 加一个 handler，由单例注册表统一管理</li>
+            <li>按文件的修改时间和大小检测 <code>tools/*.py</code> 变化，<b>改完工具不用重启</b>，也能手动 <code>sys_reload</code> 刷新</li>
+          </ul>
+          <h4>隔离执行（核心亮点）</h4>
+          <ul>
+            <li>普通工具在<b>独立子进程</b>里跑，带超时：到点先 terminate 再 kill，返回结构化超时错误</li>
+            <li>支持取消：Esc 中断能及时终止子进程工具崩溃、卡死、超时都被隔离，<b>不会拖垮主循环</b></li>
+          </ul>
+          <h4>上下文过滤</h4>
+          <ul>
+            <li>主循环支持白名单 / 黑名单，Cockpit 的“Tools 开关”就是靠它控制某次请求是否带上某个工具</li>
+          </ul>
+          <div class="al2-code">tools/registry.py · tools/sys_tools.py</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-safety" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">③ Safety 边界</span><h3>危险操作先审批，再执行</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body">
+        <div class="al2-modal-diagram"><div class="mermaid" data-src="flowchart TD
+  CMD[命令 / 文件写删] --> AS[风险评估 + 路径判定]
+  AS --> CR{灾难级操作?}
+  CR -->|是| BLK[直接拒绝执行]:::bad
+  CR -->|否| RK{高危 / 越界?}
+  RK -->|否| RUN[执行并返回]:::ok
+  RK -->|是| PERM[返回审批请求<br/>+ token · TTL 10min]:::key
+  PERM --> SAY[Agent 向用户说明风险]
+  SAY --> OKU[用户明确授权]
+  OKU --> RETRY[带 token 再次调用]
+  RETRY --> RUN
+  classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
+  classDef bad fill:#fde8e8,stroke:#dc2626,color:#991b1b;
+  classDef ok fill:#e6f6ef,stroke:#0e9f6e,color:#065f46;"></div></div>
+        <div class="al2-modal-notes">
+          <h4>命令风险分级</h4>
+          <ul>
+            <li><b>灾难级直接拒绝</b>：<code>rm -rf /</code>、<code>mkfs</code>、写裸盘、fork bomb 等根本不执行</li>
+            <li><b>高危需审批</b>：提权、删除、磁盘挂载、包安装、<code>git reset --hard</code>、越出工作区、curl 管道到解释器等</li>
+            <li>先剥离 heredoc 和引号字面量再扫描，避免把示例字符串里的危险词误判</li>
+          </ul>
+          <h4>人类审批 token</h4>
+          <ul>
+            <li>高危命令首次调用<b>不执行</b>，返回随机 token（TTL 10 分钟，一次性）；Agent 必须先说明命令、风险、影响</li>
+            <li>用户同意后带 token 再调用才执行；审批状态跨隔离子进程共享</li>
+          </ul>
+          <h4>沙箱 + 子 Agent 收权</h4>
+          <ul>
+            <li>越出工作区的读写删走审批；子 Agent 禁用递归委派、长期记忆、语音等副作用工具</li>
+          </ul>
+          <div class="al2-code">tools/sys_tools.py · tools/file_tools.py · core/prompt_builder.py</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-todo" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">④ Todo / Delegate</span><h3>复杂任务拆成父子 Agent 协作</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-wide">
+        <div class="al2-modal-diagram"><div class="mermaid" data-src="flowchart TD
+  P[父 Agent 调度者] --> INIT[构建树状看板]
+  INIT --> RDY[找可执行叶子任务]
+  RDY --> DEL[delegate_task 并行分发]:::key
+  DEL --> POOL[线程池 · 默认 3 · 上限 10]
+  POOL --> C1[子 Agent · 隔离上下文]
+  C1 --> CL[领取任务 claim]
+  CL --> J{足够具体?}
+  J -->|否| SP[拆分 propose_split]
+  J -->|是| WK[执行 → 更新状态]
+  SP --> SAVE[子上下文落盘]
+  WK --> SAVE
+  SAVE --> META[路径写入 todo metadata]
+  META --> AGG[父进程只看 digest 汇总]:::key
+  AGG --> ALL{整棵树完成?}
+  ALL -->|是| CLR[批量清理子上下文]
+  ALL -->|否 · 还有就绪任务| RDY
+  classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;"></div></div>
+        <div class="al2-modal-notes">
+          <h4>两层分工</h4>
+          <ul>
+            <li><b>Todo 看板</b>：共享的状态 / 规划板——树状任务、拓扑依赖、claim 租约只有 pending 且依赖都完成的<b>叶子任务</b>能被执行</li>
+            <li><b>Delegate 引擎</b>：真正干活的地方，每个子任务启动一个<b>全新 Agent</b>，线程池并行（默认 3，上限 10）</li>
+          </ul>
+          <h4>为什么不会“上下文互相污染”</h4>
+          <ul>
+            <li>子 Agent 只拿到自包含的目标，明确“你不是全局调度者”</li>
+            <li>无论成功 / 超时 / 截断，子上下文都<b>落盘归档</b>，只把路径写回看板；父进程默认只读 digest，不回灌子进程的完整对话</li>
+            <li>超时不算失败，而是标记 blocked、交还父进程重新规划；整棵树完成后再统一清理</li>
+          </ul>
+          <div class="al2-code">tools/todo_tool.py · tools/delegate_tool.py</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-file" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">📁 文件管理</span><h3>安全的文件读写</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-text">
+        <ul>
+          <li><b>读</b>：分页读取，并对重复读做去重，避免陷入死循环</li>
+          <li><b>写 / 删 / 搜</b>：写入前给 diff 预览；支持按内容搜索文件</li>
+          <li><b>沙箱边界</b>：判定路径是否在工作区内，越界操作走 Safety 审批</li>
+        </ul>
+        <div class="al2-code">tools/file_tools.py</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-memory" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">🧠 Memory</span><h3>只记长期不失效的事实</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-text">
+        <ul>
+          <li><code>memory</code> 写、<code>memory_search / memory_get</code> 读</li>
+          <li>用户偏好（USER.md）与项目稳定事实（MEMORY.md）<b>分开存</b></li>
+          <li>只存声明式、长期有效的事实；任务进度、PR 号、commit 等易失信息不进 memory</li>
+          <li>子 Agent 被禁用长期记忆写入</li>
+        </ul>
+        <div class="al2-code">memory_tool · memory_read_tool</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-web" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">🌐 Web</span><h3>联网调研</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-text">
+        <ul>
+          <li><code>web_search</code> 搜索、<code>web_extract</code> 抽取网页正文</li>
+          <li>服务论文调研和实时事实查询</li>
+        </ul>
+        <div class="al2-code">web_tools</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-skill" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">📚 Skill</span><h3>可复用的工作流说明书</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-text">
+        <ul>
+          <li>每个 <code>SKILL.md</code> 是一份可复用工作流：论文调研、精读、仓库阅读、项目进度等</li>
+          <li>支持查看 / 编辑（patch）/ 搜索 / 迁移 / 整理</li>
+          <li>引导优先 patch 现有 skill，避免技能膨胀</li>
+        </ul>
+        <div class="al2-code">skills_tool · skill_hierarchy_tool · skill_curator_tool</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-artifact" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">🗂️ Artifact</span><h3>有界读回大输出</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-text">
+        <ul>
+          <li><code>inspect</code> 看概览、<code>search</code> 找匹配、<code>slice</code> 取行区间（硬上限 500 行）</li>
+          <li>专门用来读回落盘的大工具输出和子 Agent 上下文，路径限定在工作区内</li>
+        </ul>
+        <div class="al2-code">artifact_tools</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-autoresearch" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">🧪 AutoResearch</span><h3>受控自动实验闭环</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-text">
+        <ul>
+          <li><b>Plan → Attempt → Conclude</b> 的小型实验闭环</li>
+          <li>安全边界：不自动 <code>git reset --hard</code>、不擅自初始化仓库、中间版本存 artifact / patch</li>
+          <li>用 budget / timeout / monitor / stop 文件控制长时间运行</li>
+        </ul>
+        <div class="al2-code">core/autoresearch.py</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-cockpit" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">🖥️ Cockpit GUI</span><h3>浏览器可视化观测台</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-modal-body-text">
+        <ul>
+          <li>树状问题链、聊天 / 文件双模式、PDF / Markdown 阅读、选中文本分支、Tools 开关</li>
+          <li>Agent Loop 通过事件流驱动前端观测：LLM 请求快照、工具起止、消息追加、截断</li>
+        </ul>
+        <div class="al2-code">app_gui · app_gui_frontend</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="ragent-cli-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/3" aria-label="关闭放大图">×</a>
+  <img src="assets/images/r-agent-cli.png" alt="R-Agent CLI 示例放大图">
+</div>
+
+<div id="ragent-gui-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/3" aria-label="关闭放大图">×</a>
+  <img src="assets/images/r-agent-gui.png" alt="R-Agent GUI 示例放大图">
+</div>
+
+<div id="moo-pareto-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/4" aria-label="关闭多目标优化概念图">×</a>
+  <img src="assets/images/multi-objective-pareto-frontier.jpeg" alt="多目标优化帕累托前沿概念图放大图">
+</div>
+
+<div id="moo-algorithm-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/4" aria-label="关闭多目标演化算法图">×</a>
+  <img src="assets/images/multi-objective-evolution-loop.jpeg" alt="多目标演化算法循环示意图放大图">
+</div>
+
+<div id="creation-memory-pipeline-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/5" aria-label="关闭 Creation Memory 流程图">×</a>
+  <img src="assets/images/image_1785070442.png" alt="Doubao Creation Memory 处理流程图放大图">
+</div>
+
+<div id="creation-distillation-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/6" aria-label="关闭两阶段蒸馏流程图">×</a>
+  <img src="assets/images/image_1785067942.png" alt="两阶段 In-Context Distillation 流程图放大图">
+</div>
+
+<div id="suggestion-dpo-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/7" aria-label="关闭 DPO 示例图">×</a>
+  <img src="assets/images/image-4.png" alt="Generative Suggestion Recommendation DPO 示例放大图">
+</div>
+
+<div id="suggestion-example-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/7" aria-label="关闭生成示例图">×</a>
+  <img src="assets/images/image-2.png" alt="春日野餐创作建议示例放大图">
+</div>
+
+<div id="creator-loop-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/8" aria-label="关闭 AI Creator Productivity 系统总览图">×</a>
+  <img src="assets/images/edited_image_125253.png" alt="AI Creator Productivity 系统总览闭环图放大图">
+</div>
+
+<div id="ranking-dbmtl-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/9" aria-label="关闭 DBMTL EMSNet MMCN 结构图">×</a>
+  <img src="assets/images/ppt_assets_fig1_dbmtl_emsnet_mmcn.png" alt="DBMTL EMSNet MMCN 精排整体结构图放大图">
+</div>
+
+<div id="ranking-mmoe-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/9" aria-label="关闭 MMoE 多专家结构图">×</a>
+  <img src="assets/images/ppt_assets_fig2_mmoe.png" alt="MMoE 多专家结构图放大图">
+</div>
+
+<div id="ranking-staytime-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/9" aria-label="关闭 Staytime WCE 分桶结构图">×</a>
+  <img src="assets/images/ppt_assets_fig3_staytime_wce.png" alt="Staytime WCE 分桶结构图放大图">
+</div>
+
+<div id="ranking-mllm-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/9" aria-label="关闭 MLLM UE 序列结构图">×</a>
+  <img src="assets/images/ppt_assets_fig4_mllm_ue_seq.png" alt="MLLM UE 序列 Target Attention 和 Histogram Learning 结构图放大图">
+</div>
+
+<div class="al2-zoom" id="al2-zoom" aria-hidden="true">
+  <div class="al2-zoom-toolbar">
+    <span class="al2-zoom-title">流程图 · 滚动查看，可放大缩小</span>
+    <div class="al2-zoom-ctrls">
+      <button type="button" data-zoom="out" aria-label="缩小">−</button>
+      <button type="button" data-zoom="fit" aria-label="适应宽度">适应</button>
+      <button type="button" data-zoom="in" aria-label="放大">＋</button>
+      <button type="button" data-zoom="close" class="al2-zoom-close">关闭 ✕</button>
+    </div>
+  </div>
+  <div class="al2-zoom-scroll"><div class="al2-zoom-inner"></div></div>
+</div>
+
+<div style="position:fixed;bottom:12px;left:12px;font-size:11px;color:#484f5866;z-index:100;pointer-events:none">
+  S 演讲者视图 · T 切换主题 · ← → 翻页 · F 全屏 · O 总览
+</div>
+
+<script src="assets/runtime.js"></script>
+<script>
+document.querySelector('[data-moo-paper-close]')?.addEventListener('click', function () {
+  this.closest('.moo-paper-list').removeAttribute('open');
+});
+document.querySelector('[data-moo-alignment-close]')?.addEventListener('click', function () {
+  this.closest('.moo-applications')?.querySelector('.moo-alignment-detail')?.removeAttribute('open');
+});
+document.querySelector('[data-suggestion-example-close]')?.addEventListener('click', function () {
+  this.closest('.suggestion-example').removeAttribute('open');
+});
+document.querySelector('[data-creator-challenge-close]')?.addEventListener('click', function () {
+  this.closest('.creator-challenges').removeAttribute('open');
+});
+document.querySelectorAll('.ranking-accordion details').forEach((item) => {
+  item.addEventListener('toggle', () => {
+    if (!item.open) return;
+    document.querySelectorAll('.ranking-accordion details[open]').forEach((other) => {
+      if (other !== item) other.removeAttribute('open');
+    });
+  });
+});
+const rankingOpen = new URLSearchParams(window.location.search).get('rankingOpen');
+if (rankingOpen) {
+  const target = document.querySelectorAll('.ranking-accordion details')[Number(rankingOpen) - 1];
+  if (target) target.setAttribute('open', '');
+}
+document.querySelectorAll('.agent-loop-pillar').forEach((item) => {
+  item.addEventListener('toggle', () => {
+    if (!item.open) return;
+    document.querySelectorAll('.agent-loop-pillar[open]').forEach((other) => {
+      if (other !== item) other.removeAttribute('open');
+    });
+  });
+});
+document.querySelectorAll('.agent-loop-chips details').forEach((item) => {
+  item.addEventListener('toggle', () => {
+    if (!item.open) return;
+    document.querySelectorAll('.agent-loop-chips details[open]').forEach((other) => {
+      if (other !== item) other.removeAttribute('open');
+    });
+  });
+});
+const agentOpen = new URLSearchParams(window.location.search).get('agentOpen');
+if (agentOpen) {
+  const target = document.querySelectorAll('.agent-loop-pillar')[Number(agentOpen) - 1];
+  if (target) target.setAttribute('open', '');
+}
+
+// ===== Slide 10: large explanation panels (mermaid rendered lazily) =====
+(function () {
+  function openPanel(name) {
+    const modal = document.getElementById('al2-panel-' + name);
+    if (!modal) return;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    if (window.__renderMermaid) window.__renderMermaid(modal);
+  }
+  function closePanel(modal) {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+  document.querySelectorAll('.al2-open-btn, .al2-pillar, .al2-chips button').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openPanel(btn.getAttribute('data-panel'));
+    });
+  });
+  document.querySelectorAll('.al2-modal').forEach((modal) => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal || e.target.hasAttribute('data-close')) closePanel(modal);
+    });
+  });
+
+  // ---- Click a diagram to zoom it fullscreen ----
+  const zoom = document.getElementById('al2-zoom');
+  const zoomInner = zoom.querySelector('.al2-zoom-inner');
+  const zoomScroll = zoom.querySelector('.al2-zoom-scroll');
+  let natW = 0, natH = 0, fitScale = 1, zoomScale = 1;
+
+  function applyZoom() {
+    const el = zoomInner.querySelector('svg, img');
+    if (!el || !natW) return;
+    el.style.width = (natW * zoomScale) + 'px';
+    el.style.height = (natH * zoomScale) + 'px';
+  }
+  function computeFit() {
+    // available area inside the scroll box (minus padding)
+    const availW = zoomScroll.clientWidth - 60;
+    const availH = zoomScroll.clientHeight - 60;
+    if (!natW || !natH) { fitScale = 1; return; }
+    fitScale = Math.min(availW / natW, availH / natH);
+    if (!isFinite(fitScale) || fitScale <= 0) fitScale = 1;
+  }
+  function openZoom(diagramEl) {
+    const src = diagramEl.querySelector('svg, img');
+    if (!src) return;
+    zoomInner.innerHTML = '';
+    const clone = src.cloneNode(true);
+    if (clone.tagName.toLowerCase() === 'img') {
+      natW = clone.naturalWidth || 1024;
+      natH = clone.naturalHeight || 768;
+    } else {
+      // derive natural size from viewBox (robust for wide + tall diagrams)
+      const vb = (clone.getAttribute('viewBox') || '').split(/[ ,]+/).map(Number);
+      if (vb.length === 4 && vb[2] > 0 && vb[3] > 0) {
+        natW = vb[2]; natH = vb[3];
+      } else {
+        const bb = src.getBoundingClientRect();
+        natW = bb.width || 800; natH = bb.height || 600;
+      }
+    }
+    clone.removeAttribute('width');
+    clone.removeAttribute('height');
+    clone.style.maxWidth = 'none';
+    clone.style.display = 'block';
+    zoomInner.appendChild(clone);
+    zoom.classList.add('is-open');
+    zoom.setAttribute('aria-hidden', 'false');
+    // fit after layout so clientWidth/Height are correct
+    requestAnimationFrame(() => {
+      computeFit();
+      zoomScale = fitScale;
+      applyZoom();
+      zoomScroll.scrollTop = 0;
+      zoomScroll.scrollLeft = Math.max(0, (zoomInner.scrollWidth - zoomScroll.clientWidth) / 2);
+    });
+  }
+  function closeZoom() {
+    zoom.classList.remove('is-open');
+    zoom.setAttribute('aria-hidden', 'true');
+  }
+  document.querySelectorAll('.al2-modal-diagram').forEach((d) => {
+    d.addEventListener('click', () => openZoom(d));
+  });
+  zoom.querySelectorAll('[data-zoom]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const act = btn.getAttribute('data-zoom');
+      if (act === 'in') zoomScale = Math.min(zoomScale + fitScale * 0.25, fitScale * 5);
+      else if (act === 'out') zoomScale = Math.max(zoomScale - fitScale * 0.25, fitScale * 0.4);
+      else if (act === 'fit') { computeFit(); zoomScale = fitScale; }
+      else if (act === 'close') { closeZoom(); return; }
+      applyZoom();
+    });
+  });
+  zoom.addEventListener('click', (e) => { if (e.target === zoom) closeZoom(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (zoom.classList.contains('is-open')) { e.stopPropagation(); closeZoom(); return; }
+    const open = document.querySelector('.al2-modal.is-open');
+    if (open) { e.stopPropagation(); closePanel(open); }
+  }, true);
+
+  // Auto-open a panel via ?al2Open=<name> (for preview/verification)
+  const params = new URLSearchParams(window.location.search);
+  const al2Open = params.get('al2Open');
+  if (al2Open) {
+    window.addEventListener('load', () => setTimeout(() => {
+      openPanel(al2Open);
+      if (params.get('al2Zoom')) {
+        setTimeout(() => {
+          const d = document.querySelector('#al2-panel-' + al2Open + ' .al2-modal-diagram');
+          if (d) openZoom(d);
+        }, 500);
+      }
+    }, 200));
+  }
+  if (params.get('arZoom')) {
+    window.addEventListener('load', () => setTimeout(() => {
+      const d = document.querySelector('.ar-loop-canvas');
+      if (d) openZoom(d);
+    }, 600));
+  }
+})();
+</script>
+</body>
+</html>
