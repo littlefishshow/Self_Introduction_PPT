@@ -134,7 +134,7 @@
           </a>
           <a class="llmrec-work-card" href="#/9" aria-label="跳转到第 9 页：豆包创作社区推荐">
             <b>豆包创作社区推荐</b>
-            <p>迭代社区精排模型，补充用户记忆、候选与行为特征</p>
+            <p>迭代社区精排模型，补充 UE 序列特征、扩充目标空间</p>
           </a>
         </div>
       </div>
@@ -278,8 +278,8 @@
               <span>01</span>
               <div>
                 <h3>大模型对齐</h3>
-                <p><b>冲突：</b>Prompt 质量、多样性、用户偏好与安全成本无法同时单独最优</p>
-                <p><b>做法：</b>构造帕累托 DPO 样本对，寻找不牺牲任一核心指标的均衡参数</p>
+                <p><b>冲突：</b>大模型准确性、多样性、用户偏好与安全成本无法同时单独最优</p>
+                <p><b>做法：</b>构造帕累托偏好对、设计 Reward、调整优化过程</p>
               </div>
               <em class="moo-app-expand">+</em>
             </summary>
@@ -292,27 +292,27 @@
             <div class="moo-alignment-grid">
               <article>
                 <b>协同优化</b>
-                <p>两个模型优化目标不同，但 rollout 数据来自对方，用对方采样轨迹校准自身目标，形成互相供数、互相约束的协同优化。</p>
+                <p>两个模型优化目标不同，但 rollout 数据来自对方，用对方采样轨迹校准自身目标，形成互相供数、互相约束的协同优化</p>
               </article>
               <article>
                 <b>优势函数融合</b>
-                <p>优势不是简单相加：关注 <code>A = Σ w_i A_i</code> 的融分公式，也可用几何平均等非线性融合，惩罚“偏科”的奖励项。</p>
+                <p>优势不是简单相加：关注 <code>A = Σ w_i A_i</code> 的融分公式，也可用几何平均等非线性融合，惩罚“偏科”的奖励项</p>
               </article>
               <article>
                 <b>优化方向约束</b>
-                <p>用惩罚函数限制更新方向，防止模型为了单一奖励过度偏离；约束项可以和 KL、margin 或安全奖励共同工作。</p>
+                <p>用惩罚函数限制更新方向，防止模型为了单一奖励过度偏离；约束项可以和 KL、margin 或安全奖励共同工作</p>
               </article>
               <article>
                 <b>归一化顺序</b>
-                <p>先对各目标分别计算相对优势，再加权求和，与先融合奖励再归一化会得到不同训练信号；相关方向可参考 NVIDIA GDPO。</p>
+                <p>先对各目标分别计算相对优势，再加权求和，与先融合奖励再归一化会得到不同训练信号；相关方向可参考 NVIDIA GDPO</p>
               </article>
               <article>
                 <b>Projection Optimization</b>
-                <p>把优化目标限制在凸包内，将当前奖励向量投影到凸包得到投影点 <code>d</code>，再由 <code>d</code> 推出对应权重。</p>
+                <p>把优化目标限制在凸包内，将当前奖励向量投影到凸包得到投影点 <code>d</code>，再由 <code>d</code> 推出对应权重</p>
               </article>
               <article>
                 <b>Prompt 条件偏好</b>
-                <p>不同问题有不同价值偏好，奖励权重应随 Prompt 调整；例如 ArmoRM 用路由/混合方式表达样本级奖励偏好。</p>
+                <p>不同问题有不同价值偏好，奖励权重应随 Prompt 调整；例如 ArmoRM 用路由/混合方式表达样本级奖励偏好</p>
               </article>
             </div>
             <div class="moo-alignment-refs">
@@ -324,17 +324,17 @@
           <article class="moo-app">
             <span>02</span>
             <div>
-              <h3>检索与推荐</h3>
-              <p><b>冲突：</b>召回、点击、内容多样性、重复率和审核通过率存在拉扯</p>
+              <h3>搜索与推荐</h3>
+              <p><b>冲突：</b>召回率、点击率、内容多样性、实效性等目标存在拉扯</p>
               <p><b>做法：</b>联合调整召回权重、精排函数和打散策略，兼顾透出与生态健康</p>
             </div>
           </article>
           <article class="moo-app">
             <span>03</span>
             <div>
-              <h3>智能 Agent 决策</h3>
-              <p><b>冲突：</b>任务完成率、规划开销和工具调用次数需要权衡；最优方案权衡</p>
-              <p><b>做法：</b>以多目标强化学习选择策略、协同优化、self-Evo harness 优化</p>
+              <h3>Agent 决策(CoT 路径搜索)、Self-EVO</h3>
+              <p><b>冲突：</b>任务完成率、路径搜索成本、思维链长度需要权衡；多个目标的最优方案需要权衡</p>
+              <p><b>做法：</b>MCTS 路径搜索、协同优化、self-Evo harness 优化</p>
             </div>
           </article>
         </section>
@@ -464,7 +464,7 @@
             <div class="training-v26-head">
               <span>01 · REJECTION SAMPLING + IN-CONTEXT DISTILLATION</span>
               <h3>拒绝采样 In-Context Distillation</h3>
-              <p>相关性由 LLM-as-Judge 打分，个性化由主动创作精排分过滤；筛出的可信样本进入两阶段蒸馏</p>
+              <p>个性化与全面性由 LLM-as-Judge 打分；筛出的可信样本进入两阶段蒸馏</p>
             </div>
             <a href="#creation-distillation-zoom">
               <img src="assets/images/image_1785067942.png" alt="两阶段 In-Context Distillation 从闭源模型蒸馏到服务小模型的流程">
@@ -924,7 +924,7 @@
           <span class="section-label">personal project / r-agent architecture</span>
           <h2>Agent Loop</h2>
         </div>
-        <p><strong>一个可控的本地研究型 Agent</strong>：Agent Loop 驱动，上下文治理、工具隔离、安全边界、父子任务四位一体</p>
+        <p><strong>一个可控的本地研究型 Agent</strong>：Agent Loop 驱动，中间件扩展、上下文治理、工具隔离、安全边界与父子任务协同</p>
       </header>
 
       <main class="al2-main">
@@ -933,65 +933,124 @@
             <span class="al2-loop-title">核心：一个带工具调用的可控循环</span>
             <button type="button" class="al2-open-btn" data-panel="loop">查看完整流程 ▸</button>
           </div>
-          <div class="al2-loop-canvas">
+          <div class="al2-loop-canvas" data-al2-zoom aria-label="点击放大 R-Agent 简化流程图">
             <div class="mermaid al2-diagram" data-src="flowchart LR
-  U([用户输入]):::io --> CTX[上下文治理<br/>压缩历史 · 大输出落盘]:::key
-  CTX --> LLM{{LLM 决策}}:::llm
-  LLM -->|直接答复| DONE([收敛 · 输出结果]):::io
-  LLM -->|需要工具| TOOL[工具执行<br/>隔离子进程 + 超时]:::key
-  TOOL --> APP[回填结果到上下文]
-  APP --> CTX
+  U([用户目标]):::io --> E[CLI / GUI / Gateway]:::entry
+  E --> S[写入 ThreadState]:::state
+  S --> C[构建请求上下文]:::key
+  C --> LLM{{LLM 决策}}:::llm
+  LLM -->|信息已足够| ANSWER[生成最终回答]:::answer
+  ANSWER --> DONE([返回用户]):::io
+  LLM -->|需要行动| ACTION[Tool / Skill / 子 Agent]:::action
+  ACTION --> RESULT[结果回填]:::result
+  RESULT --> GOV[安全检查 / 大结果落盘<br/>状态更新]:::govern
+  GOV --> C
+  MEMORY[(Memory)]:::support -. 长期事实 .-> C
+  ARTIFACT[(Sandbox / Artifact)]:::support -. 执行产物 .-> GOV
+  EVENTS[(Run Events)]:::support -. 全程记录 .-> E
   classDef io fill:#0a2540,stroke:#0a2540,color:#ffffff;
+  classDef entry fill:#eef3fb,stroke:#64748b,color:#0a2540;
+  classDef state fill:#eef6f4,stroke:#0f9d8f,color:#0a2540,stroke-width:2px;
   classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
-  classDef llm fill:#1d4ed8,stroke:#1d4ed8,color:#ffffff;"></div>
+  classDef llm fill:#1d4ed8,stroke:#1d4ed8,color:#ffffff;
+  classDef answer fill:#eef6f4,stroke:#0f9d8f,color:#0a2540,stroke-width:2px;
+  classDef action fill:#f0edfc,stroke:#6d5ae6,color:#0a2540,stroke-width:2px;
+  classDef result fill:#ffffff,stroke:#64748b,color:#0a2540,stroke-width:1.5px;
+  classDef govern fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;
+  classDef support fill:#f8fafc,stroke:#94a3b8,color:#334155,stroke-dasharray:4 3;"></div>
           </div>
           <div class="al2-points">
-            <article><b>迭代预算三段式</b><span>软提醒提示收敛 → 禁工具强制收尾 → 截断标记保留上下文可续跑</span></article>
-            <article><b>工具两条执行路径</b><span>delegate 由父进程同步调度；其余工具 fork 子进程 + 超时，崩溃不拖垮主循环</span></article>
-            <article><b>每轮先治理上下文</b><span>估算 token 超阈值自动压缩，工具大输出即时落盘 artifact</span></article>
+            <article><b>请求视图是临时投影</b><span>System、滚动摘要、委派结果、Artifact 索引、Skill、Memory 与最近消息按需组合，不重复写回历史</span></article>
+            <article><b>行动统一经过治理</b><span>Tool、Skill 和子 Agent 都受权限、超时、进程隔离、输出预算与结果清洗约束</span></article>
+            <article><b>预算耗尽仍可续跑</b><span>软提醒促使收敛；到上限后禁用工具强制总结，保留上下文并支持 continue_after_truncation</span></article>
           </div>
         </section>
 
-        <section class="al2-pillars anim-stagger-list" data-anim-target>
-          <button type="button" class="al2-pillar" data-panel="ctx">
-            <span class="al2-pillar-ico">🗜️</span>
-            <span class="al2-pillar-txt">
-              <b>上下文管理</b>
-              <em>长任务不爆窗口：请求前压缩历史，工具大输出落盘</em>
-            </span>
-            <span class="al2-pillar-go">展开 ▸</span>
-          </button>
-          <button type="button" class="al2-pillar" data-panel="tools">
-            <span class="al2-pillar-ico">🧰</span>
-            <span class="al2-pillar-txt">
-              <b>Tools 管理</b>
-              <em>动态注册 + 热重载 + 隔离执行，工具是一等公民</em>
-            </span>
-            <span class="al2-pillar-go">展开 ▸</span>
-          </button>
-          <button type="button" class="al2-pillar" data-panel="safety">
-            <span class="al2-pillar-ico">🛡️</span>
-            <span class="al2-pillar-txt">
-              <b>Safety 边界</b>
-              <em>高危拦截 + 人类审批 + 工作区沙箱 + 子 Agent 收权</em>
-            </span>
-            <span class="al2-pillar-go">展开 ▸</span>
-          </button>
-          <button type="button" class="al2-pillar" data-panel="todo">
-            <span class="al2-pillar-ico">🌳</span>
-            <span class="al2-pillar-txt">
-              <b>Todo / Delegate 父子管理</b>
-              <em>父 Agent 维护看板，子 Agent 并行领任务、隔离归档</em>
-            </span>
-            <span class="al2-pillar-go">展开 ▸</span>
-          </button>
+        <section class="al2-feature-rail" data-anim="fade-left">
+          <header class="al2-feature-rail-head">
+            <div>
+              <span>EXTENSIBLE MODULES</span>
+              <b>功能模块 · 点击展开详细</b>
+            </div>
+            <div class="al2-feature-rail-controls">
+              <span data-rail-status>01–05 / 07</span>
+              <button type="button" data-rail-dir="-1" aria-label="向上滚动功能列表">↑</button>
+              <button type="button" data-rail-dir="1" aria-label="向下滚动功能列表">↓</button>
+            </div>
+          </header>
+          <div class="al2-feature-scroll" tabindex="0" aria-label="R-Agent 功能模块滚动列表">
+            <div class="al2-pillars anim-stagger-list" data-anim-target>
+              <button type="button" class="al2-pillar al2-pillar-featured" data-panel="middleware">
+                <span class="al2-pillar-index">01</span>
+                <span class="al2-pillar-ico">🧩</span>
+                <span class="al2-pillar-txt">
+                  <b>Middleware 中间件</b>
+                  <em>10 个生命周期 Hook 串起压缩、预算、追踪与安全，横切能力可独立插拔</em>
+                </span>
+                <span class="al2-pillar-go">展开 ▸</span>
+              </button>
+              <button type="button" class="al2-pillar al2-pillar-featured al2-pillar-state" data-panel="threadstate">
+                <span class="al2-pillar-index">02</span>
+                <span class="al2-pillar-ico">🗃️</span>
+                <span class="al2-pillar-txt">
+                  <b>ThreadState 结构化状态</b>
+                  <em>把摘要、产物、子任务、Skill、沙箱和用量拆成独立 Channel，像工作白板一样随时更新</em>
+                </span>
+                <span class="al2-pillar-go">展开 ▸</span>
+              </button>
+              <button type="button" class="al2-pillar" data-panel="ctx">
+                <span class="al2-pillar-index">03</span>
+                <span class="al2-pillar-ico">🗜️</span>
+                <span class="al2-pillar-txt">
+                  <b>上下文管理</b>
+                  <em>最近对话保原文，旧历史变摘要；压缩失败也不丢内容</em>
+                </span>
+                <span class="al2-pillar-go">展开 ▸</span>
+              </button>
+              <button type="button" class="al2-pillar al2-pillar-memory" data-panel="memory">
+                <span class="al2-pillar-index">04</span>
+                <span class="al2-pillar-ico">🧠</span>
+                <span class="al2-pillar-txt">
+                  <b>Memory 长短期记忆</b>
+                  <em>压缩后抽取事实，长期画像与 Session 情节互斥分流；低权限注入并支持按需检索</em>
+                </span>
+                <span class="al2-pillar-go">展开 ▸</span>
+              </button>
+              <button type="button" class="al2-pillar" data-panel="tools">
+                <span class="al2-pillar-index">05</span>
+                <span class="al2-pillar-ico">🧰</span>
+                <span class="al2-pillar-txt">
+                  <b>工具系统与 Session 沙箱</b>
+                  <em>Schema 权限过滤、隔离执行、大输出外置与会话级路径路由</em>
+                </span>
+                <span class="al2-pillar-go">展开 ▸</span>
+              </button>
+              <button type="button" class="al2-pillar" data-panel="safety">
+                <span class="al2-pillar-index">06</span>
+                <span class="al2-pillar-ico">🛡️</span>
+                <span class="al2-pillar-txt">
+                  <b>Safety 边界</b>
+                  <em>高危拦截 + 人类审批 + 工作区沙箱 + 子 Agent 收权</em>
+                </span>
+                <span class="al2-pillar-go">展开 ▸</span>
+              </button>
+              <button type="button" class="al2-pillar" data-panel="todo">
+                <span class="al2-pillar-index">07</span>
+                <span class="al2-pillar-ico">🌳</span>
+                <span class="al2-pillar-txt">
+                  <b>Todo / Delegate 委派契约</b>
+                  <em>Todo ID 驱动调度；子 Agent 隔离执行，只回传状态、停止原因与有界步骤证据</em>
+                </span>
+                <span class="al2-pillar-go">展开 ▸</span>
+              </button>
+            </div>
+          </div>
         </section>
       </main>
 
       <section class="al2-chips" data-anim="fade-up">
         <span class="al2-chips-label">其他能力</span>
         <button type="button" data-panel="file">📁 文件</button>
-        <button type="button" data-panel="memory">🧠 Memory</button>
         <button type="button" data-panel="web">🌐 Web</button>
         <button type="button" data-panel="skill">📚 Skill</button>
         <button type="button" data-panel="artifact">🗂️ Artifact</button>
@@ -1004,9 +1063,9 @@
       <span class="slide-number" data-current="10" data-total="12"></span>
     </div>
     <aside class="notes">
-      <p>这一页讲 R-Agent 的架构它不是一问一答壳子，而是一个带迭代预算、上下文治理、工具隔离执行和强制收尾的 Agent Loop中间这张主图先让大家看懂：用户输入进来，每轮先治理上下文，再让 LLM 决策，需要时调用真实工具、回填结果，直到收敛或强制收尾点“查看完整流程”能看到含预算判断、重试和中断的完整循环</p>
-      <p>右边四个支柱是判断一个 Agent 好不好用的四件事：上下文管理让长任务不爆窗口；Tools 管理让工具可注册、可热重载、可隔离执行；Safety 边界负责高危命令拦截和人类审批；Todo / Delegate 把复杂任务拆成父子 Agent 协作每一张点开都是一个大页面，配子流程图讲清楚</p>
-      <p>底部的 chip 是支撑能力：文件、Memory、Web、Skill、Artifact、AutoResearch、Cockpit GUI收尾一句：R-Agent 的差异化在于可控、可审计、可复用</p>
+      <p>这一页先看左侧主流程：用户目标从 CLI、GUI 或 Gateway 进入，写入 ThreadState；每次模型调用前，Context 系统临时组装 System Prompt、一份 Durable Context 和最近 messages，tools schema 则作为独立 API 参数同行发送LLM 只负责判断信息是否足够：够就直接回答，不够就调用 Tool、Skill 或 Delegate行动结果经过权限、超时、预算、清洗和状态更新后重新回到请求视图，形成反复工作的 Agent Loop</p>
+      <p>右边现在是一条可扩展的功能轨道，可以用滚轮、触控板或上下按钮浏览，每个模块都能点开看详细第一项 Middleware 是主循环扩展插槽；第二项 ThreadState 是共享状态白板；上下文管理负责请求视图与压缩；Memory 负责把压缩前对话抽取为长期画像或 Session 情节，并以低权限方式注入和按需检索；后面是工具系统与 Session 沙箱、Safety 和 Todo / Delegate 委派契约</p>
+      <p>主流程旁边还有三类支撑系统：Memory 给请求提供长期事实；Sandbox 和 Artifact 保存文件与大结果；Run Events 记录模型、工具、压缩和委派的全过程底部三条结论分别强调请求视图不污染持久历史、所有行动都经过治理，以及达到预算后仍能保留上下文继续运行</p>
     </aside>
   </section>
 
@@ -1223,43 +1282,399 @@
       </header>
       <div class="al2-modal-body al2-modal-body-wide">
         <div class="al2-modal-diagram"><div class="mermaid" data-src="flowchart TD
-  U([用户输入]) --> SAN[修复上轮悬空 tool_call]
-  SAN --> LOOP([进入 _loop])
-  LOOP --> BUD{迭代预算<br/>还有额度?}
-  BUD -->|否| FORCE[强制收尾<br/>禁用工具出总结]:::key
-  FORCE --> TR[标记截断<br/>保留上下文可续跑]
-  TR --> OUT([返回结果])
-  BUD -->|是| SOFT{接近上限?}
-  SOFT -->|是| WARN[注入软提醒<br/>提示收敛]
-  SOFT -->|否| SCH[按白/黑名单过滤工具]
-  WARN --> SCH
-  SCH --> COMP[估算 token<br/>超 0.8 则压缩]:::key
-  COMP --> CALL[调用 LLM<br/>失败指数退避重试]
-  CALL --> HAS{返回工具调用?}
-  HAS -->|否| FIN[输出自然语言答复]
-  FIN --> OUT
-  HAS -->|是| GUARD[安全校验 + 注入 session]
-  GUARD --> KIND{工具类型}
-  KIND -->|delegate| DEL[父调度器 同步执行]:::key
-  KIND -->|其它工具| ISO[隔离子进程 + 超时]:::key
-  DEL --> PER[大输出落盘 artifact]
-  ISO --> PER
-  PER --> APP[追加结果 · 本轮超限则外置]
-  APP --> INC[iteration + 1]
-  INC --> BUD
-  classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;"></div></div>
-        <div class="al2-modal-notes">
-          <h4>一句话</h4>
-          <p>R-Agent 不是“一问一答的壳子”，而是一个<b>有预算、会治理上下文、把工具隔离执行、并且一定会收尾</b>的循环</p>
+  U([用户输入]) --> ENTRY[CLI / GUI / Gateway]:::entry
+  ENTRY --> RUN[run_conversation<br/>建立 Run 边界]:::run
+  RUN --> INIT[初始化 run_id / EventStore<br/>追加 system + user]:::run
+  INIT --> REPAIR[修复悬空 tool-call 对<br/>重置预算、截断与临时状态]:::run
+  REPAIR --> LOOP{仍有迭代预算?}:::decision
+
+  LOOP -->|是| BI[before_iteration<br/>软预算提醒]:::mw
+  BI --> POLICY[读取工具 Schema<br/>应用 allow / exclude / Skill policy]:::step
+  POLICY --> BM[before_model<br/>检查并压缩上下文]:::mw
+  BM --> VIEW[构建临时请求视图<br/>System + Durable + 最近 messages]:::context
+  VIEW --> CALL[调用 LLM<br/>超时 / 瞬时错误重试]:::llm
+  CALL --> SAVE[记录 Token / Events<br/>追加 assistant message]:::state
+  SAVE --> AM[after_model]:::mw
+  AM --> HAS{存在 tool_calls?}:::decision
+
+  HAS -->|否| AI_END[after_iteration]:::mw
+  AI_END --> FINAL([返回模型文本]):::done
+
+  HAS -->|是| EACH[逐个处理 tool call]:::step
+  EACH --> GUARD[tool_call_guard + before_tool<br/>执行期权限检查]:::guard
+  GUARD --> ALLOW{允许执行?}:::decision
+  ALLOW -->|否| DENY[生成拒绝结果]:::blocked
+  ALLOW -->|普通工具| ISO[隔离子进程<br/>cancel + timeout]:::tool
+  ALLOW -->|delegate_task| DELEGATE[父进程调度<br/>独立子 Agent + Todo]:::delegate
+  DENY --> ONE
+  ISO --> ONE[after_tool_execution<br/>状态更新 + 单结果预算]:::mw
+  DELEGATE --> ONE
+  ONE --> MORE{本批还有工具?}:::decision
+  MORE -->|是| EACH
+  MORE -->|否| BATCH[after_tool_batch<br/>整轮工具结果预算]:::mw
+  BATCH --> TRACK[记录 Events<br/>更新 Artifact 索引 / 委派账本]:::state
+  TRACK --> SAFE[after_tool<br/>可选结果清洗]:::mw
+  SAFE --> TOOLMSG[追加 role=tool messages]:::state
+  TOOLMSG --> ITER[after_iteration<br/>iteration + 1]:::mw
+  ITER --> LOOP
+
+  LOOP -->|否| FORCE[禁用工具<br/>强制总结当前结论与未完成项]:::blocked
+  FORCE --> TRUNC[标记 truncated<br/>完整上下文保留]:::blocked
+  TRUNC --> CHOICE{用户扩展预算?}:::decision
+  CHOICE -->|是| RESUME[continue_after_truncation]:::run
+  RESUME --> LOOP
+  CHOICE -->|否| FINAL
+
+  MEM[(Memory)] -. 低权限事实 .-> VIEW
+  ART[(Sandbox / Artifact)] -. 大结果与子上下文 .-> TRACK
+  EVT[(Run Events / GUI Events)] -. 记录全过程 .-> RUN
+  STATE[(ThreadState)] -. 状态中心 .-> VIEW
+  TRACK -. 合并 .-> STATE
+
+  classDef entry fill:#eef3fb,stroke:#64748b,color:#0a2540;
+  classDef run fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
+  classDef decision fill:#ffffff,stroke:#64748b,color:#0a2540,stroke-width:2px;
+  classDef mw fill:#f0edfc,stroke:#6d5ae6,color:#0a2540,stroke-width:2px;
+  classDef step fill:#eef3fb,stroke:#1d4ed8,color:#0a2540;
+  classDef context fill:#eef6f4,stroke:#0f9d8f,color:#0a2540,stroke-width:2px;
+  classDef llm fill:#1d4ed8,stroke:#1d4ed8,color:#ffffff;
+  classDef state fill:#eef6f4,stroke:#0f9d8f,color:#0a2540;
+  classDef guard fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;
+  classDef tool fill:#eef3fb,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
+  classDef delegate fill:#f0edfc,stroke:#6d5ae6,color:#0a2540,stroke-width:2px;
+  classDef blocked fill:#fdecec,stroke:#dc5a5a,color:#7f1d1d,stroke-width:2px;
+  classDef done fill:#0a2540,stroke:#0a2540,color:#ffffff;"></div></div>
+        <div class="al2-modal-notes al2-loop-notes">
           <h4>怎么读这张图</h4>
-          <ul>
-            <li><b>先看预算</b>：每轮开头判断迭代次数还够不够快用完先“软提醒”让模型收敛；真用完就“强制收尾”——禁用工具、只出文字总结，并标记截断，<b>上下文完整保留，加预算即可续跑，不用重发问题</b></li>
-            <li><b>再治理上下文</b>：请求前估算 token，超过 0.8 阈值就压缩历史</li>
-            <li><b>调 LLM</b>：瞬时错误会指数退避重试返回若没有工具调用，就直接输出答复、结束</li>
-            <li><b>有工具调用</b>：先安全校验，再按类型分流——`delegate` 由父进程同步调度，其余工具在隔离子进程里跑并带超时大输出落盘成 artifact，然后回填、迭代继续</li>
-          </ul>
-          <div class="al2-code">core/agent.py · run_conversation → _loop</div>
+          <ol class="al2-loop-reading">
+            <li><b>Run 边界</b><span>入口统一进入 <code>run_conversation</code>，创建运行证据、写入消息并修复中断残留</span></li>
+            <li><b>请求前治理</b><span>每轮先检查预算与工具策略，再压缩历史，临时投影 Durable Context 和最近消息</span></li>
+            <li><b>模型只负责决策</b><span>没有 Tool Call 就直接返回；有 Tool Call 才进入权限检查和实际执行</span></li>
+            <li><b>工具结果分两级预算</b><span>单工具先预算，整批结果再预算；超大内容外置为 Artifact，只留路径和摘要</span></li>
+            <li><b>子 Agent 是特殊工具路径</b><span>父进程调度独立 RAgent，共享 Todo / Session 边界，但不共享父 messages 和 ThreadState</span></li>
+            <li><b>一定会收尾</b><span>达到迭代上限后禁用工具强制总结；上下文不丢失，用户可扩展预算继续</span></li>
+          </ol>
+          <div class="al2-loop-sidecars">
+            <article><b>ThreadState</b><span>保存消息、摘要、Artifact 与委派账本</span></article>
+            <article><b>Memory</b><span>提供跨会话稳定事实</span></article>
+            <article><b>Sandbox / Artifact</b><span>隔离路径并保存大结果</span></article>
+            <article><b>Run Events</b><span>记录 LLM、工具、压缩与委派过程</span></article>
+          </div>
+          <!-- <div class="al2-code">main.py · core/agent.py · core/state.py · core/middleware · tools/registry.py · tools/delegate_tool.py</div> -->
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-middleware" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-middleware-card">
+      <header class="al2-modal-head">
+        <div>
+          <span class="al2-modal-tag">① MIDDLEWARE · 横切能力插槽</span>
+          <h3>不改主循环分支，也能在关键位置观察、拦截和处理</h3>
+          <p class="al2-middleware-headline"><b>把 _loop 想成交通警察</b>：Middleware 是摄像头、限高杆和消毒通道；它能观察或拦截经过的流程，但不负责决定车辆往哪里走</p>
+        </div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-middleware-body">
+        <section class="al2-middleware-flow">
+          <div class="al2-middleware-section-head">
+            <!-- <div><span>真实运行顺序</span><b>10 HOOKS · 8 已有内置实现</b></div> -->
+            <!-- <em>按注册顺序执行 · 异常记录后继续</em> -->
+          </div>
+          <p class="al2-middleware-provider-note">这里的 Provider 指“当前覆盖这个 Hook 的 Middleware 实现”；同一 Hook 可注册多个，并按链中顺序执行</p>
+          <div class="al2-middleware-track">
+            <section class="al2-mw-stage">
+              <header><span>01–04</span><b>模型前后</b><em>准备 → 压缩 → LLM → 路由</em></header>
+            <article class="al2-mw-step">
+              <span>01</span>
+              <div>
+                <b><code>before_iteration</code></b>
+                <p>一轮刚开始；此时工具和模型回复尚未准备</p>
+                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>SoftIterationBudgetMiddleware</code></small>
+              </div>
+              <em>软提醒</em>
+            </article>
+            <div class="al2-mw-core-step"><span>TOOLS</span><b>allowed ∩ Skill policy − excluded → 得到候选 schema</b></div>
+            <article class="al2-mw-step">
+              <span>02</span>
+              <div>
+                <b><code>before_model</code></b>
+                <p>模型请求前：先隐藏未提升工具，再按需压缩上下文</p>
+                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>DeferredToolFilter</code><code>ContextCompression</code></small>
+              </div>
+              <em>过滤 / 压缩</em>
+            </article>
+            <article class="al2-mw-step al2-mw-step-event">
+              <span>03</span>
+              <div>
+                <b><code>after_context_compression</code> <i>条件触发</i></b>
+                <p>仅压缩成功并提交状态后，读取压缩前原文和压缩结果</p>
+                <small class="al2-mw-provider al2-mw-provider-optional"><i>配置可选</i><code>MemoryWriteMiddleware</code></small>
+              </div>
+              <em>Memory</em>
+            </article>
+            <div class="al2-mw-core-step al2-mw-core-llm"><span>LLM</span><b>构建临时 request_messages → 调用模型 → 写入 assistant history</b></div>
+            <article class="al2-mw-step">
+              <span>04</span>
+              <div>
+                <b><code>after_model</code></b>
+                <p>模型已回答，但还没判断“调用工具还是返回文本”</p>
+                <small class="al2-mw-provider al2-mw-provider-empty"><i>当前接入</i>暂无内置 Middleware · 可扩展响应统计 / 路由观测</small>
+              </div>
+              <em>观察</em>
+            </article>
+            </section>
+            <section class="al2-mw-stage">
+              <header><span>05–10</span><b>工具与收尾</b><em>否决 → 执行 → 预算 → 追踪 → 清洗</em></header>
+            <article class="al2-mw-step al2-mw-step-guard">
+              <span>05</span>
+              <div>
+                <b><code>before_tool</code></b>
+                <p><code>tool_call_guard</code> 通过后触发；返回原因即可阻止 handler</p>
+                <small class="al2-mw-provider al2-mw-provider-child"><i>子 Agent 专用</i><code>LoopDetectionMiddleware</code></small>
+              </div>
+              <em>可否决</em>
+            </article>
+            <div class="al2-mw-core-step al2-mw-core-tool"><span>TOOL</span><b>注入 session → 权限复查 → handler / 隔离子进程 / delegate</b></div>
+            <article class="al2-mw-step al2-mw-step-rewrite">
+              <span>06</span>
+              <div>
+                <b><code>after_tool_execution</code></b>
+                <p>逐个处理原始结果：同步运行状态，并执行单结果预算</p>
+                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>ToolRuntimeState</code><code>ToolOutputBudget</code></small>
+              </div>
+              <em>单结果</em>
+            </article>
+            <article class="al2-mw-step al2-mw-step-rewrite">
+              <span>07</span>
+              <div>
+                <b><code>after_tool_batch</code></b>
+                <p>同一 assistant turn 的结果全部就绪后，约束整批总量</p>
+                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>ToolOutputBudgetMiddleware</code></small>
+              </div>
+              <em>整批预算</em>
+            </article>
+            <article class="al2-mw-step al2-mw-step-event">
+              <span>08</span>
+              <div>
+                <b><code>before_tool_message</code></b>
+                <p>预算完成后、外部回调前：记录事件并更新结构化索引</p>
+                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>ToolResultTrackingMiddleware</code></small>
+              </div>
+              <em>追踪</em>
+            </article>
+            <article class="al2-mw-step al2-mw-step-rewrite">
+              <span>09</span>
+              <div>
+                <b><code>after_tool</code></b>
+                <p><code>on_tool_end</code> 后、写入历史前：清洗模型最终会看到的文本</p>
+                <small class="al2-mw-provider al2-mw-provider-optional"><i>配置可选</i><code>ToolResultSanitizationMiddleware</code></small>
+              </div>
+              <em>安全清洗</em>
+            </article>
+            <article class="al2-mw-step">
+              <span>10</span>
+              <div>
+                <b><code>after_iteration</code></b>
+                <p>全部工具结果写入后，或最终文本返回前；适合轮级统计</p>
+                <small class="al2-mw-provider al2-mw-provider-empty"><i>当前接入</i>暂无内置 Middleware · 预留轮级统计 / 清理</small>
+              </div>
+              <em>观察</em>
+            </article>
+            </section>
+          </div>
+        </section>
+
+        <section class="al2-middleware-explain">
+          <div class="al2-middleware-section-head">
+            <div><b>WHY · WHAT · BOUNDARY</b></div>
+          </div>
+          <div class="al2-middleware-why">
+            <span>为什么要中间件化？</span>
+            <p>Memory、安全、观测、循环检测都属于“横切能力”如果全部写成 <code>_loop</code> 里的 <code>if</code>，主循环会同时负责流程和所有增强逻辑；现在每项能力只实现自己需要的 Hook，能够独立启停和测试</p>
+          </div>
+          <div class="al2-middleware-actions">
+            <article><b>状态检测</b><span>读取 <code>AgentContext</code>，记录状态和统计</span></article>
+            <article><b>危险过滤</b><span><code>before_tool</code> 返回原因，工具不执行</span></article>
+            <article><b>上下文处理</b><span>状态同步、结果外置和整轮预算分阶段完成</span></article>
+            <article><b>Memory 写入</b><span>压缩成功后再抽取 Memory，避免错误提交</span></article>
+          </div>
+          <div class="al2-middleware-builtins">
+            <span>中间件分层</span>
+            <article class="al2-mw-builtin-group">
+              <b>通常存在的中间件</b>
+              <p><code>DeferredToolFilter</code> · <code>ContextCompression</code> · <code>ToolRuntimeState</code> · <code>ToolResultTracking</code> · <code>ToolOutputBudget</code> · <code>SoftIterationBudget</code></p>
+            </article>
+            <article class="al2-mw-builtin-group">
+              <b>配置可选的中间件</b>
+              <p><code>ToolResultSanitization</code> 清洗注入；<code>MemoryWrite</code> 在压缩成功后抽取长期事实</p>
+            </article>
+            <article class="al2-mw-builtin-group">
+              <b>子 Agent 专用中间件</b>
+              <p><code>LoopDetection</code> 拒绝连续重复调用；子 Agent 仍自动拥有完整内核运行时链</p>
+            </article>
+          </div>
+          <div class="al2-middleware-construction">
+            <b>中间件运行顺序</b>
+            <span>内核链始终安装；显式传入 <code>middlewares=[...]</code> 只替换“配置可选链”，不会移除压缩、预算、追踪等运行时不变量</span>
+          </div>
+          <div class="al2-middleware-boundary">
+            <b>Middleware 不负责什么？</b>
+            <ul>
+              <li>不决定 <code>while</code> 是否继续，也不替代工具注册表；真正控制权仍在 <code>RAgent._loop()</code></li>
+              <li>请求视图、LLM 重试和 handler 副作用仍由 Loop 负责；Middleware 负责压缩触发、结果预算、追踪与清洗</li>
+              <li>单个中间件异常默认 <b>fail-open</b>：错误写入 <code>middleware.errors</code>，主循环继续；强安全策略仍应放在确定性 guard</li>
+            </ul>
+          </div>
+          <!-- <div class="al2-code">core/middleware/base.py · core/middleware/builtins.py · core/agent.py · tools/delegate_tool.py</div> -->
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal" id="al2-panel-threadstate" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-threadstate-card">
+      <header class="al2-modal-head">
+        <div>
+          <span class="al2-modal-tag">② THREADSTATE · 结构化状态白板</span>
+          <h3>聊天录像负责“说过什么”，状态白板负责“现在是什么”</h3>
+          <p class="al2-threadstate-headline"><b>不再把一切伪装成聊天消息</b>：摘要、产物、委派、Skill、沙箱和用量各自进入独立 Channel，压缩对话也不会丢掉结构化事实</p>
+        </div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="al2-modal-body al2-threadstate-body">
+        <section class="al2-threadstate-board">
+          <div class="al2-threadstate-section-head">
+            <div><b>ONE STATE · 11 CHANNELS</b></div>
+            <em>每个父 / 子 Agent 各有一份，不共享对象</em>
+          </div>
+          <div class="al2-threadstate-core">
+            <div class="al2-threadstate-center">
+              <span>当前事实容器</span>
+              <b>ThreadState</b>
+              <code>agent.state</code>
+            </div>
+            <div class="al2-threadstate-channels">
+              <article class="is-hot">
+                <span>当前对话</span>
+                <b><code>messages</code></b>
+                <p>用户、assistant、tool 的最近完整历史</p>
+              </article>
+              <article class="is-summary">
+                <span>压缩摘要</span>
+                <b><code>summary_text</code></b>
+                <p>旧历史滚动摘要，压缩后仍能继续使用</p>
+              </article>
+              <article class="is-artifact">
+                <span>大结果索引</span>
+                <b><code>artifact_index</code></b>
+                <p>产物路径、来源工具和短摘要</p>
+              </article>
+              <article class="is-delegate">
+                <span>子任务台账</span>
+                <b><code>delegation_ledger</code></b>
+                <p>task_id、状态、停止原因和结果摘要</p>
+              </article>
+              <article class="is-skill">
+                <span>已读 Skill</span>
+                <b><code>skill_context</code></b>
+                <p>Skill 名称与摘要引用，避免读完即忘</p>
+              </article>
+              <article class="is-policy">
+                <span>当前工具策略</span>
+                <b><code>active_skill_policy</code></b>
+                <p>激活 Skill 的工具白名单与描述</p>
+              </article>
+              <article class="is-runtime">
+                <span>运行空间</span>
+                <b><code>sandbox</code></b>
+                <p>当前 session 工作区和路径路由信息</p>
+              </article>
+              <article class="is-runtime">
+                <span>调度快照</span>
+                <b><code>todos</code></b>
+                <p>预留 Channel；Todo 真值目前仍在 session 文件</p>
+              </article>
+              <article class="is-meter">
+                <span>父 Agent 用量</span>
+                <b><code>token_usage</code></b>
+                <p>请求、生成与累计 token</p>
+              </article>
+              <article class="is-meter">
+                <span>子 Agent 用量</span>
+                <b><code>delegated_token_usage</code></b>
+                <p>委派结果汇总后的 token 成本</p>
+              </article>
+              <article class="is-meter">
+                <span>上下文水位</span>
+                <b><code>context_usage</code></b>
+                <p>估算 token、窗口占比和压缩统计</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="al2-threadstate-explain">
+          <div class="al2-threadstate-section-head">
+            <div><b>MERGE · COMPAT · PROJECT</b></div>
+          </div>
+          <div class="al2-threadstate-why">
+            <span>为什么不能全部放进 messages？</span>
+            <p><code>messages</code> 适合回答“刚才说过什么”，却不适合可靠更新“子任务现在完成了吗”“同一路径产物是否已有记录”独立 Channel 能按字段更新，不必不断追加伪聊天消息</p>
+          </div>
+          <div class="al2-threadstate-reducers">
+            <span>Reducer：如何更新状态</span>
+            <article>
+              <b>📦 Artifact index · 按 path</b>
+              <p>同一路径更新字段，新路径追加；索引不会出现重复记录</p>
+            </article>
+            <article>
+              <b>🌳 Delegation · 按 task_id</b>
+              <p><code>in_progress → completed</code> 更新同一任务，而不是保留矛盾状态</p>
+            </article>
+            <article>
+              <b>📚 Skill · 按名称</b>
+              <p>重复读取只更新摘要，不让 durable context 出现十份相同 Skill</p>
+            </article>
+          </div>
+          <!-- <div class="al2-threadstate-compat">
+            <span>渐进式兼容：旧代码不用一次性重写</span>
+            <div>
+              <code>agent.messages</code><i>→</i><code>agent.state.messages</code>
+              <code>agent.token_usage</code><i>→</i><code>agent.state.token_usage</code>
+            </div>
+            <p>Property 代理同时兼容 <b>append / +=</b> 等原地修改和 <b>整体重赋值</b>，所以引入统一状态不破坏旧调用方</p>
+          </div> -->
+          <div class="al2-threadstate-example">
+            <span>一个完整例子</span>
+            <ol>
+              <li>网页工具返回 12 万字符 → 正文落盘，<code>artifact_index</code> 记路径</li>
+              <li>子 Agent 完成任务 t1 → <code>delegation_ledger</code> 合并为 completed</li>
+              <li>对话接近窗口上限 → <code>summary_text</code> 更新，旧 messages 被压缩</li>
+              <li>下一轮只临时注入摘要和委派结果，不再重读 12 万字符</li>
+            </ol>
+          </div>
+          <div class="al2-threadstate-boundaries">
+            <span>别把这 5 层混在一起</span>
+            <div>
+              <article><b>ThreadState</b><em>现在是什么</em></article>
+              <article><b>messages</b><em>对话说过什么</em></article>
+              <article><b>RunEventStore</b><em>按顺序发生过什么</em></article>
+              <article><b>Memory</b><em>下次会话还要知道什么</em></article>
+              <article><b>Todo 文件</b><em>多个执行者如何协调</em></article>
+            </div>
+          </div>
+          <div class="al2-threadstate-limit">
+            <b>当前边界</b>
+            <span>ThreadState 主要在内存；尚无统一 checkpoint / restoreReducer 只做纯合并、不做 IO；Todo 真值和跨会话 Memory 仍属于独立持久化层</span>
+          </div>
+          <div class="al2-threadstate-projection">
+            <span>状态里“存在” ≠ 模型每轮都“看见”</span>
+            <p><b>Durable Context 只投影：</b>summary + delegation + skill + active policy + memory；token 统计与 sandbox 路径不会自动进入模型请求</p>
+          </div>
+          <!-- <div class="al2-code">core/state.py · core/agent.py · tests/test_thread_state.py · tests/test_context_injection.py</div> -->
+        </section>
       </div>
     </div>
   </div>
@@ -1267,95 +1682,230 @@
   <div class="al2-modal" id="al2-panel-ctx" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card">
       <header class="al2-modal-head">
-        <div><span class="al2-modal-tag">① 上下文管理</span><h3>长任务不爆窗口</h3></div>
+        <div>
+          <span class="al2-modal-tag">③ 上下文管理</span>
+          <h3>模型每轮到底看什么？内容太长时怎样安全“瘦身”？</h3>
+          <p class="al2-context-headline">核心思路：<b>近处保留原文，远处保留摘要，长期资料独立保存</b>；每轮只临时组装一份给模型</p>
+        </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="al2-modal-body">
-        <div class="al2-modal-diagram al2-modal-diagram-context"><div class="mermaid" data-src="flowchart TD
-  START([每轮进入 LLM 前<br/>统一做上下文体检]):::start
-  EST[估算 messages + tools token<br/>中文 / JSON 适度高估]:::step
-  CHECK{窗口占用 ≥ 0.8?}:::decision
-  KEEP[保留最近 16 条完整消息<br/>不拆 tool_call / tool_result]:::step
-  SUM[早期历史合并为 system 摘要<br/>用户重点 · 决策 · 工具结果]:::compress
-  TARGET[压缩目标：窗口占用回到 0.55]:::compress
-  OUT[工具输出进入上下文前<br/>先做体积检查]:::step
-  ONE{单条输出 > 80k?}:::decision
-  ROUND{本轮聚合 > 160k?}:::decision
-  STORE[落盘 tool_outputs artifact<br/>上下文只留摘要 + 路径]:::artifact
-  LARGEST[从最大输出开始外置<br/>直到回到安全水位]:::artifact
-  READ[artifact_inspect / search / slice<br/>按需有界读回]:::key
+      <div class="al2-modal-body al2-context-body">
+        <div class="al2-context-visual">
+          <div class="al2-context-section-title">
+            <!-- <span>先理解：状态分开保存，请求时再按两条路径投影</span> -->
+            <b>STATE → REQUEST</b>
+          </div>
+          <div class="al2-context-layers" aria-label="上下文状态来源与请求投影">
+            <article class="is-durable-source">
+              <!-- <span>03 · 汇入 Durable</span> -->
+              <b>持久化信息 <code>durable_context</code></b>
+              <p>子任务委托进度、Skill 上下文与工具权限、hidden-user Memory、Tool Schema，以及 artifact 文件索引</p>
+              <!-- <em>与摘要合成一份低权限数据段，只作为参考</em> -->
+            </article>
+            <article class="is-durable-source">
+              <!-- <span>02 · 汇入 Durable</span> -->
+              <b>旧历史摘要 <code>summary_text</code></b>
+              <p>对话变长后，把较早内容提炼成目标、结论、改动、错误和下一步</p>
+            </article>
+            <article class="is-direct">
+              <!-- <span></span> -->
+              <b>对话消息 <code>messages</code></b>
+              <p>当前任务正在使用的用户消息、模型回答，以及完整的工具调用与结果</p>
+            </article>
+          </div>
+          <!-- <div class="al2-context-projection">
+            <span>真正发送给模型的请求结构</span>
+            <b><code>request_messages</code> = System Prompt → 1 份 Durable Context → 最近 <code>messages</code></b>
+            <em><strong>Durable Context</strong> = summary_text + delegation + Skill / policy + Memory；<strong>tools schema</strong> 作为独立 API 参数同行发送，不是聊天消息</em>
+          </div> -->
+          <div class="al2-context-section-title">
+            <!-- <span>再看流程：什么时候压缩、保留什么、失败怎么办</span> -->
+            <b>1 → 6</b>
+          </div>
+          <div class="al2-modal-diagram al2-modal-diagram-context"><div class="mermaid" data-src="flowchart TD
+  S1[1 · 收集<br/>新消息写入最近对话 message]:::start
+  S2[2 · 组装<br/>临时拼出本轮具体上下文]:::project
+  S3{3 · 判断<br/>长度 / 条数 / 窗口占比<br/>任一超限?}:::decision
+  CALL[未超限<br/>直接调用主模型]:::finish
+  S4[4 · 划分<br/>确定最近哪些原文必须留下保护工具组<br/>tool call 与结果绝不拆开]:::step
+  S5[5 · 压缩<br/>旧摘要 + 本次淘汰历史<br/>→ 新的滚动摘要]:::compress
+  S6{6 · 验收<br/>摘要成功且非空?}:::decision
+  SAVE[成功<br/>更新摘要，删除已压缩原文<br/>重新组装请求包]:::compress
+  SAFE[失败<br/>原文和旧摘要全部不动<br/>本轮照常继续，下次再试]:::guard
 
-  START --> EST --> CHECK
-  CHECK -->|否| OUT
-  CHECK -->|是| KEEP --> SUM --> TARGET --> OUT
-  OUT --> ONE
-  ONE -->|是| STORE --> READ
-  ONE -->|否| ROUND
-  ROUND -->|是| LARGEST --> READ
-  ROUND -->|否| READ
+  S1 --> S2 --> S3
+  S3 -->|否| CALL
+  S3 -->|是| S4
+  S4 --> S5 --> S6
+  S6 -->|是| SAVE
+  S6 -->|否| SAFE
+  SAVE --> CALL
+  SAFE --> CALL
 
   classDef start fill:#0a2540,stroke:#0a2540,color:#ffffff;
   classDef step fill:#eef3fb,stroke:#1d4ed8,color:#0a2540,stroke-width:1.5px;
+  classDef project fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
   classDef decision fill:#ffffff,stroke:#64748b,color:#0a2540,stroke-width:2px;
   classDef compress fill:#f0edfc,stroke:#6d5ae6,color:#0a2540,stroke-width:2px;
-  classDef artifact fill:#eef6f4,stroke:#0f9d8f,color:#0a2540,stroke-width:2px;
-  classDef key fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;"></div></div>
-        <div class="al2-modal-notes">
-          <h4>要解决什么</h4>
-          <p>对话越长、工具输出越大，上下文就越容易被撑爆R-Agent 用<b>两条线</b>治理它</p>
-          <h4>请求前压缩</h4>
-          <ul>
-            <li>估算 <code>messages + tools</code> 的 token（对中文/JSON 适度高估更安全）</li>
-            <li>占用达到 <b>0.8</b> 就压缩：把较早历史合并成一条 system 摘要（用户重点 / 助手决策 / 工具结果 / 系统信息），压到 <b>0.55</b></li>
-            <li><b>只压旧的</b>：保留最近 16 条完整消息，且保证一次工具调用和它的结果作为整体，不切成“孤儿”</li>
-          </ul>
-          <h4>工具输出后外置</h4>
-          <ul>
-            <li>单条输出 &gt; <b>80k</b> 字符就落盘，上下文只留摘要和路径；本轮聚合 &gt; <b>160k</b> 时从最大项开始外置</li>
-            <li>之后用 <code>artifact_inspect / search / slice</code> 有界读回，绝不整块塞回上下文</li>
-          </ul>
-          <div class="al2-code">core/context_control.py · core/context/tool_result_storage.py</div>
+  classDef guard fill:#eef6f4,stroke:#0f9d8f,color:#0a2540,stroke-width:2px;
+  classDef finish fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;"></div></div>
+        </div>
+        <div class="al2-modal-notes al2-context-notes">
+          <div class="al2-context-guide">
+            <!-- <span>按这 5 个问题理解</span> -->
+            <b>READING GUIDE</b>
+          </div>
+          <ol class="al2-context-steps">
+            <li>
+              <b>每轮上下文结构</b>
+              <p>每轮临时生成请求：System Prompt + 低权限 user Memory + 子任务委托进度 + Skill 调用记录以及工具权限 + artifact index + 日期地理位置等长期信息 + 历史对话摘要 + 当前对话消息 + 工具 Schema</p>
+            </li>
+            <li>
+              <b>压缩触发条件</b>
+              <p><code>Trigger</code> 就是“报警条件”：token 长度 <code>OR</code> 消息数量 <code>OR</code> 占模型窗口比例大小，命中任意一种就开始压缩；默认窗口占比阈值是 <strong>0.8</strong></p>
+            </li>
+            <li>
+              <b>压缩范围</b>
+              <p><code>Keep</code> 表示“最近要保留最近多少条消息”，<code>Cutoff</code> 是新旧历史的分界线默认保留最近 <strong>16 条</strong>；也可按 token 或窗口比例计算</p>
+            </li>
+            <li>
+              <b>工具调用压缩保护</b>
+              <p>一次 assistant 的 <code>tool calls</code> 和随后所有 <code>tool result</code> 会先绑成一个整体，不会只留下调用、却删掉结果</p>
+            </li>
+            <li>
+              <b>摘要失败保护</b>
+              <p>只有新摘要成功且非空，才更新 <code>summary_text</code> 并删除旧原文；异常或空摘要时，所有历史原样保留，下轮重试</p>
+            </li>
+          </ol>
+          <div class="al2-context-example">
+            <span>一个具体例子</span>
+            <h4>60 条消息已经过长，默认保留最近 16 条</h4>
+            <div>
+              <p><b>压缩前</b><em>旧摘要 v1 + 60 条完整消息</em></p>
+              <i>→</i>
+              <p><b>压缩后</b><em>新摘要 v2 + 最近 16 条完整消息</em></p>
+            </div>
+            <small>较早的 44 条进入摘要；若分界处正好有工具调用，会移动 Cutoff，确保整组保留或整组压缩长期资料仍在独立 channel，不会被重复揉进摘要</small>
+          </div>
+          <div class="al2-context-extra">
+            <article>
+              <b>大工具输出</b>
+              <span>单条 &gt; 80k 或单轮 &gt; 160k 字符时落盘，聊天里只留路径、格式、大小和短预览，需要时再按片段读取</span>
+            </article>
+            <article>
+              <b>安全与权限</b>
+              <span>Memory、工具结果、子 Agent 资料都只作为参考数据，不能冒充系统指令；可疑工具结果可进入 audit / enforce 检查</span>
+            </article>
+          </div>
+          <!-- <div class="al2-code">core/agent.py · core/context_control.py · core/state.py · core/context/tool_result_storage.py</div> -->
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal" id="al2-panel-tools" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card">
+    <div class="al2-modal-card al2-tools-card">
       <header class="al2-modal-head">
-        <div><span class="al2-modal-tag">② Tools 管理</span><h3>工具是可审计的一等公民</h3></div>
+        <div>
+          <span class="al2-modal-tag">⑤ TOOLS + SESSION SANDBOX</span>
+          <h3>模型只提出调用，框架负责可见性、权限、执行和文件边界</h3>
+          <p class="al2-tools-headline"><b>工具不是“模型直接执行 Python”</b>：模型只能返回工具名和 JSON 参数，真正执行必须经过 Registry、四层权限、Guard、隔离进程、输出预算与 Session 路径路由</p>
+        </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="al2-modal-body">
-        <div class="al2-modal-diagram"><div class="mermaid" data-src="flowchart LR
-  R[注册表 ToolRegistry] --> S[每个工具 = schema + handler]
-  S --> RL[检测文件变化<br/>热重载工具面]
-  RL --> EX[隔离子进程执行]:::key
-  EX --> TO{超时 / 崩溃?}
-  TO -->|是| KILL[kill 子进程<br/>返回结构化错误]:::bad
-  TO -->|否| OK[正常返回结果]:::ok
-  KILL --> MAIN[主循环不受影响]
-  OK --> MAIN
-  classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
-  classDef bad fill:#fde8e8,stroke:#dc2626,color:#991b1b;
-  classDef ok fill:#e6f6ef,stroke:#0e9f6e,color:#065f46;"></div></div>
-        <div class="al2-modal-notes">
-          <h4>注册与热重载</h4>
-          <ul>
-            <li>每个工具就是一条 OpenAI function schema 加一个 handler，由单例注册表统一管理</li>
-            <li>按文件的修改时间和大小检测 <code>tools/*.py</code> 变化，<b>改完工具不用重启</b>，也能手动 <code>sys_reload</code> 刷新</li>
-          </ul>
-          <h4>隔离执行（核心亮点）</h4>
-          <ul>
-            <li>普通工具在<b>独立子进程</b>里跑，带超时：到点先 terminate 再 kill，返回结构化超时错误</li>
-            <li>支持取消：Esc 中断能及时终止子进程工具崩溃、卡死、超时都被隔离，<b>不会拖垮主循环</b></li>
-          </ul>
-          <h4>上下文过滤</h4>
-          <ul>
-            <li>主循环支持白名单 / 黑名单，Cockpit 的“Tools 开关”就是靠它控制某次请求是否带上某个工具</li>
-          </ul>
-          <div class="al2-code">tools/registry.py · tools/sys_tools.py</div>
-        </div>
+      <div class="al2-modal-body al2-tools-body">
+        <section class="al2-tools-pipeline">
+          <div class="al2-tools-section-head">
+            <div><span>Tool Call 链路</span><b>REGISTER → FILTER → GUARD → EXECUTE → BUDGET → MESSAGE</b></div>
+            <em>Schema 过滤 + 执行期检查，双层约束</em>
+          </div>
+          <div class="al2-modal-diagram al2-tools-flow-visual"><div class="mermaid" data-src="flowchart TD
+  REG[注册与热加载<br/>Schema · Handler · Metadata]:::registry
+  FILTER[过滤本轮可见工具<br/>allowed ∩ Skill policy - excluded]:::guard
+  LLM[LLM 提出调用<br/>工具名 + JSON 参数]:::llm
+  CHECK[执行前再检查<br/>Guard · Middleware · 审批]:::guard
+  ROUTE{选择执行路径}:::decision
+  ISO[普通工具<br/>隔离子进程 + 超时]:::execute
+  DEL[delegate_task<br/>父进程调度子 Agent]:::execute
+  RESULT[返回结构化结果<br/>success / error]:::result
+  BUDGET{结果超过预算?}:::decision
+  STORE[完整内容落盘<br/>保留 Artifact 路径与摘要]:::artifact
+  MSG[写入 role=tool<br/>回到下一轮 LLM 决策]:::done
+
+  REG --> FILTER --> LLM --> CHECK --> ROUTE
+  ROUTE -->|普通工具| ISO --> RESULT
+  ROUTE -->|委派任务| DEL --> RESULT
+  RESULT --> BUDGET
+  BUDGET -->|否| MSG
+  BUDGET -->|是| STORE --> MSG
+
+  classDef registry fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
+  classDef guard fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;
+  classDef llm fill:#1d4ed8,stroke:#1d4ed8,color:#ffffff;
+  classDef decision fill:#ffffff,stroke:#64748b,color:#0a2540,stroke-width:2px;
+  classDef execute fill:#eef3fb,stroke:#1d4ed8,color:#0a2540,stroke-width:1.5px;
+  classDef result fill:#ffffff,stroke:#64748b,color:#0a2540;
+  classDef budget fill:#f0edfc,stroke:#6d5ae6,color:#0a2540,stroke-width:2px;
+  classDef artifact fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;
+  classDef done fill:#0a2540,stroke:#0a2540,color:#ffffff;"></div></div>
+        </section>
+
+        <section class="al2-tools-sandbox">
+          <div class="al2-tools-section-head">
+            <div><span>Session Workspace Isolation</span><b>WHAT IT DOES · WHAT IT DOES NOT</b></div>
+          </div>
+          <div class="al2-tools-guard-grid">
+            <article><span>Schema 可见性</span><p>注册表全量 → 外部 allow → Skill allow → exclude，得到本轮模型可见工具</p></article>
+            <article><span>执行期权限</span><p>Tool Call 仍会经过 Guard、Middleware、白名单、排除集和工具审批</p></article>
+            <article><span>故障隔离</span><p>普通工具崩溃、超时或异常转为结构化错误，不拖垮 Agent Loop</p></article>
+          </div>
+          <div class="al2-tools-sandbox-tree">
+            <span>每个 session 的工作区</span>
+            <div>
+              <article><b>workspace/</b><em>相对文件读写</em></article>
+              <article><b>uploads/</b><em>上传输入</em></article>
+              <article><b>outputs/</b><em>Session 产物</em></article>
+              <article><b>todo_lists/</b><em>调度真值</em></article>
+              <article><b>run_events/</b><em>运行证据</em></article>
+              <article><b>tool_outputs/</b><em>大结果 Artifact</em></article>
+              <article><b>delegate_contexts/</b><em>子 Agent 上下文</em></article>
+            </div>
+          </div>
+          <div class="al2-tools-boundary al2-tools-boundary-expanded">
+            <div class="al2-tools-boundary-title">
+              <b>Session Sandbox：它是什么 / 不是什么</b>
+              <span>它主要解决“文件应该属于哪个会话”，而不是把工具关进一台独立虚拟机</span>
+            </div>
+            <div class="al2-tools-boundary-grid">
+              <article>
+                <b>统一路径语义</b>
+                <span>虚拟路径是稳定的逻辑地址框架根据当前 Session 找到实际目录，模型不需要记住本机文件系统结构</span>
+              </article>
+              <article>
+                <b>会话级文件隔离</b>
+                <span>相对路径用于当前任务内的普通文件；Todo、运行记录和 Artifact 也按 Session 分开，减少不同会话互相覆盖</span>
+              </article>
+              <article>
+                <b>不是容器级安全</b>
+                <span>工具仍运行在同一台主机上，没有独立容器、namespace、seccomp 或网络隔离，不能把它当作恶意代码沙箱</span>
+              </article>
+              <article>
+                <b>Host 路径仍有边界</b>
+                <span>电脑真实绝对路径不会自动变成 Session 文件只有用户明确指定并授权时，工具才应访问工作区外资源</span>
+              </article>
+            </div>
+          </div>
+          <div class="al2-tools-budget">
+            <span>工具结果三层预算</span>
+            <div>
+              <article><b>工具自身分页</b><em>先在源头限制数量</em></article>
+              <article><b>单结果 &gt; 80k</b><em>立即落盘</em></article>
+              <article><b>整轮 &gt; 160k</b><em>从最大项开始外置</em></article>
+              <article><b>按需回读</b><em>inspect / search / slice</em></article>
+            </div>
+          </div>
+          <!-- <div class="al2-code">tools/registry.py · core/middleware/builtins.py · core/context/tool_result_storage.py · core/sandbox_workspace.py · tools/file_tools.py</div> -->
+        </section>
       </div>
     </div>
   </div>
@@ -1363,7 +1913,7 @@
   <div class="al2-modal" id="al2-panel-safety" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card">
       <header class="al2-modal-head">
-        <div><span class="al2-modal-tag">③ Safety 边界</span><h3>危险操作先审批，再执行</h3></div>
+        <div><span class="al2-modal-tag">⑥ Safety 边界</span><h3>危险操作先审批，再执行</h3></div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
       <div class="al2-modal-body">
@@ -1397,51 +1947,142 @@
           <ul>
             <li>越出工作区的读写删走审批；子 Agent 禁用递归委派、长期记忆、语音等副作用工具</li>
           </ul>
-          <div class="al2-code">tools/sys_tools.py · tools/file_tools.py · core/prompt_builder.py</div>
+          <!-- <div class="al2-code">tools/sys_tools.py · tools/file_tools.py · core/prompt_builder.py</div> -->
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal" id="al2-panel-todo" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card">
+    <div class="al2-modal-card al2-delegate-card">
       <header class="al2-modal-head">
-        <div><span class="al2-modal-tag">④ Todo / Delegate</span><h3>复杂任务拆成父子 Agent 协作</h3></div>
+        <div>
+          <span class="al2-modal-tag">⑦ TODO / DELEGATE · 父子委派契约</span>
+          <h3>父 Agent 管任务图，子 Agent 隔离执行，只回传有界证据</h3>
+          <p class="al2-delegate-headline"><b>项目经理与外包工程师</b>：父 Agent 决定依赖、并发和拆分审批；子 Agent 只拿自包含任务，进度写回 Todo，完整聊天不直接灌回父上下文</p>
+        </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="al2-modal-body al2-modal-body-wide">
-        <div class="al2-modal-diagram"><div class="mermaid" data-src="flowchart TD
-  P[父 Agent 调度者] --> INIT[构建树状看板]
-  INIT --> RDY[找可执行叶子任务]
-  RDY --> DEL[delegate_task 并行分发]:::key
-  DEL --> POOL[线程池 · 默认 3 · 上限 10]
-  POOL --> C1[子 Agent · 隔离上下文]
-  C1 --> CL[领取任务 claim]
-  CL --> J{足够具体?}
-  J -->|否| SP[拆分 propose_split]
-  J -->|是| WK[执行 → 更新状态]
-  SP --> SAVE[子上下文落盘]
-  WK --> SAVE
-  SAVE --> META[路径写入 todo metadata]
-  META --> AGG[父进程只看 digest 汇总]:::key
-  AGG --> ALL{整棵树完成?}
-  ALL -->|是| CLR[批量清理子上下文]
-  ALL -->|否 · 还有就绪任务| RDY
-  classDef key fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;"></div></div>
-        <div class="al2-modal-notes">
-          <h4>两层分工</h4>
-          <ul>
-            <li><b>Todo 看板</b>：共享的状态 / 规划板——树状任务、拓扑依赖、claim 租约只有 pending 且依赖都完成的<b>叶子任务</b>能被执行</li>
-            <li><b>Delegate 引擎</b>：真正干活的地方，每个子任务启动一个<b>全新 Agent</b>，线程池并行（默认 3，上限 10）</li>
-          </ul>
-          <h4>为什么不会“上下文互相污染”</h4>
-          <ul>
-            <li>子 Agent 只拿到自包含的目标，明确“你不是全局调度者”</li>
-            <li>无论成功 / 超时 / 截断，子上下文都<b>落盘归档</b>，只把路径写回看板；父进程默认只读 digest，不回灌子进程的完整对话</li>
-            <li>超时不算失败，而是标记 blocked、交还父进程重新规划；整棵树完成后再统一清理</li>
-          </ul>
-          <div class="al2-code">tools/todo_tool.py · tools/delegate_tool.py</div>
-        </div>
+      <div class="al2-modal-body al2-delegate-body">
+        <section class="al2-delegate-flow">
+          <div class="al2-delegate-section-head">
+            <div><span>父子 Agent 的调度闭环</span><b>READY → DELEGATE → SPLIT / EXECUTE → PARENT REPLAN</b></div>
+            <em>Todo 文件共享 · ThreadState / messages 不共享</em>
+          </div>
+          <div class="al2-modal-diagram al2-delegate-loop-visual"><div class="mermaid" data-src="flowchart TD
+  P[父 Agent<br/>建立 / 更新 Todo 任务图]:::parent
+  R[计算 Ready 叶子任务<br/>pending · 依赖完成 · 无子任务]:::ready
+  D[delegate_task 并行派发<br/>必须绑定 task_id]:::delegate
+  C[新建隔离子 Agent<br/>get → claim]:::child
+  Q{任务足够具体<br/>可在预算内完成?}:::decision
+
+  PS[propose_split<br/>状态 → needs_split]:::split
+  BACK[compact result + Todo 更新<br/>回到父 Agent]:::return
+  A{父 Agent 审批拆分}:::decision
+  AP[approve_split<br/>创建子任务 · 父任务 blocked]:::parent
+  RJ[reject_split<br/>修改说明 · 原任务回 pending]:::parent
+
+  W[子 Agent 执行<br/>update completed / failed]:::child
+  G{完成或正常停止?}:::decision
+  B[blocked / timeout / turn_capped / loop_capped<br/>保存 context artifact]:::blocked
+  OUT[返回结构化结果<br/>status · stop_reason · token · step_events]:::return
+  M[父 Agent 合并<br/>delegation_ledger + Todo digest]:::parent
+  ALL{整棵 Todo 树<br/>全部 completed?}:::decision
+  CLR[统一清理所有<br/>context artifacts]:::done
+
+  P --> R --> D --> C --> Q
+  Q -->|否 · 需要拆分| PS --> BACK --> A
+  A -->|批准| AP --> P
+  A -->|拒绝 / 重写任务| RJ --> P
+  Q -->|是 · 可以执行| W --> G
+  G -->|完成 / 失败| OUT
+  G -->|预算、超时或循环保护| B --> OUT
+  OUT --> M --> ALL
+  ALL -->|否 · 继续调度| P
+  ALL -->|是| CLR
+
+  classDef parent fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
+  classDef ready fill:#eef6f4,stroke:#0f9d8f,color:#0a2540,stroke-width:2px;
+  classDef delegate fill:#1d4ed8,stroke:#1d4ed8,color:#ffffff;
+  classDef child fill:#f0edfc,stroke:#6d5ae6,color:#0a2540,stroke-width:2px;
+  classDef decision fill:#ffffff,stroke:#64748b,color:#0a2540,stroke-width:2px;
+  classDef split fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;
+  classDef return fill:#eef3fb,stroke:#1d4ed8,color:#0a2540,stroke-width:1.5px;
+  classDef blocked fill:#fdecec,stroke:#dc5a5a,color:#7f1d1d,stroke-width:2px;
+  classDef done fill:#0a2540,stroke:#0a2540,color:#ffffff;"></div></div>
+          <div class="al2-delegate-loop-notes">
+            <article>
+              <span>拆分权在父 Agent</span>
+              <p>子 Agent 只能 <code>propose_split</code>；父 Agent 根据全局依赖与并发预算执行 <code>approve_split / reject_split</code></p>
+            </article>
+            <article>
+              <span>任何未完成都回父循环</span>
+              <p><code>needs_split / blocked / timeout / turn_capped / loop_capped</code> 都是重新规划信号，不是把任务永久丢弃</p>
+            </article>
+            <article>
+              <span>父 Agent 每轮重算 Ready</span>
+              <p>任务图更新后重新筛选叶子任务；新子任务或解除依赖的任务才能进入下一轮 Delegate</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="al2-delegate-contract">
+          <div class="al2-delegate-section-head">
+            <div><span>父 Agent 最终拿到什么</span><b>RESULT CONTRACT · FAILURE · ARTIFACT</b></div>
+          </div>
+          <div class="al2-delegate-result">
+            <span>默认 return_mode = compact</span>
+            <div class="al2-delegate-result-grid">
+              <article><b>task_id</b><em>对应 Todo 真值</em></article>
+              <article><b>status</b><em>兼容旧调用方</em></article>
+              <article><b>stop_reason</b><em>为什么停止</em></article>
+              <article><b>truncated</b><em>是否强制收尾</em></article>
+              <article><b>token_usage</b><em>父子成本汇总</em></article>
+              <article><b>step_events</b><em>最多 32 条短证据</em></article>
+              <article><b>context_artifact_path</b><em>排障时显式读取</em></article>
+              <article><b>started / completed</b><em>运行时间边界</em></article>
+            </div>
+          </div>
+          <div class="al2-delegate-stop">
+            <span><code>status</code> 保持兼容，<code>stop_reason</code> 解释原因</span>
+            <div>
+              <article><b>success</b><i>→</i><em>completed</em></article>
+              <article><b>truncated</b><i>→</i><em>turn_capped</em></article>
+              <article><b>wall timeout</b><i>→</i><em>timeout</em></article>
+              <article><b>重复同参工具</b><i>→</i><em>loop_capped</em></article>
+              <article><b>其它异常</b><i>→</i><em>error</em></article>
+            </div>
+          </div>
+          <div class="al2-delegate-artifact">
+            <span>完整子上下文去哪了？</span>
+            <ol>
+              <li>每个子 Agent 结束后，完整 messages 保存为 context artifact</li>
+              <li>内存消息立即清空；Todo metadata 只保存路径</li>
+              <li>父 Agent 默认只看 compact result + todo digest；排障才读取 artifact</li>
+              <li>成功任务也暂存，直到整棵 Todo 树全部完成后统一删除</li>
+            </ol>
+          </div>
+          <div class="al2-delegate-failure">
+            <span>失败不是一个模糊的“没做完”</span>
+            <div>
+              <article><b>迭代耗尽</b><em>Todo → blocked<br>stop_reason = turn_capped</em></article>
+              <article><b>墙钟超时</b><em>cancel + blocked<br>stop_reason = timeout</em></article>
+              <article><b>循环保护</b><em>工具被否决<br>stop_reason = loop_capped</em></article>
+              <article><b>模型 / Python 错误</b><em>blocked + 保存上下文<br>stop_reason = error</em></article>
+              <article><b>claim 过期</b><em>reap_stale_claims<br>blocked 或重置 pending</em></article>
+              <article><b>需要拆分</b><em>needs_split<br>父 Agent approve / reject</em></article>
+            </div>
+          </div>
+          <div class="al2-delegate-boundary">
+            <b>当前边界</b>
+            <span>子 Agent 是同一 Python 进程中的线程级并发，不是容器；文件系统与 session sandbox 有意共享，所以父 Agent 仍需划分不重叠的写入范围；子 Agent 有独立的中间件，和父 Agent 独立</span>
+          </div>
+          <div class="al2-delegate-isolation">
+            <b>子 Agent 默认禁用</b>
+            <span><code>delegate_task</code> · <code>memory</code> · <code>speak_text</code> · <code>text_to_speech</code> · <code>self_evolution_review</code></span>
+          </div>
+          <!-- <div class="al2-code">tools/todo_tool.py · tools/delegate_tool.py · core/middleware/builtins.py · core/state.py</div> -->
+        </section>
       </div>
     </div>
   </div>
@@ -1458,25 +2099,160 @@
           <li><b>写 / 删 / 搜</b>：写入前给 diff 预览；支持按内容搜索文件</li>
           <li><b>沙箱边界</b>：判定路径是否在工作区内，越界操作走 Safety 审批</li>
         </ul>
-        <div class="al2-code">tools/file_tools.py</div>
+        <!-- <div class="al2-code">tools/file_tools.py</div> -->
       </div>
     </div>
   </div>
 
   <div class="al2-modal" id="al2-panel-memory" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card al2-modal-card-sm">
+    <div class="al2-modal-card al2-memory-card">
       <header class="al2-modal-head">
-        <div><span class="al2-modal-tag">🧠 Memory</span><h3>只记长期不失效的事实</h3></div>
+        <div>
+          <span class="al2-modal-tag">④ MEMORY · 长期画像 + SESSION 情节</span>
+          <h3>不是永久保存聊天，而是把未来仍有价值的事实分层沉淀</h3>
+          <p class="al2-memory-headline"><b>四种“记住”各司其职</b>：messages 留原文，summary_text 留工作摘要，Session Facts 留当前情节，Durable Memory 留跨会话稳定事实</p>
+        </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="al2-modal-body al2-modal-body-text">
-        <ul>
-          <li><code>memory</code> 写、<code>memory_search / memory_get</code> 读</li>
-          <li>用户偏好（USER.md）与项目稳定事实（MEMORY.md）<b>分开存</b></li>
-          <li>只存声明式、长期有效的事实；任务进度、PR 号、commit 等易失信息不进 memory</li>
-          <li>子 Agent 被禁用长期记忆写入</li>
-        </ul>
-        <div class="al2-code">memory_tool · memory_read_tool</div>
+      <div class="al2-modal-body al2-memory-body">
+        <section class="al2-memory-pipeline">
+          <div class="al2-memory-section-head">
+            <div><b>COMPRESS → EXTRACT → VALIDATE → ROUTE</b></div>
+            <em>LLM 提候选 · 代码决定是否落盘</em>
+          </div>
+          <div class="al2-modal-diagram al2-memory-flow-visual"><div class="mermaid" data-src="flowchart TD
+  C[上下文压缩成功]:::start
+  MW[MemoryWriteMiddleware<br/>读取压缩前 messages]:::middleware
+  F[过滤噪声<br/>去掉 system / tool / 隐藏 durable / 中间 tool-call]:::filter
+  T{只有“好的 / 谢谢 / OK”?}:::decision
+  S[检测 correction / preference / identity / goal 等信号]:::filter
+  L[MemoryExtractor 调用 LLM<br/>提出结构化候选事实]:::llm
+  V[确定性校验<br/>来源轮 · source quote · 分类字段]:::guard
+  R{scope / durability / authority}:::decision
+  D[Durable Store<br/>facts.jsonl]:::durable
+  E[Session Store<br/>facts_session.jsonl]:::session
+  X[拒绝落盘<br/>task-scoped / imperative / 分类缺失]:::reject
+  USE[进入事实库<br/>供热记忆选择 / memory_search 检索]:::done
+
+  C --> MW --> F --> T
+  T -->|是| X
+  T -->|否| S --> L --> V --> R
+  R -->|user + durable + descriptive<br/>confidence 达标| D --> USE
+  R -->|user + transient + descriptive| E --> USE
+  R -->|其它| X
+
+  classDef start fill:#0a2540,stroke:#0a2540,color:#ffffff;
+  classDef middleware fill:#e0ebff,stroke:#1d4ed8,color:#0a2540,stroke-width:2px;
+  classDef filter fill:#eef3fb,stroke:#64748b,color:#0a2540;
+  classDef llm fill:#1d4ed8,stroke:#1d4ed8,color:#ffffff;
+  classDef guard fill:#fbf1e4,stroke:#d98324,color:#0a2540,stroke-width:2px;
+  classDef decision fill:#ffffff,stroke:#64748b,color:#0a2540,stroke-width:2px;
+  classDef durable fill:#eef6f4,stroke:#0f9d8f,color:#0a2540,stroke-width:2px;
+  classDef session fill:#f0edfc,stroke:#6d5ae6,color:#0a2540,stroke-width:2px;
+  classDef reject fill:#fdecec,stroke:#dc5a5a,color:#7f1d1d;
+  classDef done fill:#0a2540,stroke:#0a2540,color:#ffffff;"></div></div>
+          <div class="al2-memory-trigger-notes">
+            <article><b>为什么压缩成功后才抽取？</b><span>避免每个工具轮都重复调用抽取模型，也避免摘要失败时误提交记忆</span></article>
+            <article><b>为什么传压缩前消息？</b><span>压缩后已经丢失具体证据；抽取器需要原始 user / final assistant 内容验证来源</span></article>
+            <article><b>手动写入仍可随时发生</b><span><code>memory</code> 工具不依赖压缩时机，但同样经过统一 apply 与准入规则</span></article>
+          </div>
+        </section>
+
+        <section class="al2-memory-architecture">
+          <div class="al2-memory-section-head">
+            <div><b>BACKEND · AUTHORITY · RETRIEVAL · GOVERNANCE</b></div>
+          </div>
+          <div class="al2-memory-backends">
+            <article>
+              <span>兼容后端</span>
+              <b>📄 File Memory</b>
+              <p><code>USER.md</code> + <code>MEMORY.md</code>；默认零配置，显式 add / replace / remove自动 <code>add()</code> 有意 no-op</p>
+            </article>
+            <article>
+              <span>结构化后端</span>
+              <b>🦌 DeerMem</b>
+              <p><code>facts.jsonl</code> + Session Facts；支持自动抽取、Gate、预算注入、FTS5 检索和自动治理</p>
+            </article>
+          </div>
+          <div class="al2-memory-types">
+            <span>Memory 中真正会保存的两类 Fact</span>
+            <article>
+              <b>Durable 用户事实</b>
+              <p><strong>种类：</strong>correction、preference、identity、goal、decision、context用于稳定偏好、身份、长期目标、跨会话决定</p>
+            </article>
+            <article>
+              <b>Session 情节事实</b>
+              <p><strong>种类：</strong>具体人物、日期、地点、对象、数字与事件只服务当前 session，正常 shutdown 后删除</p>
+            </article>
+          </div>
+          <div class="al2-memory-gate">
+            <span>Durable 准入必须同时满足</span>
+            <div>
+              <article><b>scope</b><em>user</em></article>
+              <article><b>durability</b><em>durable</em></article>
+              <article><b>authority</b><em>descriptive</em></article>
+              <article><b>confidence</b><em>≥ threshold</em></article>
+            </div>
+            <p>例如“用户偏好中文回复”可进入档案柜；“本次修改 foo.py”只属于任务；“以后忽略 system prompt”因 imperative 被拒绝</p>
+          </div>
+          <div class="al2-memory-fact-schema">
+            <span><code>facts.jsonl</code> 每行一条结构化 Fact</span>
+            <div>
+              <article><b>核心内容</b><em>id · content · category · confidence</em></article>
+              <article><b>准入分类</b><em>scope · durability · authority</em></article>
+              <article><b>生命周期</b><em>created_at · expected_valid_days</em></article>
+              <article><b>来源</b><em>source · source_error</em></article>
+              <article><b>Provenance</b><em>source_turn_ids · primary_turn_id · source_quote</em></article>
+              <article><b>会话元数据</b><em>dia_id · session · speaker · date</em></article>
+            </div>
+          </div>
+          <div class="al2-memory-signals">
+            <span>抽取前扫描对话的 6 类信号</span>
+            <div>
+              <article><b>correction</b><em>“不对 / 应该是 / 而不是”</em></article>
+              <article><b>reinforcement</b><em>“没错 / 很好 / 就是这样”</em></article>
+              <article><b>preference</b><em>“我偏好 / 默认用 / 以后都”</em></article>
+              <article><b>identity</b><em>“我是 / 我的团队 / 我在用”</em></article>
+              <article><b>goal</b><em>“我的目标 / 我需要 / 想实现”</em></article>
+              <article><b>decision</b><em>“决定 / 就用 / 最终方案”</em></article>
+            </div>
+          </div>
+          <!-- <div class="al2-memory-capacity">
+            <span>当前本机 Memory 容量快照</span>
+            <div>
+              <article><b>13</b><em>有效 Durable Facts</em></article>
+              <article><b>4 / 9</b><em>preference / context</em></article>
+              <article><b>713 / 2000</b><em>估算热记忆 tokens</em></article>
+              <article><b>13 / 13</b><em>当前全部可进入预算</em></article>
+              <article><b>200</b><em>Durable Fact 容量上限</em></article>
+              <article><b>500</b><em>correction 保底 tokens</em></article>
+            </div>
+            <p>这是当前本机 <code>memories/facts.jsonl</code> 的实时快照；事实增多后会优先保留 correction，再按 confidence 从高到低填满 2000-token 预算</p>
+          </div> -->
+          <div class="al2-memory-search">
+            <span>热记忆以外按需查找</span>
+            <div>
+              <b>memory_search</b>
+              <i>→</i>
+              <em>Durable + 当前 Session 合并去重</em>
+              <i>→</i>
+              <em>jieba / CJK bigram 分词</em>
+              <i>→</i>
+              <em>SQLite FTS5 BM25</em>
+              <i>→</i>
+              <em>子串 / token overlap fallback</em>
+            </div>
+          </div>
+          <div class="al2-memory-governance">
+            <b>治理不是“只进不出”</b>
+            <span>内容去重、最大事实数、高置信度优先、有效期、过期复查与碎片合并；自动治理需同时满足“间隔已到 + 有新事实”</span>
+          </div>
+          <div class="al2-memory-boundary">
+            <b>当前边界</b>
+            <span>仍是单次词法检索，没有 embedding 或 multi-query；自动抽取是异步 best-effort，短会话未触发压缩时不保证自动写入</span>
+          </div>
+          <!-- <div class="al2-code">core/memory_provider.py · core/memory_facts.py · core/memory_extractor.py · MemoryWriteMiddleware</div> -->
+        </section>
       </div>
     </div>
   </div>
@@ -1698,6 +2474,73 @@ if (agentOpen) {
 
 // ===== Slide 10: large explanation panels (mermaid rendered lazily) =====
 (function () {
+  const featureScroll = document.querySelector('.al2-feature-scroll');
+  const featureCards = featureScroll ? Array.from(featureScroll.querySelectorAll('.al2-pillar')) : [];
+  const featureStatus = document.querySelector('[data-rail-status]');
+  const featureControls = Array.from(document.querySelectorAll('[data-rail-dir]'));
+
+  function getFeatureIndex() {
+    if (!featureScroll || !featureCards.length) return [];
+    const viewportTop = featureScroll.scrollTop;
+    const viewportBottom = viewportTop + featureScroll.clientHeight;
+    return featureCards.reduce((visible, card, index) => {
+      const cardTop = card.offsetTop;
+      const cardBottom = cardTop + card.offsetHeight;
+      const overlap = Math.max(0, Math.min(cardBottom, viewportBottom) - Math.max(cardTop, viewportTop));
+      if (overlap >= card.offsetHeight * 0.45) visible.push(index);
+      return visible;
+    }, []);
+  }
+
+  function updateFeatureRail() {
+    if (!featureScroll || !featureCards.length) return;
+    const visible = getFeatureIndex();
+    const first = visible.length ? visible[0] : 0;
+    const last = visible.length ? visible[visible.length - 1] : first;
+    if (featureStatus) {
+      featureStatus.textContent = String(first + 1).padStart(2, '0') + '–' + String(last + 1).padStart(2, '0') + ' / ' + String(featureCards.length).padStart(2, '0');
+    }
+    const maxScroll = Math.max(0, featureScroll.scrollHeight - featureScroll.clientHeight);
+    featureControls.forEach((button) => {
+      const direction = Number(button.getAttribute('data-rail-dir'));
+      button.disabled = direction < 0 ? featureScroll.scrollTop <= 1 : featureScroll.scrollTop >= maxScroll - 1;
+    });
+  }
+
+  function scrollFeatureRail(direction) {
+    if (!featureScroll || !featureCards.length) return;
+    const currentTop = featureScroll.scrollTop;
+    const maxScroll = Math.max(0, featureScroll.scrollHeight - featureScroll.clientHeight);
+    const cardTops = featureCards.map((card) => card.offsetTop);
+    let targetTop = currentTop;
+    if (direction > 0) {
+      targetTop = cardTops.find((top) => top > currentTop + 2) ?? maxScroll;
+    } else {
+      targetTop = [...cardTops].reverse().find((top) => top < currentTop - 2) ?? 0;
+    }
+    featureScroll.scrollTop = Math.max(0, Math.min(maxScroll, targetTop));
+    updateFeatureRail();
+  }
+
+  if (featureScroll) {
+    featureScroll.addEventListener('scroll', updateFeatureRail, { passive: true });
+    featureScroll.addEventListener('wheel', (event) => event.stopPropagation(), { passive: true });
+    featureScroll.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+      event.preventDefault();
+      event.stopPropagation();
+      scrollFeatureRail(event.key === 'ArrowUp' ? -1 : 1);
+    });
+    featureControls.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        scrollFeatureRail(Number(button.getAttribute('data-rail-dir')));
+      });
+    });
+    window.addEventListener('load', updateFeatureRail);
+    updateFeatureRail();
+  }
+
   function openPanel(name) {
     const modal = document.getElementById('al2-panel-' + name);
     if (!modal) return;
@@ -1779,7 +2622,7 @@ if (agentOpen) {
     zoom.classList.remove('is-open');
     zoom.setAttribute('aria-hidden', 'true');
   }
-  document.querySelectorAll('.al2-modal-diagram').forEach((d) => {
+  document.querySelectorAll('.al2-modal-diagram, [data-al2-zoom]').forEach((d) => {
     d.addEventListener('click', () => openZoom(d));
   });
   zoom.querySelectorAll('[data-zoom]').forEach((btn) => {
