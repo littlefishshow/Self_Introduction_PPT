@@ -1,0 +1,296 @@
+index.html
+  s_99fe717d496676::t_ba13959e74cccc 1769
+  s_aa575859998f35::t_792cac625e3e18 1501
+  h_200a9ca5cd7f1a 137,281-282,327-328,335,337,467,927,936,938-950,952-953,956-960,963-965,969-1002,1006,1010-1020,1023-1024,1028-1029,1037-1038,1041-1042,1045-1047,1066-1068,1285-1347,1349-1500,1502-1542,1544-1677,1686-1688,1692-1743,1747,1750-1768,1770-1800,1807,1810-1812,1816-1859,1861-1908,1916,1950,1957,1960-1962,1966-2085,2102,2108,2111-2113,2117-2255,2477-2543,2625 gitai:{"mixed_line_ranges":[{"Single":337},{"Single":467},{"Single":1730},{"Single":1761},{"Single":1765}],"operations":[]}
+  s_357dc7ec15344a::t_06db7c3f405e34 336
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "95e4b96de42ead729b888344d49f8c2d6be5511e",
+  "prompts": {},
+  "humans": {
+    "h_200a9ca5cd7f1a": {
+      "author": "littlefishshow <1790326323@qq.com>"
+    }
+  },
+  "sessions": {
+    "s_357dc7ec15344a": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-b8badbdd-48a8-4382-913c-85add8648bc0",
+        "model": "default"
+      },
+      "human_author": "littlefishshow <1790326323@qq.com>"
+    },
+    "s_99fe717d496676": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-35223212-9eeb-4110-a4ef-d8e1a1898d13",
+        "model": "default"
+      },
+      "human_author": "littlefishshow <1790326323@qq.com>"
+    },
+    "s_aa575859998f35": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-89881a54-f3ac-4175-9c92-cfe654d8679e",
+        "model": "default"
+      },
+      "human_author": "littlefishshow <1790326323@qq.com>"
+    }
+  },
+  "attestation_metadata": {
+    "index.html": [
+      {
+        "hash": "h_200a9ca5cd7f1a",
+        "line_ranges": [
+          {
+            "Single": 137
+          },
+          {
+            "Range": [
+              281,
+              282
+            ]
+          },
+          {
+            "Range": [
+              327,
+              328
+            ]
+          },
+          {
+            "Single": 335
+          },
+          {
+            "Single": 337
+          },
+          {
+            "Single": 467
+          },
+          {
+            "Single": 927
+          },
+          {
+            "Single": 936
+          },
+          {
+            "Range": [
+              938,
+              950
+            ]
+          },
+          {
+            "Range": [
+              952,
+              953
+            ]
+          },
+          {
+            "Range": [
+              956,
+              960
+            ]
+          },
+          {
+            "Range": [
+              963,
+              965
+            ]
+          },
+          {
+            "Range": [
+              969,
+              1002
+            ]
+          },
+          {
+            "Single": 1006
+          },
+          {
+            "Range": [
+              1010,
+              1020
+            ]
+          },
+          {
+            "Range": [
+              1023,
+              1024
+            ]
+          },
+          {
+            "Range": [
+              1028,
+              1029
+            ]
+          },
+          {
+            "Range": [
+              1037,
+              1038
+            ]
+          },
+          {
+            "Range": [
+              1041,
+              1042
+            ]
+          },
+          {
+            "Range": [
+              1045,
+              1047
+            ]
+          },
+          {
+            "Range": [
+              1066,
+              1068
+            ]
+          },
+          {
+            "Range": [
+              1285,
+              1347
+            ]
+          },
+          {
+            "Range": [
+              1349,
+              1500
+            ]
+          },
+          {
+            "Range": [
+              1502,
+              1542
+            ]
+          },
+          {
+            "Range": [
+              1544,
+              1677
+            ]
+          },
+          {
+            "Range": [
+              1686,
+              1688
+            ]
+          },
+          {
+            "Range": [
+              1692,
+              1743
+            ]
+          },
+          {
+            "Single": 1747
+          },
+          {
+            "Range": [
+              1750,
+              1768
+            ]
+          },
+          {
+            "Range": [
+              1770,
+              1800
+            ]
+          },
+          {
+            "Single": 1807
+          },
+          {
+            "Range": [
+              1810,
+              1812
+            ]
+          },
+          {
+            "Range": [
+              1816,
+              1859
+            ]
+          },
+          {
+            "Range": [
+              1861,
+              1908
+            ]
+          },
+          {
+            "Single": 1916
+          },
+          {
+            "Single": 1950
+          },
+          {
+            "Single": 1957
+          },
+          {
+            "Range": [
+              1960,
+              1962
+            ]
+          },
+          {
+            "Range": [
+              1966,
+              2085
+            ]
+          },
+          {
+            "Single": 2102
+          },
+          {
+            "Single": 2108
+          },
+          {
+            "Range": [
+              2111,
+              2113
+            ]
+          },
+          {
+            "Range": [
+              2117,
+              2255
+            ]
+          },
+          {
+            "Range": [
+              2477,
+              2543
+            ]
+          },
+          {
+            "Single": 2625
+          }
+        ],
+        "mixed_line_ranges": [
+          {
+            "Single": 337
+          },
+          {
+            "Single": 467
+          },
+          {
+            "Single": 1730
+          },
+          {
+            "Single": 1761
+          },
+          {
+            "Single": 1765
+          }
+        ],
+        "operations": []
+      }
+    ]
+  },
+  "remote_transcripts": {}
+}
