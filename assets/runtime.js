@@ -116,6 +116,112 @@
     // Are we running inside the presenter popup? (legacy flag, now unused)
     const isPresenterWindow = false;
     const presenterNotesStorageKey = 'html-ppt-presenter-notes:' + location.pathname;
+    const presenterNotesSchemaKey = presenterNotesStorageKey + ':schema';
+    const presenterNotesVersionKey = presenterNotesStorageKey + ':versions';
+    const slideIds = slides.map((slide, i) =>
+      slide.getAttribute('data-slide-id') || ('slide-' + (i + 1))
+    );
+    const externalNotes = {};
+    const externalNoteLoads = slides.map((slide, i) => {
+      const note = slide.querySelector('.notes[data-notes-src], aside.notes[data-notes-src], .speaker-notes[data-notes-src]');
+      if (!note) return Promise.resolve();
+      const src = note.getAttribute('data-notes-src');
+      if (!src) return Promise.resolve();
+      note.setAttribute('data-notes-loading', 'true');
+      return fetch(new URL(src, document.baseURI))
+        .then(response => {
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          return response.text();
+        })
+        .then(source => {
+          const format = note.getAttribute('data-notes-format');
+          const html = format === 'markdown' && window.marked
+            ? window.marked.parse(source, { gfm: true, breaks: false })
+            : '<pre>' + source
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;') + '</pre>';
+          externalNotes[i] = html;
+          note.removeAttribute('data-notes-loading');
+          note.setAttribute('data-notes-loaded', 'true');
+          if (i === idx) notes.innerHTML = getSlideNotes(i);
+          if (bc) bc.postMessage({ type: 'notes-update', idx: i, notes: getSlideNotes(i) });
+        })
+        .catch(error => {
+          note.removeAttribute('data-notes-loading');
+          note.setAttribute('data-notes-error', String(error && error.message || error));
+        });
+    });
+
+    function migratePresenterNotes() {
+      try {
+        const raw = localStorage.getItem(presenterNotesStorageKey);
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return;
+
+        const entries = Object.entries(saved);
+        const hasNumericKeys = entries.some(([key]) => /^\d+$/.test(key));
+        if (!hasNumericKeys) {
+          localStorage.setItem(presenterNotesSchemaKey, 'slide-id-v1');
+          return;
+        }
+
+        const insertAt = parseInt(deck.getAttribute('data-notes-legacy-insert-at') || '', 10);
+        const legacyTotal = parseInt(deck.getAttribute('data-notes-legacy-total') || '', 10);
+        const migrated = {};
+
+        entries
+          .filter(([key]) => /^\d+$/.test(key))
+          .forEach(([key, value]) => {
+            const oldIndex = Number(key);
+            const shouldShift = Number.isFinite(insertAt) &&
+              Number.isFinite(legacyTotal) &&
+              oldIndex >= insertAt &&
+              oldIndex < legacyTotal;
+            const newIndex = shouldShift ? oldIndex + 1 : oldIndex;
+            const slideId = slideIds[newIndex];
+            if (slideId) migrated[slideId] = value;
+          });
+
+        entries
+          .filter(([key]) => !/^\d+$/.test(key))
+          .forEach(([key, value]) => {
+            migrated[key] = value;
+          });
+
+        localStorage.setItem(presenterNotesStorageKey, JSON.stringify(migrated));
+        localStorage.setItem(presenterNotesSchemaKey, 'slide-id-v1');
+      } catch(e) {}
+    }
+
+    migratePresenterNotes();
+
+    function migrateVersionedPresenterNotes() {
+      try {
+        const saved = readPresenterNotes();
+        const versions = JSON.parse(localStorage.getItem(presenterNotesVersionKey) || '{}');
+        let savedChanged = false;
+        let versionsChanged = false;
+        slides.forEach((slide, i) => {
+          const note = slide.querySelector('.notes[data-notes-version], aside.notes[data-notes-version], .speaker-notes[data-notes-version]');
+          if (!note) return;
+          const slideId = slideIds[i];
+          const version = note.getAttribute('data-notes-version');
+          if (!slideId || !version || versions[slideId] === version) return;
+          if (Object.prototype.hasOwnProperty.call(saved, slideId)) {
+            delete saved[slideId];
+            savedChanged = true;
+          }
+          versions[slideId] = version;
+          versionsChanged = true;
+        });
+        if (savedChanged) localStorage.setItem(presenterNotesStorageKey, JSON.stringify(saved));
+        if (versionsChanged) localStorage.setItem(presenterNotesVersionKey, JSON.stringify(versions));
+      } catch(e) {}
+    }
+
+    migrateVersionedPresenterNotes();
 
     function readPresenterNotes() {
       try {
@@ -128,7 +234,15 @@
 
     function getSlideNotes(i) {
       const saved = readPresenterNotes();
-      if (Object.prototype.hasOwnProperty.call(saved, i)) return saved[i];
+      const slideId = slideIds[i];
+      if (slideId && Object.prototype.hasOwnProperty.call(saved, slideId)) return saved[slideId];
+      if (Object.prototype.hasOwnProperty.call(externalNotes, i)) return externalNotes[i];
+      const note = slides[i].querySelector('.notes, aside.notes, .speaker-notes');
+      return note ? note.innerHTML : '';
+    }
+
+    function getOriginalSlideNotes(i) {
+      if (Object.prototype.hasOwnProperty.call(externalNotes, i)) return externalNotes[i];
       const note = slides[i].querySelector('.notes, aside.notes, .speaker-notes');
       return note ? note.innerHTML : '';
     }
@@ -331,20 +445,31 @@
      */
     let presenterWin = null;
 
-    function openPresenterWindow() {
+    async function openPresenterWindow() {
       if (presenterWin && !presenterWin.closed) {
         presenterWin.focus();
         return;
       }
+
+      presenterWin = window.open('', 'html-ppt-presenter', 'width=1280,height=820,menubar=no,toolbar=no');
+      if (!presenterWin) {
+        alert('请允许弹出窗口以使用演讲者视图');
+        return;
+      }
+      presenterWin.document.open();
+      presenterWin.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Presenter</title></head><body style="margin:0;display:grid;place-items:center;min-height:100vh;background:#0d1117;color:#8b949e;font:16px -apple-system,sans-serif">正在加载演讲稿…</body></html>');
+      presenterWin.document.close();
+
+      await Promise.allSettled(externalNoteLoads);
 
       // Build absolute URL of THIS deck file (without hash/query)
       const deckUrl = location.protocol + '//' + location.host + location.pathname;
 
       // Collect slide titles + notes (HTML strings)
       const slideMeta = slides.map((s, i) => {
-        const note = s.querySelector('.notes, aside.notes, .speaker-notes');
-        const originalNotes = note ? note.innerHTML : '';
+        const originalNotes = getOriginalSlideNotes(i);
         return {
+          id: slideIds[i],
           title: s.getAttribute('data-title') ||
             (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1)),
           notes: getSlideNotes(i),
@@ -356,11 +481,7 @@
       const currentTheme = root.getAttribute('data-theme') || (themes[themeIdx] || '');
       const presenterHTML = buildPresenterHTML(deckUrl, slideMeta, total, idx, CHANNEL_NAME, currentTheme);
 
-      presenterWin = window.open('', 'html-ppt-presenter', 'width=1280,height=820,menubar=no,toolbar=no');
-      if (!presenterWin) {
-        alert('请允许弹出窗口以使用演讲者视图');
-        return;
-      }
+      if (presenterWin.closed) return;
       presenterWin.document.open();
       presenterWin.document.write(presenterHTML);
       presenterWin.document.close();
@@ -454,13 +575,66 @@
     color: #d0d7de;
     font-family: "Noto Sans SC", -apple-system, sans-serif;
   }
+  .pcard-notes .pcard-body h1,
+  .pcard-notes .pcard-body h2,
+  .pcard-notes .pcard-body h3,
+  .pcard-notes .pcard-body h4 {
+    color: #f0f6fc;
+    line-height: 1.35;
+  }
+  .pcard-notes .pcard-body h1 { margin: .2em 0 .8em; font-size: 1.55em; }
+  .pcard-notes .pcard-body h2 {
+    margin: 1.5em 0 .65em;
+    padding-bottom: .3em;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+    color: #f0883e;
+    font-size: 1.28em;
+  }
+  .pcard-notes .pcard-body h3 { margin: 1.2em 0 .55em; color: #58a6ff; font-size: 1.08em; }
+  .pcard-notes .pcard-body h4 { margin: 1em 0 .45em; font-size: 1em; }
   .pcard-notes .pcard-body p { margin: 0 0 .7em 0; }
+  .pcard-notes .pcard-body ul,
+  .pcard-notes .pcard-body ol { margin: .3em 0 .9em; padding-left: 1.5em; }
+  .pcard-notes .pcard-body li { margin: .25em 0; }
+  .pcard-notes .pcard-body blockquote {
+    margin: .6em 0 1em;
+    padding: .55em .8em;
+    border-left: 3px solid #58a6ff;
+    background: rgba(88,166,255,.07);
+    color: #9da7b3;
+  }
+  .pcard-notes .pcard-body hr { margin: 1.3em 0; border: 0; border-top: 1px solid rgba(255,255,255,.12); }
   .pcard-notes .pcard-body strong { color: #f0883e; }
   .pcard-notes .pcard-body em { color: #58a6ff; font-style: normal; }
   .pcard-notes .pcard-body code {
     font-family: "SF Mono", monospace; font-size: .9em;
     background: rgba(255,255,255,.08); padding: 1px 6px; border-radius: 4px;
   }
+  .pcard-notes .pcard-body pre {
+    overflow-x: auto;
+    margin: .7em 0 1em;
+    padding: .7em .8em;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 7px;
+    background: #0d1117;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .pcard-notes .pcard-body pre code { padding: 0; background: transparent; }
+  .pcard-notes .pcard-body table {
+    width: 100%;
+    margin: .7em 0 1em;
+    border-collapse: collapse;
+    font-size: .82em;
+  }
+  .pcard-notes .pcard-body th,
+  .pcard-notes .pcard-body td {
+    padding: .4em .5em;
+    border: 1px solid rgba(255,255,255,.12);
+    text-align: left;
+    vertical-align: top;
+  }
+  .pcard-notes .pcard-body th { background: rgba(255,255,255,.07); color: #f0f6fc; }
   .pcard-notes .empty { color: #484f58; font-style: italic; }
 	  .pcard-notes .pcard-actions {
 	    display: flex;
@@ -659,6 +833,7 @@
   var timerCount = document.getElementById('timer-count');
 	  var NOTES_STORAGE_KEY = ${JSON.stringify(notesStorageKey)};
 	  var originalSlideNotes = slideMeta.map(function(s){ return s.originalNotes || ''; });
+	  var slideIds = slideMeta.map(function(s, i){ return s.id || ('slide-' + (i + 1)); });
 	  var notesSaveTimer = null;
 	  var isRenderingNotes = false;
 
@@ -728,23 +903,27 @@
 	  }
 	  function currentNote(n) {
 	    var saved = readSavedNotes();
-	    return Object.prototype.hasOwnProperty.call(saved, n) ? saved[n] : originalNote(n);
+	    var slideId = slideIds[n];
+	    return slideId && Object.prototype.hasOwnProperty.call(saved, slideId) ? saved[slideId] : originalNote(n);
 	  }
 	  function renderNotes(n) {
 	    isRenderingNotes = true;
 	    var note = currentNote(n);
 	    notesBody.innerHTML = note || '<span class="empty">（这一页还没有逐字稿，点击这里开始编辑）</span>';
-	    notesStatus.textContent = Object.prototype.hasOwnProperty.call(readSavedNotes(), n) ? '已保存本页修改' : '可编辑 · 自动保存';
+	    var slideId = slideIds[n];
+	    notesStatus.textContent = slideId && Object.prototype.hasOwnProperty.call(readSavedNotes(), slideId) ? '已保存本页修改' : '可编辑 · 自动保存';
 	    isRenderingNotes = false;
 	  }
 	  function saveCurrentNotes() {
 	    if (isRenderingNotes) return;
 	    var saved = readSavedNotes();
-	    saved[idx] = notesBody.innerHTML;
+	    var slideId = slideIds[idx];
+	    if (!slideId) return;
+	    saved[slideId] = notesBody.innerHTML;
 	    writeSavedNotes(saved);
-	    if (slideMeta[idx]) slideMeta[idx].notes = saved[idx];
+	    if (slideMeta[idx]) slideMeta[idx].notes = saved[slideId];
 	    notesStatus.textContent = '已自动保存';
-	    if (bc) bc.postMessage({ type: 'notes-update', idx: idx, notes: saved[idx] });
+	    if (bc) bc.postMessage({ type: 'notes-update', idx: idx, notes: saved[slideId] });
 	  }
 	  function flushNotesSave() {
 	    if (!notesSaveTimer) return;
@@ -952,7 +1131,8 @@
   document.getElementById('btn-notes-reset').addEventListener('click', function(){
     if (!confirm('还原当前页逐字稿到原始版本？')) return;
     var saved = readSavedNotes();
-    delete saved[idx];
+    var slideId = slideIds[idx];
+    if (slideId) delete saved[slideId];
     writeSavedNotes(saved);
     if (slideMeta[idx]) slideMeta[idx].notes = originalNote(idx);
     renderNotes(idx);
