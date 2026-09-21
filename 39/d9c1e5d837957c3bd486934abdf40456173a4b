@@ -1,0 +1,215 @@
+index.html
+  h_200a9ca5cd7f1a 11,124-126,128-130,132,136,160,184,196,208,224,622,626,639,641-642,645-651,653-656,659-663,665-667,669,673-676,678-681,683-685,687,689-692,703,707-785,788-791,2435,2529,2801-2982,5033-5060,5074,5079,5084,5089,5094,5115 gitai:{"mixed_line_ranges":[{"Single":641},{"Single":647},{"Range":[650,651]}],"operations":[]}
+  s_b9fef0cec429bc::t_c09ee9d7b00594 652
+  s_cf4a2416488511::t_623fbff9c4d747 664
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "39d9c1e5d837957c3bd486934abdf40456173a4b",
+  "prompts": {},
+  "humans": {
+    "h_200a9ca5cd7f1a": {
+      "author": "littlefishshow <1790326323@qq.com>"
+    }
+  },
+  "sessions": {
+    "s_b9fef0cec429bc": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-e6d16258-f59b-44fe-b42a-22cc9c1723d6",
+        "model": "default"
+      },
+      "human_author": "littlefishshow <1790326323@qq.com>"
+    },
+    "s_cf4a2416488511": {
+      "agent_id": {
+        "tool": "trae-cue",
+        "id": "ai_tab-icr-13753721-9ab6-478d-ad25-99a423415b11",
+        "model": "default"
+      },
+      "human_author": "littlefishshow <1790326323@qq.com>"
+    }
+  },
+  "attestation_metadata": {
+    "index.html": [
+      {
+        "hash": "h_200a9ca5cd7f1a",
+        "line_ranges": [
+          {
+            "Single": 11
+          },
+          {
+            "Range": [
+              124,
+              126
+            ]
+          },
+          {
+            "Range": [
+              128,
+              130
+            ]
+          },
+          {
+            "Single": 132
+          },
+          {
+            "Single": 136
+          },
+          {
+            "Single": 160
+          },
+          {
+            "Single": 184
+          },
+          {
+            "Single": 196
+          },
+          {
+            "Single": 208
+          },
+          {
+            "Single": 224
+          },
+          {
+            "Single": 622
+          },
+          {
+            "Single": 626
+          },
+          {
+            "Single": 639
+          },
+          {
+            "Range": [
+              641,
+              642
+            ]
+          },
+          {
+            "Range": [
+              645,
+              651
+            ]
+          },
+          {
+            "Range": [
+              653,
+              656
+            ]
+          },
+          {
+            "Range": [
+              659,
+              663
+            ]
+          },
+          {
+            "Range": [
+              665,
+              667
+            ]
+          },
+          {
+            "Single": 669
+          },
+          {
+            "Range": [
+              673,
+              676
+            ]
+          },
+          {
+            "Range": [
+              678,
+              681
+            ]
+          },
+          {
+            "Range": [
+              683,
+              685
+            ]
+          },
+          {
+            "Single": 687
+          },
+          {
+            "Range": [
+              689,
+              692
+            ]
+          },
+          {
+            "Single": 703
+          },
+          {
+            "Range": [
+              707,
+              785
+            ]
+          },
+          {
+            "Range": [
+              788,
+              791
+            ]
+          },
+          {
+            "Single": 2435
+          },
+          {
+            "Single": 2529
+          },
+          {
+            "Range": [
+              2801,
+              2982
+            ]
+          },
+          {
+            "Range": [
+              5033,
+              5060
+            ]
+          },
+          {
+            "Single": 5074
+          },
+          {
+            "Single": 5079
+          },
+          {
+            "Single": 5084
+          },
+          {
+            "Single": 5089
+          },
+          {
+            "Single": 5094
+          },
+          {
+            "Single": 5115
+          }
+        ],
+        "mixed_line_ranges": [
+          {
+            "Single": 641
+          },
+          {
+            "Single": 647
+          },
+          {
+            "Range": [
+              650,
+              651
+            ]
+          }
+        ],
+        "operations": []
+      }
+    ]
+  },
+  "remote_transcripts": {}
+}
