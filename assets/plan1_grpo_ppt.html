@@ -1,0 +1,212 @@
+<html style="margin:0;padding:0;">
+<div style="background-color:transparent;box-sizing:border-box;padding:24px 28px;font-family:'Times New Roman','PingFang SC',serif;max-width:1000px;margin:0 auto;">
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+  chtml: { scale: 1.15 }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  .adv-formula {
+    flex:0 0 230px;
+    box-sizing:border-box;
+    align-self:center;
+    background:#F4F8FB;
+    border:1.5px solid #90CAF9;
+    border-radius:10px;
+    padding:14px 12px;
+    text-align:center;
+  }
+  .adv-formula-title { font-size:13px;font-weight:bold;color:#1565C0;margin-bottom:7px; }
+  .adv-formula-math { font-size:17px;color:#1A1B1C;white-space:nowrap; }
+  .adv-formula-note { font-size:11.5px;color:#777;margin-top:7px; }
+  .legend-box {
+    background:#FBFBF9;
+    border:1.5px solid #E8E6E0;
+    border-radius:12px;
+    padding:16px 20px 17px;
+  }
+  .legend-heading {
+    font-size:15px;font-weight:bold;color:#444;
+    margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #ECE9E2;
+  }
+  .legend-grid {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    column-gap:18px;
+    row-gap:12px;
+  }
+  .legend-item { display:grid;grid-template-columns:42px 1fr;align-items:center;gap:8px;min-width:0; }
+  .legend-symbol { display:flex;align-items:center;justify-content:center;height:30px; }
+  .legend-node {
+    min-width:38px;height:26px;padding:0 5px;box-sizing:border-box;
+    display:flex;align-items:center;justify-content:center;border-radius:7px;
+    font-size:13px;color:#1A1B1C;
+  }
+  .legend-memory { background:#E3F2FD;border:2px solid #1976D2; }
+  .legend-suggestion { background:#F3E5F5;border:2px solid #7B1FA2; }
+  .legend-reward { width:28px;height:28px;min-width:28px;padding:0;border-radius:50%;background:#FFF8E1;border:2px solid #F9A825; }
+  .legend-action { font-size:13px;color:#E65100;font-style:italic; }
+  .legend-copy { font-size:11.5px;color:#555;line-height:1.35; }
+  .legend-copy b { color:#333;font-weight:bold; }
+</style>
+<style>
+  html, body { width: 1000px; height: 330px; overflow: hidden; }
+  html > div { width: 1000px; height: 330px; max-width: none !important; padding: 10px 18px 8px !important; }
+  html > div > div:first-of-type { display: none; }
+  html > div > div:nth-of-type(2) { margin-bottom: 0 !important; }
+  .legend-box { display: none; }
+</style>
+
+<!-- Title -->
+<div style="text-align:center;margin-bottom:28px;">
+  <!-- <span style="font-size:21px;font-weight:bold;color:#1A1B1C;">Plan 1 : GRPO — Same $M_i$, $G$ Parallel $(M', s)$ Samples</span> -->
+</div>
+
+<!-- Flow Diagram -->
+<div style="display:flex;align-items:stretch;width:100%;gap:0;margin-bottom:26px;padding:0 20px;box-sizing:border-box;">
+
+  <div style="display:flex;align-items:stretch;gap:0;flex:0 0 auto;">
+
+  <!-- M0 (left, vertically centered) -->
+  <div style="display:flex;align-items:center;flex-shrink:0;">
+    <div style="background:#E3F2FD;border:2px solid #1976D2;border-radius:10px;padding:14px 20px;min-width:64px;text-align:center;">
+      <span style="font-size:20px;color:#1A1B1C;">$M_i$</span>
+    </div>
+  </div>
+
+  <!-- Arrow + a^M label -->
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;">
+    <span style="font-size:15px;color:#E65100;font-style:italic;margin-bottom:4px;">$a^{\mathcal{M}}$</span>
+    <svg width="40" height="22" viewBox="0 0 40 22" style="flex-shrink:0;">
+      <line x1="2" y1="11" x2="30" y2="11" stroke="#555" stroke-width="2.2" stroke-linecap="round"/>
+      <polygon points="30,5 40,11 30,17" fill="#555"/>
+    </svg>
+  </div>
+
+  <!-- Branches (column) -->
+  <div style="display:flex;flex-direction:column;gap:22px;flex:0 0 340px;">
+
+    <!-- Branch 1 -->
+    <div style="display:flex;align-items:center;gap:0;">
+      <div style="background:#E3F2FD;border:2px solid #1976D2;border-radius:10px;padding:12px 18px;min-width:72px;text-align:center;flex-shrink:0;">
+        <span style="font-size:18px;color:#1A1B1C;">$M_{i+1}^{(1)}$</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;">
+        <span style="font-size:14px;color:#E65100;font-style:italic;margin-bottom:3px;">$a^{\mathcal{S}}$</span>
+        <svg width="36" height="20" viewBox="0 0 36 20"><line x1="2" y1="10" x2="27" y2="10" stroke="#555" stroke-width="2" stroke-linecap="round"/><polygon points="27,4.5 36,10 27,15.5" fill="#555"/></svg>
+      </div>
+      <div style="background:#F3E5F5;border:2px solid #7B1FA2;border-radius:10px;padding:12px 16px;min-width:56px;text-align:center;flex-shrink:0;">
+        <span style="font-size:18px;color:#1A1B1C;">$s^{(1)}$</span>
+      </div>
+      <svg width="36" height="20" viewBox="0 0 36 20" style="flex-shrink:0;"><line x1="2" y1="10" x2="27" y2="10" stroke="#555" stroke-width="2" stroke-linecap="round"/><polygon points="27,4.5 36,10 27,15.5" fill="#555"/></svg>
+      <div style="background:#FFF8E1;border:2px solid #F9A825;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <span style="font-size:17px;color:#1A1B1C;">$r^{(1)}$</span>
+      </div>
+    </div>
+
+    <!-- Branch 2 -->
+    <div style="display:flex;align-items:center;gap:0;">
+      <div style="background:#E3F2FD;border:2px solid #1976D2;border-radius:10px;padding:12px 18px;min-width:72px;text-align:center;flex-shrink:0;">
+        <span style="font-size:18px;color:#1A1B1C;">$M_{i+1}^{(2)}$</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;">
+        <span style="font-size:14px;color:#E65100;font-style:italic;margin-bottom:3px;">$a^{\mathcal{S}}$</span>
+        <svg width="36" height="20" viewBox="0 0 36 20"><line x1="2" y1="10" x2="27" y2="10" stroke="#555" stroke-width="2" stroke-linecap="round"/><polygon points="27,4.5 36,10 27,15.5" fill="#555"/></svg>
+      </div>
+      <div style="background:#F3E5F5;border:2px solid #7B1FA2;border-radius:10px;padding:12px 16px;min-width:56px;text-align:center;flex-shrink:0;">
+        <span style="font-size:18px;color:#1A1B1C;">$s^{(2)}$</span>
+      </div>
+      <svg width="36" height="20" viewBox="0 0 36 20" style="flex-shrink:0;"><line x1="2" y1="10" x2="27" y2="10" stroke="#555" stroke-width="2" stroke-linecap="round"/><polygon points="27,4.5 36,10 27,15.5" fill="#555"/></svg>
+      <div style="background:#FFF8E1;border:2px solid #F9A825;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <span style="font-size:17px;color:#1A1B1C;">$r^{(2)}$</span>
+      </div>
+    </div>
+
+    <!-- Dots -->
+    <div style="display:flex;align-items:center;justify-content:flex-start;height:8px;padding-left:170px;">
+      <span style="font-size:24px;color:#AAA;letter-spacing:4px;">⋮</span>
+    </div>
+
+    <!-- Branch G -->
+    <div style="display:flex;align-items:center;gap:0;">
+      <div style="background:#E3F2FD;border:2px solid #1976D2;border-radius:10px;padding:12px 18px;min-width:72px;text-align:center;flex-shrink:0;">
+        <span style="font-size:18px;color:#1A1B1C;">$M_{i+1}^{(G)}$</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;">
+        <span style="font-size:14px;color:#E65100;font-style:italic;margin-bottom:3px;">$a^{\mathcal{S}}$</span>
+        <svg width="36" height="20" viewBox="0 0 36 20"><line x1="2" y1="10" x2="27" y2="10" stroke="#555" stroke-width="2" stroke-linecap="round"/><polygon points="27,4.5 36,10 27,15.5" fill="#555"/></svg>
+      </div>
+      <div style="background:#F3E5F5;border:2px solid #7B1FA2;border-radius:10px;padding:12px 16px;min-width:56px;text-align:center;flex-shrink:0;">
+        <span style="font-size:18px;color:#1A1B1C;">$s^{(G)}$</span>
+      </div>
+      <svg width="36" height="20" viewBox="0 0 36 20" style="flex-shrink:0;"><line x1="2" y1="10" x2="27" y2="10" stroke="#555" stroke-width="2" stroke-linecap="round"/><polygon points="27,4.5 36,10 27,15.5" fill="#555"/></svg>
+      <div style="background:#FFF8E1;border:2px solid #F9A825;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <span style="font-size:17px;color:#1A1B1C;">$r^{(G)}$</span>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <!-- A few reward samples converge into one compact group-advantage formula. -->
+  <svg width="100%" height="252" viewBox="0 0 220 252" preserveAspectRatio="none" style="flex:1 1 auto;min-width:72px;align-self:center;overflow:visible;" aria-hidden="true">
+    <line x1="0" y1="26" x2="188" y2="126" stroke="#9A8B61" stroke-width="1.7" vector-effect="non-scaling-stroke"/>
+    <line x1="0" y1="226" x2="188" y2="126" stroke="#9A8B61" stroke-width="1.7" vector-effect="non-scaling-stroke"/>
+    <line x1="188" y1="126" x2="210" y2="126" stroke="#666" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    <polygon points="210,120 220,126 210,132" fill="#666"/>
+  </svg>
+
+  <div class="adv-formula">
+    <div class="adv-formula-title">组间优势</div>
+    <div class="adv-formula-math">$A^{(g)}=\dfrac{r^{(g)}-\mu_r}{\sigma_r}$</div>
+    <div class="adv-formula-note">$g=1,2,\ldots,G$</div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend-box">
+  <!-- <div class="legend-heading">Legend / 图例</div> -->
+  <div class="legend-grid">
+    <div class="legend-item">
+      <div class="legend-symbol"><div class="legend-node legend-memory">$M_t$</div></div>
+      <div class="legend-copy"><b>记忆状态</b><br/>第 $t$ 天的 memory chunk</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-symbol"><div class="legend-node legend-suggestion">$s$</div></div>
+      <div class="legend-copy"><b>下游建议</b><br/>消费 memory 后生成</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-symbol">
+        <div style="display:flex;flex-direction:column;align-items:center;line-height:1;">
+          <span class="legend-action">$a^{\mathcal{M}}$</span>
+          <svg width="38" height="12" viewBox="0 0 38 12" aria-hidden="true"><line x1="1" y1="6" x2="29" y2="6" stroke="#555" stroke-width="1.8"/><polygon points="29,1 38,6 29,11" fill="#555"/></svg>
+        </div>
+      </div>
+      <div class="legend-copy"><b>记忆更新动作</b><br/>LLM 策略 $\pi_\theta$ 生成</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-symbol">
+        <div style="display:flex;flex-direction:column;align-items:center;line-height:1;">
+          <span class="legend-action">$a^{\mathcal{S}}$</span>
+          <svg width="38" height="12" viewBox="0 0 38 12" aria-hidden="true"><line x1="1" y1="6" x2="29" y2="6" stroke="#555" stroke-width="1.8"/><polygon points="29,1 38,6 29,11" fill="#555"/></svg>
+        </div>
+      </div>
+      <div class="legend-copy"><b>建议生成动作</b><br/>LLM 策略 $\pi_\theta$ 生成</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-symbol"><div class="legend-node legend-reward">$r$</div></div>
+      <div class="legend-copy"><b>综合奖励</b><br/>CTR + 多样性 + API 质量</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-symbol" style="font-size:15px;color:#1565C0;">$G$</div>
+      <div class="legend-copy"><b>并行采样数</b><br/>同一个 $M_i$ 下的样本数</div>
+    </div>
+  </div>
+</div>
+
+</div>
+</html>

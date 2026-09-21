@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="assets/base.css">
 <link rel="stylesheet" id="theme-link" href="assets/themes/corporate-clean.css">
 <link rel="stylesheet" href="assets/animations.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20260912-plan3-fit-v1">
 <script>
   window.MathJax = {
     tex: {
@@ -121,19 +121,19 @@
         </article>
 
         <div class="llmrec-work-grid">
-          <a class="llmrec-work-card" href="#/6" aria-label="跳转到第 6 页：Doubao Creation Memory">
-            <b>Doubao Creation Memory</b>
-            <p>从每日图文 / 视频创作消息中抽取兴趣，构建层次化用户记忆</p>
+          <a class="llmrec-work-card" href="#/6" aria-label="跳转到第 6 页：WCB Personalized Suggestion">
+            <b>WCB Personalized Suggestion</b>
+            <p>从用户消息构建 Creation Memory，并生成个性化主动创作建议</p>
           </a>
-          <a class="llmrec-work-card" href="#/8" aria-label="跳转到第 8 页：Generative Suggestion Recommendation">
-            <b>Generative Suggestion Recommendation</b>
-            <p>基于用户记忆生成个性化主动创作建议，激发创作心智</p>
+          <a class="llmrec-work-card" href="#/9" aria-label="跳转到第 9 页：One Model Suggestion Generation">
+            <b>One Model Suggestion Generation</b>
+            <p>统一 Memory 写入与 Suggestion 生成，优化长程状态与终端信用</p>
           </a>
-          <a class="llmrec-work-card" href="#/10" aria-label="跳转到第 10 页：AI Creator Productivity">
+          <a class="llmrec-work-card" href="#/11" aria-label="跳转到第 11 页：AI Creator Productivity">
             <b>AI Creator Productivity</b>
             <p>从海量创作数据挖掘可迁移 Skill，构建生成、评估、改进闭环</p>
           </a>
-          <a class="llmrec-work-card" href="#/11" aria-label="跳转到第 11 页：豆包创作社区推荐">
+          <a class="llmrec-work-card" href="#/12" aria-label="跳转到第 12 页：豆包创作社区推荐">
             <b>豆包创作社区推荐</b>
             <p>迭代社区精排模型，补充 UE 序列特征、扩充目标空间</p>
           </a>
@@ -157,7 +157,7 @@
     </div>
     <aside class="notes">
       <p>这一页先介绍我的工业实践主线：字节跳动 Data-Flow-AI 推荐方向，豆包应用 LLM4REC这个场景的关键输入不是传统推荐里的点击序列，而是用户主动发给豆包的创作消息它们价值很高，因为能直接反映用户想创作什么；但难点也很明显，单轮消息经常上下文不完整、噪声多、意图表达模糊</p>
-      <p>围绕这个问题，我的工作主要分成四条线第一是 Doubao Creation Memory，把每日图文和视频创作消息沉淀成层次化用户记忆第二是 Generative Suggestion Recommendation，基于这些记忆生成主动创作建议第三是 AI Creator Productivity，从海量创作数据中挖掘可复用的创作 Skill第四是豆包创作社区推荐，把这些能力接入精排模型和推荐链路</p>
+      <p>围绕这个问题，我的工作主要分成四条线第一是 WCB Personalized Suggestion，把 Creation Memory 构建与个性化主动创作建议合并成一条端到端业务链路第二是 One Model Suggestion Generation，用同一个模型完成 Memory 写入与 Suggestion 生成，让长程状态直接接受终端回报第三是 AI Creator Productivity，从海量创作数据中挖掘可复用的创作 Skill第四是豆包创作社区推荐，把这些能力接入精排模型和推荐链路</p>
     </aside>
   </section>
 
@@ -181,7 +181,7 @@
         <section class="ragent-feature-zone">
           <div class="ragent-zone-label"><span>CORE CAPABILITIES</span></div>
           <div class="ragent-feature-grid anim-stagger-list" data-anim-target>
-            <a class="ragent-feature" href="#/12" aria-label="跳转到第 12 页：完整 Agent Loop">
+            <a class="ragent-feature" href="#/13" aria-label="跳转到第 13 页：完整 Agent Loop">
               <div class="ragent-feature-no">01</div>
               <div class="ragent-feature-title">
                 <span class="ragent-feature-mark">EXECUTE</span>
@@ -193,7 +193,7 @@
               <p>动态注册文件、Shell、Python、Web、Memory、Todo 与 Delegate；大输出转 artifact、长上下文自动压缩，让长任务持续推进</p>
             </a>
 
-            <a class="ragent-feature" href="#/13" aria-label="跳转到第 13 页：受控自动实验闭环">
+            <a class="ragent-feature" href="#/14" aria-label="跳转到第 14 页：受控自动实验闭环">
               <div class="ragent-feature-no">02</div>
               <div class="ragent-feature-title">
                 <span class="ragent-feature-mark">AUTORESEARCH</span>
@@ -205,7 +205,7 @@
               <p>自动改代码、运行 train / eval、读取 metrics、保留改进与总结失败；预算、超时、monitor / stop 和固定评测共同约束实验边界</p>
             </a>
 
-            <a class="ragent-feature" href="#/14" aria-label="跳转到第 14 页：端到端科研链路">
+            <a class="ragent-feature" href="#/15" aria-label="跳转到第 15 页：端到端科研链路">
               <div class="ragent-feature-no">03</div>
               <div class="ragent-feature-title">
                 <span class="ragent-feature-mark">RESEARCH</span>
@@ -221,7 +221,7 @@
               <p>不止生成摘要，而是围绕研究价值、实验可信度、可复现性和关键实现路径形成可复用判断</p>
             </a>
 
-            <a class="ragent-feature" href="#/14" aria-label="跳转到第 14 页：GUI 交互与 Cockpit">
+            <a class="ragent-feature" href="#/15" aria-label="跳转到第 15 页：GUI 交互与 Cockpit">
               <div class="ragent-feature-no">04</div>
               <div class="ragent-feature-title">
                 <span class="ragent-feature-mark">EVOLVE</span>
@@ -619,11 +619,11 @@
     </aside>
   </section>
 
-  <section class="slide" data-slide-id="memory-sft-rl-opd" data-title="Memory SFT → RL → OPD">
+  <section class="slide" data-slide-id="memory-sft-rl-opd" data-title="One Model: POMDP &amp; Necessity">
     <div class="memory-rl-page">
       <header class="memory-rl-head" data-anim="fade-down">
         <div>
-          <span class="section-label">doubao creation memory / post-training</span>
+          <span class="section-label">doubao creation memory / pomdp formulation</span>
           <h2>One Model Suggestion Generation</h2>
         </div>
         <!-- <div class="memory-rl-meta"> -->
@@ -636,51 +636,60 @@
         <figure class="memory-rl-figure" data-anim="fade-right">
           <a href="#memory-rl-task-zoom">
             <img src="assets/images/fig1_task_structure.png" alt="用户消息经过多轮覆盖式记忆更新后生成创作推荐，并接收三路奖励的任务结构图">
-            <em>任务结构 · 点击放大</em>
+            <!-- <em>任务结构 · 点击放大</em> -->
           </a>
-          <figcaption>当日消息流 → <b>定长 Memory 多轮覆盖式重写</b> → Title / Desc；三路奖励反馈到策略优化 <button type="button" class="memory-rl-open" data-panel="memory-task">任务定义与数据 ▸</button></figcaption>
+          <figcaption><b>当日消息流 → 定长 Memory 多轮覆盖式重写 → Title / Desc </b>过程满足 POMDP </figcaption>
+          <!-- Memory 是连接观察与下游回报的 belief state <button type="button" class="memory-rl-open" data-panel="memory-task">任务定义与数据 ▸</button> -->
         </figure>
 
-        <div class="memory-rl-formulas" data-anim="fade-left">
-          <article class="memory-rl-formula">
-            <header><span>01 · GMPO</span><b>序列级几何平均比值</b></header>
-            <div class="display-math">\[
-              r_i^{\mathrm{geo}}=\exp\!\left(\frac{1}{|y_i|}\sum_t\log\frac{\pi_\theta(a_{i,t}|s_{i,t})}{\pi_{\mathrm{old}}(a_{i,t}|s_{i,t})}\right)
-            \]</div>
-            <div class="display-math memory-rl-objective">\[
-              \mathcal J=\mathbb E\!\left[\min\!\left(r_i^{\mathrm{geo}}\hat A_i,\ \operatorname{clip}(r_i^{\mathrm{geo}},e^{-\varepsilon_l},e^{\varepsilon_h})\hat A_i\right)\right]
-            \]</div>
-            <p><b>作用：</b>几何平均自带长度归一，防止长轨迹带来的方差影响</p>
-            <button type="button" class="memory-rl-open" data-panel="memory-gmpo">展开原理、收益与判定标准 ▸</button>
+        <div class="memory-one-model" data-anim="fade-left">
+          <article class="memory-pomdp-card">
+            <div class="memory-pomdp-title"><span>POMDP</span><b>Procedure</b></div>
+            <div class="memory-prompt-stages">
+              <button type="button" class="memory-prompt-stage memory-rl-open" data-panel="memory-stage-write" aria-label="查看第一阶段：用户兴趣 Memory 维护模块">
+                <span>STAGE 01 · WRITE</span><b>Memory Update</b><p>profile + 旧 Memory + 当日消息 → 新 Memory</p>
+              </button>
+              <i>→</i>
+              <button type="button" class="memory-prompt-stage memory-rl-open" data-panel="memory-stage-Suggestion" aria-label="查看第二阶段：个性化创作提案生成模块">
+                <span>STAGE 02 · READ</span><b>Suggestion 生成</b><p>profile + memory + recent titles → 输出 1–8 组 Title / Desc</p>
+              </button>
+            </div>
           </article>
 
-          <article class="memory-rl-formula is-gdpo">
-            <header><span>02 · GDPO</span><b>多奖励解耦归一化</b></header>
-            <div class="display-math">\[
-              \hat A_i^{(c)}=\frac{R_i^{(c)}-\operatorname{mean}_gR_g^{(c)}}{\operatorname{std}_gR_g^{(c)}+\epsilon},\qquad
-              \hat A_i=\sum_cw_c\hat A_i^{(c)}
-            \]</div>
-            <div class="memory-rl-rewards"><span>精排</span><span>生图 RM</span><span>LLM Judge</span><span>格式 / 合规</span></div>
-            <p><b>顺序：</b>连续分先转组内胜率，再逐奖励归一化、最后加权，避免小方差制造虚假优势。</p>
-            <button type="button" class="memory-rl-open" data-panel="memory-reward">展开奖励、胜率化与信用分配 ▸</button>
-          </article>
+          <div class="memory-one-claims">
+            <button type="button" class="memory-one-claim memory-rl-open" data-panel="memory-one-credit">
+              <span>01 · CREDIT</span><b>梯度切分, 信用分配难度大</b><p>分训切断梯度，只能优化格式；单模型直接优化“对 Title / Desc 有用”</p>
+            </button>
+            <button type="button" class="memory-one-claim memory-rl-open" data-panel="memory-one-protocol">
+              <span>02 · PROTOCOL</span><b>一个模型分布一致，读写协议统一</b><p>两个模型像陌生人传纸条；共享参数等价于分布一致</p>
+            </button>
+            <button type="button" class="memory-one-claim memory-rl-open" data-panel="memory-one-compounding">
+              <span>03 · HORIZON</span><b>多轮误差会被复利放大</b><p>每轮轻微接口错配都会污染下一轮状态；轮数越长，分训劣势越明显。</p>
+            </button>
+          </div>
         </div>
       </div>
 
-      <section class="memory-rl-pipeline" data-anim="fade-up">
-        <div class="memory-rl-stages">
-          <button type="button" class="memory-rl-stage memory-rl-open" data-panel="memory-task"><span>01</span><b>数据构建</b><p>(user, day) 为单元<br>40–60 万条 + 三类留出集</p><em>展开 ▸</em></button>
+      <section class="memory-basic-flow" data-anim="fade-up">
+        <header class="memory-basic-head"><span>ONE MODEL TRAINING</span><b>Gemini 标注 → 32B SFT → 两阶段 RL → 8B OPD</b></header>
+        <div class="memory-basic-stages">
+          <button type="button" class="memory-basic-stage memory-rl-open" data-panel="memory-basic-sft"><span>01</span><b>Gemini 3 Pro → 32B SFT</b><p>真实分布采样 · Judge 拒绝采样<br>2,385 steps · train / val 同步收敛</p></button>
           <i>→</i>
-          <button type="button" class="memory-rl-stage memory-rl-open" data-panel="memory-sft"><span>02</span><b>SFT 冷启动</b><p>Prompt Distillation<br>按 pass@k + 熵选 ckpt</p><em>展开 ▸</em></button>
+          <section class="memory-basic-rl-stage">
+            <header><span>02</span><b>Qwen3-32B · Two-Stage RL</b></header>
+            <div>
+              <button type="button" class="memory-rl-open" data-panel="memory-basic-rl"><small>STAGE I</small><b>Short Horizon</b><p>&lt;15 turn · avg 4.8</p></button>
+              <i>→</i>
+              <button type="button" class="memory-rl-open" data-panel="memory-basic-rl"><small>STAGE II</small><b>Long Horizon</b><p>&gt;30 turn · avg 38.3</p></button>
+            </div>
+          </section>
           <i>→</i>
-          <button type="button" class="memory-rl-stage memory-rl-open" data-panel="memory-rollout"><span>03</span><b>32B RL</b><p>k+1 独立样本<br>4 → 8 → 12 turn 课程</p><em>展开 ▸</em></button>
-          <i>→</i>
-          <button type="button" class="memory-rl-stage memory-rl-open" data-panel="memory-opd"><span>04</span><b>OPD → 8B</b><p>学生自采样 + Teacher 逐 token<br>Reverse KL + 三方对照</p><em>展开 ▸</em></button>
+          <button type="button" class="memory-basic-stage memory-rl-open" data-panel="memory-opd"><span>03</span><b>32B Teacher → 8B OPD</b><p>Student on-policy 采样<br>Teacher 逐 token 蒸馏</p></button>
         </div>
-        <div class="memory-rl-guardrails">
-          <button type="button" class="memory-rl-open" data-panel="memory-rollout"><b>Rollout</b><span>k+1 次独立调用 / 样本，共享 trajectory_id</span><em>展开 ▸</em></button>
-          <button type="button" class="memory-rl-open" data-panel="memory-reward"><b>Credit</b><span>L0 广播 → L1 步级分组 → L2 稠密 turn reward</span><em>展开 ▸</em></button>
-          <button type="button" class="memory-rl-open" data-panel="memory-infra"><b>Infra</b><span>三策略 + token-TIS；F(τ=2) &gt; 0.1 停机</span><em>展开 ▸</em></button>
+        <div class="memory-basic-foundations">
+          <button type="button" class="memory-rl-open" data-panel="memory-basic-data"><b>DATA</b><span>30 万用户 · 1 万 UID SFT 采样 · 76,320 train / 2,400 val</span></button>
+          <button type="button" class="memory-rl-open" data-panel="memory-basic-reward"><b>REWARD</b><span>精排 + LLM Judge + 下游 API · 各路 Advantage 后加权</span></button>
+          <button type="button" class="memory-rl-open" data-panel="memory-basic-infra"><b>INFRA</b><span>slime · 32×A100 80GB · TP8 / DP4 · seq 8192</span></button>
         </div>
       </section>
 
@@ -691,13 +700,95 @@
       </div> -->
     </div>
     <div class="deck-footer">
-      <span class="mono">工业实践 · Memory SFT → RL → OPD · <a class="footer-link" href="#/2">返回第 2 页</a></span>
+      <span class="mono">工业实践 · POMDP → One Model · <a class="footer-link" href="#/2">返回第 2 页</a></span>
       <span class="slide-number" data-current="9" data-total="18"></span>
     </div>
     <aside class="notes">
-      <p>这一页承接前面的 Memory 训练，讲清楚一条完整的 SFT、RL 到 OPD 路线。任务有两个连续阶段：先把用户当日的图文和视频消息多轮写入一段固定 1024 token 的 Memory，而且每一轮都是覆盖式重写；再只依赖最终 Memory 生成 Title 和 Desc，生成阶段不再看到原始消息，所以 Memory 是唯一的信息瓶颈。</p>
-      <p>RL 部分有两个关键设计。GMPO 把逐 token 的重要性比值换成序列级几何平均，再对整段序列做 clip。这样天然消除了长度尺度差异，更适合把约 1024 token 的 Memory 和约 100 token 的生成结果放在同一批次里训练。GDPO 则先对精排、生图 RM、文案 Judge、Memory Judge 和格式合规等每一路奖励分别做组内归一化，再按权重融合；连续模型分数还要先转成组内胜率，避免很小的原始分差被极小方差放大成虚假优势。</p>
-      <p>训练流程分四段：先按 user-day 构建 40 到 60 万条样本并做难易课程；再做 Prompt Distillation 的 SFT 冷启动；随后在 Qwen3-32B 上用 GRPO、GMPO 和 GDPO 做强化学习；最后通过 On-Policy Distillation 蒸馏到 8B 在线模型。每条轨迹有 k 次 Memory 更新和 1 次生成，共 k+1 个独立训练样本，它们不拼成长序列，但共享 trajectory_id 和轨迹级优势。首版先用轨迹级广播，第二版再加入步级信用分配。最终必须同时比较 SFT、8B 直接 RL 和 OPD，不能预设蒸馏路线一定胜出。</p>
+      <p><strong>这一页先不讲 RL 算法，先回答为什么要把任务做成 One Model。</strong>真实兴趣看不见，我们每天只能观察用户发来的图文和视频，所以这是一个 POMDP：定长 Memory 相当于 belief state，用有限容量保存对未来创作最有用的信息；最终 Title、Desc 以及线上反馈才是终端回报。右上角是两次独立 LLM 调用：第一阶段从 profile、旧 Memory 和当日消息中维护长期兴趣，第二阶段读取这份 Memory，再结合 context、历史标题和 mode 生成 1 到 8 组创作提案。</p>
+      <p>第一，分开训练会切断信用。Memory Writer 收不到最终回报，只能按照人工摘要规范学习，容易保留“读起来顺”的信息，却丢掉画风、题材和新鲜度这些真正能驱动创作的要素。第二，Memory 是 Writer 与 Reader 之间的协议。两个独立模型容易各自形成私有约定；共享参数则像给自己写便签，写和读天然使用同一个编码习惯。</p>
+      <p>第三，多轮会把小错放大。每次覆盖式更新都建立在上一版 Memory 上，单轮接口错配会不断污染后续状态。所以 One Model 的价值不是少部署一个模型，而是让终端信用、内部协议和长程状态三件事同时闭环。</p>
+      <p><strong>底部是实际训练主链。</strong>先用 Gemini 3 Pro 打标并训练 Qwen3-32B；RL 分为短轨迹和长轨迹两阶段，第一阶段使用小于 20 turn、平均 4.8 turn 的样本，第二阶段使用大于 30 turn、平均 38.3 turn 的样本；最后把 RL 后的 32B Teacher 通过 OPD 蒸馏到 Qwen3-8B。Data、Reward 和 Infra 三块可以继续展开看具体配置。</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-slide-id="memory-rl-objectives" data-title="One Model Post-Training">
+    <div class="memory-rl-page memory-compare-page">
+      <header class="memory-rl-head memory-compare-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">doubao creation memory / three-step comparison</span>
+          <h2>Random Trajectory Window RL</h2>
+        </div>
+        <div class="memory-rl-meta"><strong>LOCAL → GLOBAL → WINDOWED</strong><span>从单步组内优势，逐步走向长程状态信用</span></div>
+      </header>
+
+      <main class="memory-plan-layout memory-plan-v2">
+        <section class="memory-plan-primary-v2" data-anim="fade-right">
+          <header><span>PLAN 03 · RECOMMENDED</span><b>随机窗口强化：局部计算，长程信用</b></header>
+          <div class="memory-plan-visual">
+            <a class="memory-plan-step12" href="#memory-plan3-zoom">
+              <iframe class="plan3-inline-frame" src="assets/plan3_reinforce_ppt.html" title="Plan 3 步骤 1 和 2：随机抽取局部窗口，并从同一起点并行 rollout" tabindex="-1"></iframe>
+            </a>
+            <button type="button" class="memory-plan-why memory-rl-open" data-panel="memory-plan3-advantages">为什么 Plan 3 更合理</button>
+          </div>
+          <div class="memory-plan-formulas">
+            <article>
+              <span>③ MEMORY UPDATE</span><b>承担窗口内未来后果</b>
+              <div class="display-math">\[\widetilde A_{i+k}^{\mathcal M,(n)}=\sum_{j=k}^{K}\gamma^{j-k}A_{i+j}^{(n)}\]</div>
+            </article>
+            <article>
+              <span>④ SUGGESTION</span><b>只承担当前位置奖励</b>
+              <div class="display-math">\[\widetilde A_{i+k}^{\mathcal S,(n)}=A_{i+k}^{(n)}\]</div>
+            </article>
+            <article class="is-gmpo">
+              <span>⑤ GMPO</span><b>用几何平均稳定长输出</b>
+              <div class="display-math">\[r_i^{geo}=\exp\!\left(\frac{1}{|o_i|}\sum_t\log\rho_{i,t}\right),\quad \mathcal J=\mathbb E[\operatorname{clip}(r_i^{geo})\hat A_i]\]</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="memory-plan-side" data-anim="fade-left">
+          <div class="memory-plan-baselines">
+            <a href="#memory-plan1-zoom">
+              <header><span>PLAN 01 · LOCAL</span><b>单步 GRPO</b></header>
+              <div class="memory-plan-baseline-visual"><iframe class="plan-baseline-frame" src="assets/plan1_grpo_ppt.html" title="Plan 1 单个 Memory 状态下的并行 GRPO 方案" tabindex="-1"></iframe></div>
+              <p><b>失败原因：</b>Memory 更新轨迹没有进入训练；update 并非真正 on-policy，也感知不到未来 Memory 状态。</p>
+            </a>
+            <a href="#memory-plan2-zoom">
+              <header><span>PLAN 02 · GLOBAL</span><b>长轨迹 Agentic RL</b></header>
+              <div class="memory-plan-baseline-visual"><iframe class="plan-baseline-frame" src="assets/plan2_agentic_rl_ppt.html" title="Plan 2 完整长轨迹终端奖励方案" tabindex="-1"></iframe></div>
+              <p><b>失败原因：</b>多轮 update 共用一个终端信号，非可验证奖励下信用严重混淆；完整轨迹连 32 卡也难负担。</p>
+            </a>
+          </div>
+
+          <section class="memory-plan-results">
+            <header><span>EXPERIMENTS</span><b>已知证据与本项目消融</b></header>
+            <div class="memory-exp-gallery">
+              <a class="memory-exp-card is-recall" href="#memory-exp-recall-zoom">
+                <img src="assets/images/exp-memory-recall.png" alt="不同训练方案随 Memory 更新轮数变化的 Recall 曲线">
+                <span>LONG-HORIZON RECALL</span>
+              </a>
+              <a class="memory-exp-card is-chunk" href="#memory-exp-chunk-zoom">
+                <img src="assets/images/exp-reward-chunk.png" alt="不同 Chunk 长度下的训练 Reward 曲线">
+                <span>REWARD × CHUNK</span>
+              </a>
+              <a class="memory-exp-card is-crossplay" href="#memory-exp-same-model-zoom">
+                <img src="assets/images/exp-same-model.png" alt="不同 Memory Updater 和 Suggestion Generator 组合的最终 Reward 矩阵">
+                <span>SAME MODEL CROSS-PLAY</span>
+              </a>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · One Model Post-Training · <a class="footer-link" href="#/9">返回问题定义</a></span>
+      <span class="slide-number" data-current="10" data-total="19"></span>
+    </div>
+    <aside class="notes">
+      <p><strong>这一页比较三种信用分配方案。</strong>Plan 1 只在同一个 Memory 状态下采样下一步更新和建议。问题是 Memory 更新轨迹没有真正进入训练过程：要么 update 不是 on-policy，要么它完全看不到自己对未来 Memory 状态的影响，所以单步比较不能解决长期信用。</p>
+      <p>Plan 2 虽然 rollout 了完整轨迹，但所有 Memory update 共用同一个终端信号。在可验证任务里还可以用唯一正确答案降低噪声，在推荐、内容质量这类非可验证奖励中，同一个分数无法区分到底是哪一天的更新起了作用；而且完整长轨迹成本太高，32 张卡也难以负担。</p>
+      <p>Plan 3 只把步骤一和二画成图：随机抽取固定长度 K 的窗口，再从同一起点并行 rollout N 条轨迹。下面三个公式分别说明信用怎样落回动作：Memory update 获取窗口内未来折扣优势，Suggestion 只获取当前优势，最后用 GMPO 稳定长输出。点击“为什么 Plan 3 更合理”可以继续展开五项设计理由。</p>
+      <p><strong>右下角是三组本项目实验。</strong>第一张长程 Recall 曲线显示，随着 Memory 更新轮数增加，RL 与 OPD 的记忆保持明显优于 Gemini 3 Pro、SFT 和 Baseline。第二张比较 Chunk 长度，4096 的 Reward 最高、2048 次之、1024 最低，说明单步信息容量会影响训练上限。第三张是 Memory Updater 与 Suggestion Generator 的交叉矩阵，RL→RL 得分最高为 0.86，跨模型组合普遍下降，支持同模型读写协议更一致。三张图都可以点击放大。</p>
     </aside>
   </section>
 
@@ -713,13 +804,8 @@
 
       <div class="suggestion-layout">
         <main class="suggestion-main">
-          <a class="suggestion-dpo-card" href="#suggestion-dpo-zoom" data-anim="fade-right">
-            <img src="assets/images/image-4.png" alt="Generative Suggestion Recommendation DPO 训练示例图">
-            <span>DPO preference construction · 点击放大</span>
-          </a>
-
           <section class="suggestion-narrative">
-            <article class="suggestion-motivation" data-anim="fade-left">
+            <article class="suggestion-motivation" data-anim="fade-right">
             <div class="suggestion-block-head">
               <span>WHY GENERATE</span>
               <h3>从固定 PGC 候选走向千人千面</h3>
@@ -731,7 +817,7 @@
             </div>
             </article>
 
-            <article class="suggestion-method" data-anim="fade-left">
+            <article class="suggestion-method" data-anim="fade-right">
               <span>01 · INTEREST SELECTION</span>
               <h3>先选对用户此刻值得探索的兴趣</h3>
               <ul>
@@ -740,7 +826,7 @@
               </ul>
             </article>
 
-            <article class="suggestion-method" data-anim="fade-left">
+            <article class="suggestion-method" data-anim="fade-right">
               <span>02 · SUGGESTION GENERATION</span>
               <h3>基于采样兴趣生成 Prompt 与展示文案</h3>
               <ul>
@@ -749,6 +835,11 @@
               </ul>
             </article>
           </section>
+
+          <a class="suggestion-dpo-card" href="#suggestion-dpo-zoom" data-anim="fade-left">
+            <img src="assets/images/image-4.png" alt="Generative Suggestion Recommendation DPO 训练示例图">
+            <span>DPO preference construction · 点击放大</span>
+          </a>
         </main>
 
         <aside class="suggestion-bottom">
@@ -2341,7 +2432,7 @@
     </aside>
   </section>
 
-  <section class="slide" data-slide-id="recursive-self-improvement" data-title="Recursive Self-Improvement">
+  <section class="slide" data-slide-id="recursive-self-improvement" data-title="Recursive Self-Improvement" data-slide-hidden="true">
     <div class="rsi-page rsi-origin-page">
       <header class="rsi-head" data-anim="fade-down">
         <div>
@@ -2435,7 +2526,7 @@
     </aside>
   </section>
 
-  <section class="slide" data-slide-id="rsi-limits-evolution-future" data-title="RSI Limits, Evolution and Future">
+  <section class="slide" data-slide-id="rsi-limits-evolution-future" data-title="RSI Limits, Evolution and Future" data-slide-hidden="true">
     <div class="rsi-page rsi-limit-page">
       <header class="rsi-head" data-anim="fade-down">
         <div>
@@ -2706,6 +2797,189 @@
       <p>选型：默认 vLLM 因为坑你自己能修；只有 MoE 且 EP&gt;1、需要 partial rollout、权重同步主导 step、或论文本来就用 slime / AReaL 才切 SGLang。只带一张图走就带监控面板，第 1 条永远是 rollout 与 trainer 的 logprob 差。</p>
     </aside>
   </section>
+
+  <div class="al2-modal memory-rl-modal memory-basic-modal" id="al2-panel-memory-basic-sft" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · SFT</span><h3>Gemini 3 Pro 打标 → Qwen3-32B SFT</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-basic-modal-body memory-basic-sft-body">
+        <figure><img src="assets/images/one-model-sft-loss.png" alt="Qwen3-32B SFT 训练集与验证集 Loss 曲线"><figcaption>2,385 optimizer steps · global batch 32 · moving average window 50</figcaption></figure>
+        <div class="memory-basic-detail-list">
+          <article><span>LABELING</span><h4>强模型生成候选答案，再做拒绝采样</h4><p>Gemini 3 Pro 生成伪思维链和结构化答案；答案侧使用 LLM-as-Judge 清洗幻觉、格式异常与超长重复，并用 Cohen's κ 与 Spearman 相关验证 Judge 可信度。</p></article>
+          <article><span>DATA CONTRACT</span><h4>输入贴合线上，输出满足严格契约</h4><p>输入清洗后由模型端到端判断噪声；训练和验证严格分离，同 batch 长度相近，并通过 10 类硬过滤移除状态链不一致、Markdown 污染和输出契约失败。</p></article>
+          <article><span>CURVE</span><h4>Train / Validation 同步收敛</h4><p>Train loss 约 1.3035 → 0.6280，Validation loss 约 1.2115 → 0.6277。曲线用于确认冷启动稳定，不代表最终业务效果。</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-basic-modal" id="al2-panel-memory-basic-rl" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · TWO-STAGE RL</span><h3>先学会稳定更新，再学习长程 Memory</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-basic-modal-body">
+        <div class="memory-basic-rl-compare">
+          <article><span>STAGE I</span><h4>Short Horizon</h4><b>&lt;15 turn · avg 4.8</b><p>先在较短轨迹上建立稳定的 Memory Update → Suggestion → Reward 闭环，降低训练初期的方差与资源压力。</p></article>
+          <i>→</i>
+          <article><span>STAGE II</span><h4>Long Horizon</h4><b>&gt;30 turn · avg 38.3</b><p>再切换到真实长程样本，让模型面对早期信息遗忘、状态污染和长期偏好保留问题。</p></article>
+        </div>
+        <section class="memory-basic-note"><b>与固定 4→8→12 长度课程不同</b><p>这里按照真实轨迹长度分成两个阶段：先保证短程闭环可学习，再验证长程状态能力；下一页进一步比较单步、整轨迹和随机窗口三种信用分配方案。</p></section>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-basic-modal" id="al2-panel-memory-basic-data" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · DATA</span><h3>从 30 万真实用户到可训练的 Memory + suggestion 样本</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-basic-modal-body"><div class="memory-basic-detail-grid">
+        <article><span>SOURCE</span><h4>真实分布采样</h4><p>覆盖 30 万用户：20 万 × 3 个月、10 万 × 6 个月；用户月均活跃约 4.65 天，保留明显长尾。</p></article>
+        <article><span>PROFILE</span><h4>三路画像压到 512 token</h4><p>基础画像 + 长期兴趣 + 7 天短期兴趣；白名单、条件保留和强制排除共同过滤，长期每类 ≤3、最多 8 类，短期 ≤8 并与长期去重。</p></article>
+        <article><span>CLEANING</span><h4>规范化、重复折叠、垃圾审计</h4><p>NFKC、全半角和零宽字符清洗；消息、前缀、比例指令与循环片段去重；8 类异常进入独立审计 JSONL，保持可追溯。</p></article>
+        <article><span>SFT SET</span><h4>1 万 UID + 10 类硬过滤</h4><p>从活跃 1–15 天用户按比例采样 1 万 UID；MiniHash + Jaccard 跨样本去重，答案经 Judge 拒绝采样，训练/验证严格分离。</p></article>
+        <article><span>TRAIN / VALID</span><h4>样本规模</h4><p><b>76,320</b> 条训练样本，即 38,160 个 Memory + SSuggestion 操作对；验证集 <b>2,400</b> 条。</p></article>
+        <article><span>RL SET</span><h4>独立构造，优先保证可学习性</h4><p>RL 与 SFT 不同源，丢弃 advantage 差距过小样本；格式和长度奖励只作轻量约束，持续审计 reward hacking。</p></article>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-basic-modal" id="al2-panel-memory-basic-reward" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · REWARD</span><h3>三路真实目标：精排、Judge 与下游承接</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-basic-modal-body"><div class="memory-basic-detail-grid">
+        <article><span>RANKER</span><h4>固定 Top-K 的校准效用</h4><div class="display-math">\[\hat s_i=\operatorname{clip}((s_i-l)/(h-l),0,1),\quad U(M)=\frac{\sum_{i=1}^{K}w_i\hat s_{(i)}}{\sum_{i=1}^{K}w_i},\ K\le4\]</div><p>l=0.01、h=0.04；固定 K 防止靠多生成 Suggestion 刷最高分。</p></article>
+        <article><span>LLM JUDGE</span><h4>多样性 + 安全性</h4><p>与最近 14 天标题联合判断来源、形式、内容多样性与新颖度；同时检查人名、IP 侵权、色情低俗和工具类噪声。Judge 需通过 Spearman 与 Cohen's κ 校验。</p></article>
+        <article><span>DOWNSTREAM API</span><h4>让 Prompt 接受真实下游评分</h4><p>调用下游 API 对生成 Prompt 打分，使 Memory 与 Suggestion 不只满足文本格式，而是对真实承接质量负责。</p></article>
+        <article><span>GDPO AGGREGATION</span><h4>每路先算 Advantage，再加权</h4><p>所有 Reward 先归一到 [0,1]；每个 reward 单独计算 advantage，当前方案不除 std，再按业务权重求和，避免先混合导致量纲与方差互相污染。</p></article>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-basic-modal" id="al2-panel-memory-basic-infra" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · INFRA</span><h3>32B / 8B 训练配置：32×A100 上的可复现实验合同</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-basic-modal-body"><div class="memory-basic-infra-grid">
+        <article><span>STACK</span><b>slime</b><p>Ray + Megatron-LM + SGLang</p></article>
+        <article><span>HARDWARE</span><b>32×A100 80GB</b><p>4 Workers × 8 GPUs</p></article>
+        <article><span>PARALLEL</span><b>TP=8 · DP=4</b><p>PP=1 · CP=1 · Sequence Parallel</p></article>
+        <article><span>SEQUENCE</span><b>8192 tokens</b><p>max_tokens_per_gpu=16384 · dynamic microbatch</p></article>
+        <article><span>OPTIMIZER</span><b>Adam</b><p>β1=0.9 · β2=0.95 · weight decay=0.1</p></article>
+        <article><span>LR</span><b>1e-6 → 1e-7</b><p>cosine decay · 3% warmup</p></article>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-plan-adv-modal" id="al2-panel-memory-plan3-advantages" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">PLAN 03 · DESIGN RATIONALE</span><h3>随机轨迹窗口 RL</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-plan-adv-body">
+        <article><span>01 · RANDOM WINDOW</span><h4>随机窗口替代长度课程</h4><p>不再假设“短轨迹更容易”。从真实长轨迹随机取起点 M<sub>i</sub>，固定窗口长度 K，并重复 τ 次；训练覆盖轨迹早、中、晚期真实 Memory 状态，包括已经变长、变脏的状态。rollout 成本由 K 固定，与用户累计天数无关。</p></article>
+        <article><span>02 · REAL DENSE REWARD</span><h4>每一步都让 Memory 被真实消费</h4><p>每个 step 都执行 Update Memory → Generate Suggestion → Reward，因此信号密度提高约 K 倍。中间奖励不是人工构造的 Memory 质量分，而是 Memory 被下游生成真实消费后得到的效果，奖励源头仍然是唯一业务目标。</p></article>
+        <article><span>03 · SAME START, SAME POSITION</span><h4>免费基线，同时对冲用户与日期噪声</h4><p>从同一 M<sub>i</sub> 并行采样 N 条轨迹，并只在相同位置做归一化。μ<sub>i+k</sub> 就是该位置的平均水平，不需要 critic；同一用户、同一天、同一起点让绝对点击率和任务难度等策略外因素被对冲，σ 归一化后才能跨位置加权。</p></article>
+        <article><span>04 · CAUSAL CREDIT</span><h4>两类动作承担各自真正造成的后果</h4><p>Memory update 会改变之后所有状态，所以接收从当前位置到窗口末端的折扣优势；Suggestion 给定 Memory 后只影响当前输出，本质是单步 bandit，只接收当前 A。相比终局分过度平摊或每步只看自身，这个分工更符合真实因果。</p></article>
+        <article><span>05 · GMPO</span><h4>长输出需要对极端 token ratio 更鲁棒</h4><p>Memory update 动辄上千 token，单个异常 importance ratio 容易把算术平均和整条梯度带偏。几何平均配合序列级 sign 对 outlier 更不敏感，提供更大的可用 KL 预算并减少训练塌陷。</p></article>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-stage-modal" id="al2-panel-memory-stage-write" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">STAGE 01 · MEMORY WRITE</span><h3>用户兴趣 Memory 维护：从每日交互沉淀长期状态</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="memory-stage-modal-body">
+        <section class="memory-stage-input">
+          <div><span>INPUT</span><b>profile + existing memory + 当日消息</b></div>
+          <i>→</i>
+          <div><span>DECISION</span><b>update / no_update</b></div>
+          <i>→</i>
+          <div><span>OUTPUT</span><b>完整结构化 memory</b></div>
+        </section>
+        <div class="memory-stage-grid memory-stage-grid-write">
+          <article><span>01 · CLASSIFY</span><h4>先判断什么值得记</h4><p><b>C</b> 创作兴趣、<b>T</b> 操作偏好、<b>N</b> 无信息噪声；<b>V / Q / R</b> 为低俗、违法、真人公众人物或侵权角色等风险内容，完全忽略。同一消息可同时包含 C 和 T。</p></article>
+          <article><span>02 · MERGE</span><h4>同义兴趣必须归并</h4><p>“汉服 / 汉服文创 / 汉服海报”归并为一个题材兴趣；“海报”进入交付形式，避免近义表达拆成多条后循环互证、虚高频次。</p></article>
+          <article><span>03 · SIX SLOTS</span><h4>固定 6 槽 Memory 契约</h4><p>[兴趣]、[操作偏好]、[动机]、[规避]、[可推荐]、[预算]+[状态]。兴趣总数 ≤12，每分面 ≤5；每条兴趣记录强度、次数、出现天数和首末日期。</p></article>
+          <article><span>04 · STRENGTH</span><h4>强度由多维证据共同判断</h4><p>综合复现天数、跨度、频率、最近性、profile 一致性和兴趣簇支持。单日首次通常为弱，跨日复现可升中，长期多次才考虑强；一次最多变一档。</p></article>
+          <article><span>05 · RETENTION</span><h4>删除比新增更谨慎</h4><p>低活用户的弱兴趣不自动过期。只有明确否定、确认误提取，或容量淘汰为更强证据腾位时才删除；旧兴趣消失必须声明 <b>MERGE / EVICT / KILL</b>。</p></article>
+          <article><span>06 · FORMAT</span><h4>先给证据判断，再输出状态</h4><p><code>&lt;think&gt;</code> 记录证据与变更理由，随后输出 <code>&lt;decision&gt;update|no_update&lt;/decision&gt;</code>；只有 update 时才输出完整 <code>&lt;memory&gt;</code>。</p></article>
+        </div>
+        <!-- <p class="memory-stage-takeaway"><b>这一阶段的职责：</b>不是生成文案，而是在有限容量中维护一个稳定、可解释、可供下游消费的用户兴趣 belief state。</p> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-stage-modal" id="al2-panel-memory-stage-Suggestion" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">STAGE 02 · Suggestion READ</span><h3>个性化 Suggestion 生成：消费 Memory，产出可投放创作提案</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="memory-stage-modal-body">
+        <section class="memory-stage-input">
+          <div><span>INPUT</span><b>profile + memory + context + recent titles + mode</b></div>
+          <i>→</i>
+          <div><span>PLAN</span><b>候选池 → 去重 → 动态选量</b></div>
+          <i>→</i>
+          <div><span>OUTPUT</span><b>1–8 组 Title + Desc</b></div>
+        </section>
+        <div class="memory-stage-grid memory-stage-grid-Suggestion">
+          <article><span>01 · FUSE</span><h4>融合 profile 与真实行为</h4><p>一致时取交集作为最高优先级锚点；冲突时优先真实行为。强兴趣优先用、中兴趣正常用、弱兴趣只做低风险验证；年龄和性别只用于合规适配。</p></article>
+          <article><span>02 · CANDIDATES</span><h4>自由混合七类候选来源</h4><p>intersection、memory、profile、recommend、operation、hypothesis、explore。弱连接只能标作 hypothesis，不能冒充已经验证的用户行为。</p></article>
+          <article><span>03 · COUNT</span><h4>质量决定输出 1–8 条</h4><p>先剔除空泛、近义、证据重复和画面差异不足的候选，再按剩余质量决定数量，不为凑数输出；多样性看主体、场景、动作、画风、构图与用途组合。</p></article>
+          <article><span>04 · CONTEXT</span><h4>节日与历史标题只做约束</h4><p>节日前 3–10 天最多使用一条节日提案；recent_titles 只拦截逐字重复或“主体+场景+画风”完全相同，不惩罚用户持续喜欢的方向。</p></article>
+          <article><span>05 · MODE</span><h4>控制文生图 / 图生图类型</h4><p>文生图模式全部输出文生图；图生图优先编辑类但可保留文生图；auto 根据操作偏好与候选质量自由决定。</p></article>
+          <article><span>06 · TITLE</span><h4>标题短、具体、可理解</h4><p>文生图固定“生成{画面内容}”且 ≤15 字；图生图固定“上传{照片类型}·{具体改动}”且 ≤16 字。不用广告词，也不暴露监视感。</p></article>
+          <article><span>07 · DESC</span><h4>描述必须落到可执行视觉语言</h4><p>每条 150–250 字单段，按摄影写实、插画或图生图段式撰写；抽象词落成具体视觉，并按动机调整构图，结尾严格写输出比例或保持原图比例。</p></article>
+          <article><span>08 · FORMAT</span><h4>先解释数量与归因，再给结果</h4><p><code>&lt;think&gt;</code> 包含数量决策、候选步骤、兴趣归因与 context 使用；随后输出 1–8 组 Title / Desc，组间空行，不编号。</p></article>
+        </div>
+        <p class="memory-stage-takeaway"><b>这一阶段的职责：</b>把稳定画像和行为 Memory 变成差异足够、画面可执行、合规且能直接投放的个性化创作提案。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-one-modal" id="al2-panel-memory-one-credit" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · CLAIM 01</span><h3>信用分配：Memory 必须直接为最终创作回报负责</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-rl-modal-body">
+        <section class="memory-rl-detail-lead"><b>核心判断</b><p>分开训练，信用分配截断，梯度断开，并非 on policy 优化</p></section>
+        <div class="memory-rl-detail-grid two">
+          <article><span>OBJECTIVE GAP</span><h4>两种训练在优化不同的信息</h4><div class="memory-one-compare"><p><b>分训：</b>Memory ↔ 人类摘要偏好</p><p><b>单模型：</b>Memory ↔ Title / Desc 终端回报</p></div><p>只有当“好摘要”恰好是下游创作的充分统计量时，两者才等价；本任务还需要画风、题材、新鲜度与可 prompt 化细节。</p></article>
+          <article><span>END-TO-END CREDIT</span><h4>同一策略同时更新写入与生成</h4><div class="display-math">\[\nabla_\theta J=\mathbb E\left[\sum_{t=1}^{T}A_t\nabla_\theta\log\pi_\theta(m_t|m_{t-1},x_t)+A_{gen}\nabla_\theta\log\pi_\theta(y|m_T)\right]\]</div><p>终端结果定义“什么值得写进 Memory”，不再依赖人工先写一套摘要规范。</p></article>
+          <article><span>EVIDENCE · MEMAGENT</span><h4>轨迹级信用跨 conversation 广播</h4><p><b>MemAgent · arXiv:2507.02259</b> 把损失从 group × token 扩展到 group × conversation × token，让多次 Memory 调用共享终端回报。</p></article>
+          <article><span>EVIDENCE · SUPO</span><h4>压缩步骤与终端任务共享 Reward</h4><p><b>SUPO · arXiv:2510.06727</b> 将含 I 次压缩的轨迹拆成 I+1 条子轨迹并共享 reward，支持“中间状态为最终任务服务”的训练逻辑。</p></article>
+        </div>
+        <!-- <p class="memory-one-citation"><b>证据边界：</b>论文支持多轮中间状态的端到端信用分配；“好摘要不等于好创作 Memory”是本业务任务定义下的工程推论，需要通过 One Model vs 分训消融验证。</p> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-one-modal" id="al2-panel-memory-one-protocol" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · CLAIM 02</span><h3>协议对齐：独立 Writer / Reader 会形成不兼容的私有语言</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-rl-modal-body memory-one-protocol-body">
+        <figure class="memory-one-evidence-figure"><img src="assets/images/crossplay_matrix.png" alt="Hanabi 中独立策略 self-play 与 cross-play 的 N×N 配对矩阵"><figcaption>对角线是同策略 self-play，非对角线是独立种子 cross-play。左图只有对角线高分，说明协议只对“自己”有效；Other-Play 让非对角线普遍变亮。</figcaption></figure>
+        <div class="memory-one-evidence-copy">
+          <article><span>MECHANISM</span><h4>写得规整，不代表读者真的在听</h4><p><b>Lowe et al., AAMAS 2019</b> 将 emergent communication 分成 positive signaling 与 positive listening，证明二者可以分离：发送者的符号很稳定，接收者的行为却完全不受消息影响。</p><cite>On the Pitfalls of Measuring Emergent Communication · arXiv:1903.05168</cite></article>
+          <article><span>CROSS-PLAY EVIDENCE</span><h4>协议私有化会造成可量化的协作损失</h4><p>Hanabi 中 SAD 的 self-play 为 <b>23.97 / 25</b>，独立策略 cross-play 只有 <b>2.52</b>；加入 Other-Play 后 cross-play 提升到 <b>15.32</b>，加 AUX 后达到 <b>22.07</b>。</p><cite>Hu et al., Other-Play for Zero-Shot Coordination · arXiv:2003.02979</cite></article>
+          <article class="is-conclusion"><span>WHY ONE MODEL</span><h4>共享参数 = Writer 与 Reader 固定在矩阵对角线</h4><p>同一个模型写 Memory、也由同一个模型读取 Memory，就像给自己写便签：编码习惯和解码习惯来自同一套参数。它不能自动保证内容正确，但显著减少跨模型协议错配。</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal memory-rl-modal memory-one-modal" id="al2-panel-memory-one-compounding" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · CLAIM 03</span><h3>误差累积：单轮接口错配会在长程 Memory 中复利</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-rl-modal-body">
+        <!-- <section class="memory-rl-detail-lead is-warning"><b>从常数损失到复利损失</b><p>每次覆盖式重写都依赖上一版 Memory；本轮被遗漏或误写的信息，会改变下一轮的输入状态并继续传播。</p></section> -->
+        <div class="memory-rl-detail-grid two">
+          <article><span>TOY MODEL</span><h4>T 轮后的可用信息近似指数衰减</h4><div class="memory-one-decay"><div class="display-math">\[I_T\approx I_0(1-\varepsilon)^T\]</div><p>若单轮错配率 ε=5%，10 轮后剩约 60%；20 轮后只剩约 36%。这不是论文定理，而是解释复利风险的简化模型。</p></div></article>
+          <article><span>LONG-HORIZON EVIDENCE</span><h4>不做 horizon curriculum，长程性能显著恶化</h4><p>相关长程 Memory 实验报告 F1 从 <b>0.47 降至 0.27</b>，漏检率超过 <b>70%</b>，说明短轨迹可用并不能保证扩轮稳定。</p><cite>Long-horizon memory training study · arXiv:2605.21768</cite></article>
+          <article><span>TRAINING RESPONSE</span><h4>让 ε 本身进入优化，而不是事后修补</h4><ul><li>终端 reward 回传到全部 Memory 更新轮次。</li><li>4 → 8 → 12 turn 逐步扩轮，每次扩轮密集观察。</li><li>按 held-out 20+ turn 集检查信息保真与漏检。</li></ul></article>
+          <article><span>RELATED DESIGNS</span><h4>现有工作怎样处理跨轮信用</h4><p><b>MemAgent · 2507.02259</b> 使用 multi-conv loss；<b>SUPO · 2510.06727</b> 将含多次压缩的轨迹拆分后共享 reward。它们都避免只给最后一步学习信号。</p></article>
+        </div>
+        <!-- <p class="memory-one-citation"><b>工程判据：</b>One Model 的必要性应通过“轮数 T × 方案”的交互曲线验证：如果单模型主要解决累积错配，优势应随 T 增大，而不是只在单轮上体现常数差。</p> -->
+      </div>
+    </div>
+  </div>
 
   <div class="al2-modal memory-rl-modal" id="al2-panel-memory-task" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card">
@@ -4756,6 +5030,36 @@ print( loss_mask.sum() / attention_mask.sum() )    # agent 轨迹应显著 &lt; 
   <img src="assets/images/fig1_task_structure.png" alt="用户记忆更新与创作推荐任务结构图放大图">
 </div>
 
+<div id="memory-plan1-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Plan 1 单步 GRPO 图">×</a>
+  <iframe class="memory-plan-frame-zoom is-landscape" src="assets/plan1_grpo_ppt.html" title="Plan 1 单步 GRPO 方案放大视图"></iframe>
+</div>
+
+<div id="memory-plan2-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Plan 2 长轨迹 Agentic RL 图">×</a>
+  <iframe class="memory-plan-frame-zoom is-landscape" src="assets/plan2_agentic_rl_ppt.html" title="Plan 2 长轨迹 Agentic RL 方案放大视图"></iframe>
+</div>
+
+<div id="memory-plan3-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Plan 3 随机窗口强化图">×</a>
+  <iframe class="memory-plan-frame-zoom is-plan3" src="assets/plan3_reinforce_ppt.html" title="Plan 3 随机窗口强化步骤 1 和 2 放大视图"></iframe>
+</div>
+
+<div id="memory-exp-recall-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Memory Recall 实验图">×</a>
+  <img src="assets/images/exp-memory-recall.png" alt="Memory Recall 实验曲线放大图">
+</div>
+
+<div id="memory-exp-chunk-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Reward Chunk 实验图">×</a>
+  <img src="assets/images/exp-reward-chunk.png" alt="Reward Chunk 实验曲线放大图">
+</div>
+
+<div id="memory-exp-same-model-zoom" class="image-lightbox">
+  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Same Model 实验图">×</a>
+  <img src="assets/images/exp-same-model.png" alt="Same Model Cross-Play 实验矩阵放大图">
+</div>
+
 <div id="suggestion-dpo-zoom" class="image-lightbox">
   <a class="image-lightbox-close" href="#/8" aria-label="关闭 DPO 示例图">×</a>
   <img src="assets/images/image-4.png" alt="Generative Suggestion Recommendation DPO 示例放大图">
@@ -4767,27 +5071,27 @@ print( loss_mask.sum() / attention_mask.sum() )    # agent 轨迹应显著 &lt; 
 </div>
 
 <div id="creator-loop-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/10" aria-label="关闭 AI Creator Productivity 系统总览图">×</a>
+  <a class="image-lightbox-close" href="#/11" aria-label="关闭 AI Creator Productivity 系统总览图">×</a>
   <img src="assets/images/edited_image_125253.png" alt="AI Creator Productivity 系统总览闭环图放大图">
 </div>
 
 <div id="ranking-dbmtl-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/11" aria-label="关闭 DBMTL EMSNet MMCN 结构图">×</a>
+  <a class="image-lightbox-close" href="#/12" aria-label="关闭 DBMTL EMSNet MMCN 结构图">×</a>
   <img src="assets/images/ppt_assets_fig1_dbmtl_emsnet_mmcn.png" alt="DBMTL EMSNet MMCN 精排整体结构图放大图">
 </div>
 
 <div id="ranking-mmoe-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/11" aria-label="关闭 MMoE 多专家结构图">×</a>
+  <a class="image-lightbox-close" href="#/12" aria-label="关闭 MMoE 多专家结构图">×</a>
   <img src="assets/images/ppt_assets_fig2_mmoe.png" alt="MMoE 多专家结构图放大图">
 </div>
 
 <div id="ranking-staytime-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/11" aria-label="关闭 Staytime WCE 分桶结构图">×</a>
+  <a class="image-lightbox-close" href="#/12" aria-label="关闭 Staytime WCE 分桶结构图">×</a>
   <img src="assets/images/ppt_assets_fig3_staytime_wce.png" alt="Staytime WCE 分桶结构图放大图">
 </div>
 
 <div id="ranking-mllm-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/11" aria-label="关闭 MLLM UE 序列结构图">×</a>
+  <a class="image-lightbox-close" href="#/12" aria-label="关闭 MLLM UE 序列结构图">×</a>
   <img src="assets/images/ppt_assets_fig4_mllm_ue_seq.png" alt="MLLM UE 序列 Target Attention 和 Histogram Learning 结构图放大图">
 </div>
 
@@ -4808,7 +5112,7 @@ print( loss_mask.sum() / attention_mask.sum() )    # agent 轨迹应显著 &lt; 
   S 演讲者视图 · T 切换主题 · ← → 翻页 · F 全屏 · O 总览
 </div>
 
-<script src="assets/runtime.js?v=20260907-swap-8-9-v1"></script>
+<script src="assets/runtime.js?v=20260912-plan-columns-v17"></script>
 <script>
 document.querySelector('[data-moo-paper-close]')?.addEventListener('click', function () {
   this.closest('.moo-paper-list').removeAttribute('open');

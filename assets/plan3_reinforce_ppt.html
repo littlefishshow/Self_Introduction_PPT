@@ -1,0 +1,231 @@
+<!doctype html>
+<html style="margin:0;padding:0;">
+<head>
+<meta charset="utf-8"/>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+  chtml: { scale: 1.05 }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0;background:#fff;color:#1A1B1C; }
+  .page { width:1000px;margin:0 auto;padding:22px 28px 24px;font-family:'Times New Roman','PingFang SC',serif; }
+  .section { border:1.5px solid #E8E6E0;border-radius:12px;background:#FBFBF9; }
+  .section-head { display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px; }
+  .section-title { font-size:15px;font-weight:bold;color:#333; }
+  .section-note { font-size:11.5px;color:#777; }
+  .badge { display:inline-flex;align-items:center;border-radius:999px;padding:4px 9px;font-size:11.5px;font-weight:bold;white-space:nowrap; }
+  .badge-blue { color:#1565C0;background:#E3F2FD;border:1px solid #90CAF9; }
+  .badge-gold { color:#9A6500;background:#FFF8E1;border:1px solid #F9A825; }
+
+  .source-panel { padding:14px 18px 13px;margin-bottom:14px; }
+  .source-track { display:flex;align-items:center;justify-content:center;gap:8px; }
+  .source-node { min-width:66px;height:40px;padding:0 12px;border:2px solid #1976D2;border-radius:9px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;font-size:17px; }
+  .source-node.muted { border-color:#B6C5D0;background:#F6F8F9;color:#777; }
+  .source-node.pick { border-color:#F9A825;background:#FFF8E1;box-shadow:0 0 0 3px rgba(249,168,37,.13); }
+  .track-arrow { width:28px;height:2px;background:#777;position:relative;flex:0 0 28px; }
+  .track-arrow:after { content:'';position:absolute;right:-1px;top:-4px;border-left:7px solid #777;border-top:5px solid transparent;border-bottom:5px solid transparent; }
+  .window-bracket { display:flex;align-items:center;gap:8px;padding:7px 10px;border:1.5px dashed #F9A825;border-radius:10px;background:#FFFDF4; }
+  .window-label { font-size:11.5px;color:#9A6500;font-weight:bold;margin-left:3px;white-space:nowrap; }
+
+  .rollout-panel { padding:14px 14px 15px;margin-bottom:14px; }
+  .rollout-grid { display:grid;grid-template-columns:54px repeat(3,minmax(0,1fr));gap:8px;align-items:stretch; }
+  .col-head { font-size:12px;font-weight:bold;text-align:center;color:#555;padding:3px 0 5px; }
+  .sample-label { display:flex;align-items:center;justify-content:center;font-size:13px;color:#777;font-style:italic; }
+  .step-card { border:1.3px solid #D9DDE1;border-radius:9px;background:#fff;padding:7px 7px 8px;min-height:70px; }
+  .step-top,.step-bottom { display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap; }
+  .step-top { margin-bottom:7px; }
+  .mini-memory { min-width:48px;height:25px;padding:0 5px;border:1.6px solid #1976D2;border-radius:6px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;font-size:12.5px; }
+  .mini-suggestion { min-width:40px;height:24px;padding:0 5px;border:1.6px solid #7B1FA2;border-radius:6px;background:#F3E5F5;display:flex;align-items:center;justify-content:center;font-size:12px; }
+  .mini-reward { width:28px;height:28px;border:1.7px solid #F9A825;border-radius:50%;background:#FFF8E1;display:flex;align-items:center;justify-content:center;font-size:11.5px; }
+  .action-arrow { display:flex;flex-direction:column;align-items:center;line-height:1;min-width:29px;color:#E65100;font-size:10.5px;font-style:italic; }
+  .action-arrow i { display:block;width:27px;height:1.6px;background:#666;position:relative;margin-top:2px; }
+  .action-arrow i:after { content:'';position:absolute;right:-1px;top:-3.5px;border-left:6px solid #666;border-top:4px solid transparent;border-bottom:4px solid transparent; }
+  .plain-arrow { width:22px;height:1.6px;background:#666;position:relative; }
+  .plain-arrow:after { content:'';position:absolute;right:-1px;top:-3.5px;border-left:6px solid #666;border-top:4px solid transparent;border-bottom:4px solid transparent; }
+  .dots-row { grid-column:1 / -1;text-align:center;height:8px;line-height:4px;color:#AAA;font-size:21px;letter-spacing:4px; }
+
+  .adv-label { display:flex;align-items:center;justify-content:center;color:#1565C0;font-size:12px;font-weight:bold; }
+  .adv-card { border:1.4px solid #90CAF9;border-radius:9px;background:#F4F8FB;padding:8px 6px;text-align:center; }
+  .adv-formula { font-size:13px;color:#1A1B1C;white-space:nowrap; }
+  .adv-note { margin-top:4px;font-size:10.5px;color:#777; }
+
+  .credit-row { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px; }
+  .credit-card { border:1.5px solid #E0E0E0;border-radius:10px;overflow:hidden;background:#FAFAFA; }
+  .credit-head { padding:9px 14px;font-size:14px;font-weight:bold;border-bottom:1px solid #E0E0E0; }
+  .credit-head.memory { color:#1565C0;background:#E3F2FD; }
+  .credit-head.suggestion { color:#6A1B9A;background:#F3E5F5; }
+  .credit-body { padding:10px 14px;text-align:center; }
+  .credit-math { font-size:15px;min-height:28px; }
+  .credit-copy { font-size:11.5px;color:#666;margin-top:6px;line-height:1.45; }
+
+  .gmpo-card { border:1.5px solid #90CAF9;border-radius:10px;background:#F4F8FB;padding:12px 15px 13px;margin-bottom:14px; }
+  .gmpo-head { display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px; }
+  .gmpo-title { font-size:15px;font-weight:bold;color:#1565C0; }
+  .gmpo-sub { font-size:11.5px;color:#666; }
+  .gmpo-formula { font-size:13.5px;text-align:center;overflow:hidden; }
+  .gmpo-foot { text-align:center;font-size:11px;color:#777;margin-top:5px; }
+
+  .legend-box { background:#FBFBF9;border:1.5px solid #E8E6E0;border-radius:12px;padding:13px 16px; }
+  .legend-grid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:14px;row-gap:9px; }
+  .legend-item { display:grid;grid-template-columns:39px 1fr;align-items:center;gap:7px;min-width:0; }
+  .legend-symbol { height:28px;display:flex;align-items:center;justify-content:center; }
+  .legend-copy { font-size:10.8px;line-height:1.35;color:#555; }
+  .legend-copy b { color:#333; }
+</style>
+<style>
+  html, body { width: 1200px; height: 520px; overflow: hidden; }
+  .page {
+    width: 1200px;
+    height: 520px;
+    padding: 10px 14px;
+    display: grid;
+    grid-template-rows: 94px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .source-panel { margin: 0; padding: 8px 11px; }
+  .source-panel .section-head { margin-bottom: 4px; }
+  .source-track { gap: 6px; }
+  .rollout-panel { margin: 0; padding: 8px 10px; overflow: hidden; }
+  .rollout-panel .section-head { margin-bottom: 5px; }
+  .rollout-grid { gap: 5px; }
+  .step-card { min-height: 54px; padding: 4px; }
+  .credit-row, .gmpo-card, .legend-box { display: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 1. Randomly sample a local K-step window from one long trajectory. -->
+  <div class="section source-panel">
+    <div class="section-head">
+      <div class="section-title">① 从一条长轨迹随机抽取局部窗口</div>
+      <div><span class="badge badge-gold">随机起点 $M_i$ × $\tau$ 次</span></div>
+    </div>
+    <div class="source-track">
+      <div class="source-node muted">$M_0$</div><div class="track-arrow"></div>
+      <span style="font-size:19px;color:#AAA;">$\cdots$</span><div class="track-arrow"></div>
+      <div class="window-bracket">
+        <div class="source-node pick">$M_i$</div><div class="track-arrow"></div>
+        <span style="font-size:19px;color:#AAA;">$\cdots$</span><div class="track-arrow"></div>
+        <div class="source-node pick">$M_{i+K}$</div>
+        <div class="window-label">长度 $K$</div>
+      </div>
+      <div class="track-arrow"></div><span style="font-size:19px;color:#AAA;">$\cdots$</span><div class="track-arrow"></div>
+      <div class="source-node muted">$M_T$</div>
+    </div>
+  </div>
+
+  <!-- 2. For one sampled start, rollout N parallel K-step trajectories. -->
+  <div class="section rollout-panel">
+    <div class="section-head">
+      <div class="section-title">② 从同一个 $M_i$ 连续 rollout $N$ 条长度为 $K$ 的轨迹</div>
+      <div class="section-note">每一步：Update Memory → Generate Suggestion → Reward；整套窗口采样重复 $\tau$ 次</div>
+    </div>
+
+    <div class="rollout-grid">
+      <div></div>
+      <div class="col-head">位置 1：$i \to i+1$</div>
+      <div class="col-head">位置 2：$i+1 \to i+2$</div>
+      <div class="col-head">位置 $K$：$i+K-1 \to i+K$</div>
+
+      <div class="sample-label">$\xi^{(1)}$</div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_i$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+1}^{(1)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+1}^{(1)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+1}^{(1)}$</span></div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_{i+1}^{(1)}$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+2}^{(1)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+2}^{(1)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+2}^{(1)}$</span></div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_{i+K-1}^{(1)}$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+K}^{(1)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+K}^{(1)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+K}^{(1)}$</span></div>
+      </div>
+
+      <div class="sample-label">$\xi^{(2)}$</div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_i$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+1}^{(2)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+1}^{(2)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+1}^{(2)}$</span></div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_{i+1}^{(2)}$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+2}^{(2)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+2}^{(2)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+2}^{(2)}$</span></div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_{i+K-1}^{(2)}$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+K}^{(2)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+K}^{(2)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+K}^{(2)}$</span></div>
+      </div>
+
+      <div class="dots-row">⋮</div>
+
+      <div class="sample-label">$\xi^{(N)}$</div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_i$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+1}^{(N)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+1}^{(N)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+1}^{(N)}$</span></div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_{i+1}^{(N)}$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+2}^{(N)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+2}^{(N)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+2}^{(N)}$</span></div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="mini-memory">$M_{i+K-1}^{(N)}$</span><span class="action-arrow">$a^{\mathcal M}$<i></i></span><span class="mini-memory">$M_{i+K}^{(N)}$</span></div>
+        <div class="step-bottom"><span class="action-arrow">$a^{\mathcal S}$<i></i></span><span class="mini-suggestion">$s_{i+K}^{(N)}$</span><span class="plain-arrow"></span><span class="mini-reward">$r_{i+K}^{(N)}$</span></div>
+      </div>
+
+      <div class="adv-label">同位置比较</div>
+      <div class="adv-card"><div class="adv-formula">$A_{i+1}^{(n)}=\dfrac{r_{i+1}^{(n)}-\mu_{i+1}}{\sigma_{i+1}}$</div><div class="adv-note">比较 $N$ 条轨迹在位置 $i+1$ 的奖励</div></div>
+      <div class="adv-card"><div class="adv-formula">$A_{i+2}^{(n)}=\dfrac{r_{i+2}^{(n)}-\mu_{i+2}}{\sigma_{i+2}}$</div><div class="adv-note">比较 $N$ 条轨迹在位置 $i+2$ 的奖励</div></div>
+      <div class="adv-card"><div class="adv-formula">$A_{i+K}^{(n)}=\dfrac{r_{i+K}^{(n)}-\mu_{i+K}}{\sigma_{i+K}}$</div><div class="adv-note">相同方式共计算 $K$ 轮组间优势</div></div>
+    </div>
+  </div>
+
+  <!-- 3. Different credit assignment for the two action types. -->
+  <div class="credit-row">
+    <div class="credit-card">
+      <div class="credit-head memory">③ Update Memory：使用未来折扣 Advantage</div>
+      <div class="credit-body">
+        <div class="credit-math">$\widetilde A_{i+k}^{\mathcal M,(n)}=\displaystyle\sum_{j=k}^{K}\gamma^{j-k}A_{i+j}^{(n)}$</div>
+        <div class="credit-copy">早期 memory 更新会影响后续状态，因此接收当前位置到窗口终点的折扣优势。</div>
+      </div>
+    </div>
+    <div class="credit-card">
+      <div class="credit-head suggestion">④ Generate Suggestion：只使用当前 Advantage</div>
+      <div class="credit-body">
+        <div class="credit-math">$\widetilde A_{i+k}^{\mathcal S,(n)}=A_{i+k}^{(n)}$</div>
+        <div class="credit-copy">Suggestion 只决定当前位置的输出与奖励，直接使用同位置组间优势更新。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Shared token-level GMPO objective. -->
+  <div class="gmpo-card">
+    <div class="gmpo-head">
+      <div class="gmpo-title">⑤ 每个动作都使用 GMPO 目标更新</div>
+      <div class="gmpo-sub">将上方对应的 $\widetilde A^{\mathcal M}$ 或 $\widetilde A^{\mathcal S}$ 作为 $\hat A_i$</div>
+    </div>
+    <div class="gmpo-formula">
+      $$\mathcal{J}_{\text{GMPO}}(\pi_\theta)=\mathbb{E}\left[\frac{1}{G}\sum_{i=1}^{G}\operatorname{sgn}(\hat{A}_i)\left\{\prod_{t=1}^{|o_i|}\left|\min\left(\rho_{i,t}(\theta)\hat{A}_i,\ \operatorname{clip}(\rho_{i,t}(\theta),\epsilon_{\mathrm{low}},\epsilon_{\mathrm{high}})\hat{A}_i\right)\right|\right\}^{\frac{1}{|o_i|}}\right]$$
+    </div>
+    <div class="gmpo-foot">这里 $G=N$（同一起点的并行短轨迹数）；$o_i$ 是一次 Memory Update 或 Suggestion 的输出 token 序列。</div>
+  </div>
+
+  <div class="legend-box">
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-symbol"><span class="mini-memory">$M_j$</span></div><div class="legend-copy"><b>Memory state</b><br/>短窗口中的第 $j$ 个状态</div></div>
+      <div class="legend-item"><div class="legend-symbol"><span class="mini-suggestion">$s_j^{(n)}$</span></div><div class="legend-copy"><b>Suggestion</b><br/>第 $n$ 条短轨迹的位置输出</div></div>
+      <div class="legend-item"><div class="legend-symbol"><span class="mini-reward">$r_j^{(n)}$</span></div><div class="legend-copy"><b>Reward</b><br/>Suggestion 对应的即时奖励</div></div>
+      <div class="legend-item"><div class="legend-symbol" style="font-size:14px;color:#1565C0;">$A_j^{(n)}$</div><div class="legend-copy"><b>位置优势</b><br/>相同位置跨 $N$ 条轨迹归一化</div></div>
+      <div class="legend-item"><div class="legend-symbol" style="font-size:14px;color:#9A6500;">$\tau$</div><div class="legend-copy"><b>窗口采样次数</b><br/>在原长轨迹上重复随机取起点</div></div>
+      <div class="legend-item"><div class="legend-symbol" style="font-size:14px;color:#1565C0;">$N=G$</div><div class="legend-copy"><b>并行组大小</b><br/>每个 $M_i$ 出发的短轨迹数</div></div>
+      <div class="legend-item"><div class="legend-symbol" style="font-size:14px;color:#1565C0;">$K$</div><div class="legend-copy"><b>窗口长度</b><br/>每条短轨迹的更新步数</div></div>
+      <div class="legend-item"><div class="legend-symbol" style="font-size:14px;color:#6A1B9A;">$\rho_{i,t}$</div><div class="legend-copy"><b>Token ratio</b><br/>GMPO 中新旧策略概率比</div></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

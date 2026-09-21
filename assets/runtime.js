@@ -40,8 +40,22 @@
   ready(function () {
     const deck = document.querySelector('.deck');
     if (!deck) return;
-    const slides = Array.from(deck.querySelectorAll('.slide'));
+    /*
+     * Keep temporarily hidden slides in the source, but exclude them from every
+     * audience-facing surface: navigation, hashes, overview and presenter mode.
+     * Removing data-slide-hidden="true" restores a slide on the next reload.
+     */
+    const slides = Array.from(deck.querySelectorAll('.slide'))
+      .filter(slide => slide.getAttribute('data-slide-hidden') !== 'true');
     if (!slides.length) return;
+
+    /* Visible slide numbers are derived at runtime so later slides close ranks. */
+    slides.forEach((slide, i) => {
+      const numEl = slide.querySelector('.slide-number');
+      if (!numEl) return;
+      numEl.setAttribute('data-current', i + 1);
+      numEl.setAttribute('data-total', slides.length);
+    });
 
     const previewOnlyIdx = getPreviewIdx();
     const isPreviewMode = previewOnlyIdx >= 0 && previewOnlyIdx < slides.length;
