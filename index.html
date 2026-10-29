@@ -8,12 +8,12 @@
 <link rel="stylesheet" href="assets/base.css">
 <link rel="stylesheet" id="theme-link" href="assets/themes/corporate-clean.css">
 <link rel="stylesheet" href="assets/animations.css">
-<link rel="stylesheet" href="style.css?v=20260912-plan3-fit-v1">
+<link rel="stylesheet" href="style.css?v=20260922-infra-narrative-v5">
 <script>
   window.MathJax = {
     tex: {
-      inlineMath: [['\\(', '\\)']],
-      displayMath: [['\\[', '\\]']],
+      inlineMath: [['\\(', '\\)'], ['$', '$']],
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],
       packages: {'[+]': ['ams']}
     },
     chtml: {matchFontHeight: false},
@@ -22,6 +22,9 @@
 </script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="assets/docs/embedded-docs.js"></script>
+<script src="assets/docs/baseline-credit-assignment.js"></script>
+<script src="assets/docs/ppo-loss-infra.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script>
   function __initMermaid() {
@@ -75,7 +78,7 @@
         <h1>任圣杰</h1>
         <ul class="cover-points">
           <li>
-            <strong>南京大学 硕士，机器学习与数据挖掘研究所（LAMDA） / 负责人：周志华，2024.9 - 2027.6</strong>
+            <strong>南京大学 硕士，机器学习与数据挖掘研究所（LAMDA），2024.9 - 2027.6</strong>
             <!-- <span class="course-line">课程：深度学习、自然语言处理、计算机视觉、模式识别</span> -->
           </li>
           <li>
@@ -93,8 +96,8 @@
         <span class="label">个人简述</span>
         <ul class="points">
           <li><strong>科研</strong>：多目标优化方向 7 篇论文，含 6 篇 CCF-A，4 篇独立一作</li>
-          <li><strong>工业实践</strong>：具备完整的 LLM 微调与线上部署实战经验，熟练掌握 Verl、LLaMA-Factory 训练框架，具备分布式 LLM 集群推理与高吞吐数据链路的搭建经验</li>
-          <li><strong>个人项目</strong>：持续跟进 Agent RL、投机解码 OPD 等前沿技术并进行复现和改进；了解Agent完整链路框架开发，维护个人 Agent 开源项目</li>
+          <li><strong>工业实践</strong>：具备完整的 LLM 微调与线上部署实战经验，熟练使用 Verl、Slime 等训练框架，具备分布式 LLM 集群推理与高吞吐数据链路的搭建经验</li>
+          <li><strong>个人项目</strong>：持续跟进 Agentic RL、OPD 等前沿技术并进行复现和改进；比较了解 Agent harness 链路框架开发，维护个人 Agent 开源项目</li>
         </ul>
       </div>
     </div>
@@ -121,19 +124,19 @@
         </article>
 
         <div class="llmrec-work-grid">
-          <a class="llmrec-work-card" href="#/6" aria-label="跳转到第 6 页：WCB Personalized Suggestion">
+          <a class="llmrec-work-card" href="#/8" aria-label="跳转到第 8 页：WCB Personalized Suggestion">
             <b>WCB Personalized Suggestion</b>
             <p>从用户消息构建 Creation Memory，并生成个性化主动创作建议</p>
           </a>
-          <a class="llmrec-work-card" href="#/9" aria-label="跳转到第 9 页：One Model Suggestion Generation">
+          <a class="llmrec-work-card" href="#/10" aria-label="跳转到第 10 页：One Model Suggestion Generation">
             <b>One Model Suggestion Generation</b>
             <p>统一 Memory 写入与 Suggestion 生成，优化长程状态与终端信用</p>
           </a>
-          <a class="llmrec-work-card" href="#/11" aria-label="跳转到第 11 页：AI Creator Productivity">
+          <a class="llmrec-work-card" href="#/16" aria-label="跳转到第 16 页：AI Creator Productivity">
             <b>AI Creator Productivity</b>
             <p>从海量创作数据挖掘可迁移 Skill，构建生成、评估、改进闭环</p>
           </a>
-          <a class="llmrec-work-card" href="#/12" aria-label="跳转到第 12 页：豆包创作社区推荐">
+          <a class="llmrec-work-card" href="#/17" aria-label="跳转到第 17 页：豆包创作社区推荐">
             <b>豆包创作社区推荐</b>
             <p>迭代社区精排模型，补充 UE 序列特征、扩充目标空间</p>
           </a>
@@ -161,6 +164,201 @@
     </aside>
   </section>
 
+  <section class="slide" data-slide-id="agent-rl-challenges" data-title="Agentic RL: Hard Problems &amp; Fixes">
+    <div class="arl-page">
+      <header class="arl-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">research frontier / agent reinforcement learning</span>
+          <h2>Agentic RL Experience</h2>
+        </div>
+        <!-- <p>难点 → 机制 → 药方 → 副作用，六条一次讲清；每个「新算法」都不是创新点，而是一张病历</p> -->
+      </header>
+
+      <div class="arl-premise" data-anim="fade-up">
+        <!-- <span class="arl-premise-label">单轮 RLVR 的三个隐含前提，在 Agent 场景同时失效</span> -->
+        <div class="arl-premise-grid">
+          <article><b>整条采样都由策略生成</b><p>工具 / 环境 token 常占轨迹一半以上</p></article>
+          <i>✕</i>
+          <article><b>采样分布不等于训练分布</b><p>推理与训练两套 kernel，同权重不同 logprob</p></article>
+          <i>✕</i>
+          <article><b>奖励是不干净的信号</b><p>verifier 有缺陷 + reward hacking</p></article>
+        </div>
+      </div>
+
+      <main class="arl-cards" data-anim="fade-up">
+        <div class="arl-col-head arl-col-head-algo"><span>ALGORITHM SIDE</span><b>算法侧</b></div>
+        <div class="arl-col-head arl-col-head-eng"><span>ENGINEERING SIDE</span><b>工程侧</b></div>
+
+        <button type="button" class="arl-card is-algo" data-panel="arl-credit">
+          <span class="arl-card-no">01</span>
+          <div class="arl-card-body">
+            <b>信用分配难度大</b>
+            <p>20 次 tool call 共享一个 0/1，horizon↑ → 方差↑</p>
+            <em>turn-level · GiGPO · IGPO · TRACE</em>
+          </div>
+          <span class="arl-card-go">展开 ▸</span>
+        </button>
+
+        <button type="button" class="arl-card is-eng" data-panel="arl-logprob">
+          <span class="arl-card-no">04</span>
+          <div class="arl-card-body">
+            <b>训练推理不一致</b>
+            <p>采样用 vLLM、算 logprob 用 FSDP，两套 kernel</p>
+            <em>TIS / MIS · Routing Replay · 统一 FP16</em>
+          </div>
+          <span class="arl-card-go">展开 ▸</span>
+        </button>
+
+        <button type="button" class="arl-card is-algo" data-panel="arl-baseline">
+          <span class="arl-card-no">02</span>
+          <div class="arl-card-body">
+            <b>长轨迹 RL 偏置</b>
+            <p>偏置从 loss 分母长出来：长度 / 难度 / 梯度饥饿</p>
+            <em>Dr.GRPO · DAPO 四件套 (0.2 / 0.28) · GSPO</em>
+          </div>
+          <span class="arl-card-go">展开 ▸</span>
+        </button>
+
+        <button type="button" class="arl-card is-eng" data-panel="arl-reward">
+          <span class="arl-card-no">05</span>
+          <div class="arl-card-body">
+            <b>奖励与环境</b>
+            <p>verifier 自己就是最大的噪声源</p>
+            <em>权限隔离 → 判据外置 → 奖励复合 → 抽检</em>
+          </div>
+          <span class="arl-card-go">展开 ▸</span>
+        </button>
+
+        <button type="button" class="arl-card is-algo" data-panel="arl-mask">
+          <span class="arl-card-no">03</span>
+          <div class="arl-card-body">
+            <b>token 边界 mask 错误无声</b>
+            <p>算法写错 loss 会飞，mask 写错什么都不发生</p>
+            <em>token-in/out 渲染 · loss mask 自查 · Overlong Filtering</em>
+          </div>
+          <span class="arl-card-go">展开 ▸</span>
+        </button>
+
+        <button type="button" class="arl-card is-eng" data-panel="arl-horizon">
+          <span class="arl-card-no">06</span>
+          <div class="arl-card-body">
+            <b>长时程：上下文墙与长尾墙</b>
+            <p>上下文会撑爆，长尾会绑架整个 step</p>
+            <em>CompactionRL 2026 · partial rollout · 异步</em>
+          </div>
+          <span class="arl-card-go">展开 ▸</span>
+        </button>
+      </main>
+
+      <!-- <footer class="arl-takeaway" data-anim="fade-up"> -->
+        <!-- <b>排障顺序</b>
+        <span>实现错误 → 数值尺度 → 步长 → 奖励设计。算法只决定你多快撞到环境与 verifier 定下的那个上限。</span> -->
+      <!-- </footer> -->
+    </div>
+    <div class="deck-footer">
+      <span class="mono">研究前沿 · Agentic RL Hard Problems &amp; Fixes</span>
+      <span class="slide-number" data-current="17" data-total="18"></span>
+    </div>
+    <aside class="notes">
+      <p>这页不讲 Agentic RL 是什么，只讲它在什么地方会崩、崩了怎么救。单轮 RLVR 能跑通靠三个隐含前提：全 on-policy、采样即训练分布、奖励干净——Agent 场景把这三条同时打断了，后面六个难点全是这三处裂缝的下游。</p>
+      <p>左栏算法侧：信用分配（一个标量摊给几十步，解法是往下切粒度，2026 的 TRACE 用参考模型的 log-ratio 做 TD 差分）、组内基线（GRPO 省了 critic 欠了三笔债，记住 clip-higher 是 0.2 配 0.28）、mask（全页最容易露馅的地方，写错什么都不会发生只是 reward 涨得慢）。</p>
+      <p>右栏工程侧：双 logprob（同一份权重两套 kernel，修掉它 Wordle 从 63.9 涨到 77.4）、奖励环境（SWE-bench Verified 被审出 59.4% 失败样本其实是测试本身有缺陷）、长时程（撞两堵墙，CompactionRL 把摘要生成和任务执行一起训进 RL）。</p>
+      <p>收束：训练发散时排查顺序永远是先查实现错误，再校准数值尺度，再调步长，最后才回到奖励设计。先动 reward 的人，通常是在给一个 mask bug 打补丁。</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-slide-id="agent-rl-practice" data-title="Agentic RL in Practice: Engine Pitfalls + Metrics">
+    <div class="arl-page arl-practice-page">
+      <header class="arl-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">Agentic RL in practice / engine pitfalls &amp; metrics</span>
+          <h2>Agentic RL Infra</h2>
+        </div>
+        <!-- <p>先修引擎，再看曲线；每个阈值都标可信度</p> -->
+      </header>
+
+      <main class="arl-practice-layout">
+        <section class="arl-pit-column" data-anim="fade-right">
+          <div class="arl-block-head arl-block-head-eng">
+            <div><span>FRAMEWORK PITFALLS</span><b>框架层的坑</b></div>
+            <!-- <em>点开看：现象 → 原因 → 解决 → 两框架对比</em> -->
+          </div>
+          <div class="arl-pit-list">
+            <button type="button" class="arl-pit" data-panel="arl-cache">
+              <span>01</span>
+              <div><b>前缀缓存：换了权重，缓存没换</b><p>还在拿「半新半旧」的模型采样</p></div>
+              <code>清缓存</code>
+            </button>
+            <button type="button" class="arl-pit" data-panel="arl-sleep">
+              <span>02</span>
+              <div><b>显存让位：训练和推理抢显卡</b><p>交接不干净会 OOM 或加速失灵</p></div>
+              <code>先唤醒权重</code>
+            </button>
+            <button type="button" class="arl-pit" data-panel="arl-weightsync">
+              <span>03</span>
+              <div><b>权重同步：新权重怎么传给引擎</b><p>接口会改名、会死锁，模型越大越慢</p></div>
+              <code>钉版本</code>
+            </button>
+            <button type="button" class="arl-pit" data-panel="arl-token">
+              <span>04</span>
+              <div><b>Token In Token Out</b><p>推理和训练始终使用 token id</p></div>
+              <code>直返 token</code>
+            </button>
+            <button type="button" class="arl-pit" data-panel="arl-determinism">
+              <span>05</span>
+              <div><b>高精度模式：用来排错</b><p>用完即关；采样别开 FP8 缓存</p></div>
+              <code>临时开</code>
+            </button>
+          </div>
+          <!-- <button type="button" class="arl-verdict" data-panel="arl-engine">
+            <b>默认上 vLLM —— 不是更快，是坑你自己能修</b>
+            <span>命中一条才换 SGLang：超大 MoE · 部分回滚 · 权重同步主导耗时 · 论文本来就用它</span>
+            <em>展开选型对比 ▸</em>
+          </button> -->
+        </section>
+
+        <section class="arl-metric-column" data-anim="fade-left">
+          <div class="arl-block-head arl-block-head-metric">
+            <div><span>METRICS TO WATCH</span><b>中间指标</b></div>
+            <!-- <em>奖励动得最晚，要盯会先动的上游指标</em> -->
+          </div>
+          <div class="arl-metric-list">
+            <button type="button" class="arl-metric" data-panel="arl-generic">
+              <span class="arl-metric-tag">通用</span>
+              <div><b>模型还在正常学习吗</b><p>策略熵 · 裁剪比例 · KL 距离 · 零优势组</p></div>
+              <em>展开 ▸</em>
+            </button>
+            <button type="button" class="arl-metric" data-panel="arl-agentdelta">
+              <span class="arl-metric-tag">Agent</span>
+              <div><b>信号真的进梯度了吗</b><p>可训练占比 · 截断溢出 · 长尾 · 判分误判</p></div>
+              <em>展开 ▸</em>
+            </button>
+            <button type="button" class="arl-metric" data-panel="arl-lying">
+              <span class="arl-metric-tag">会骗人</span>
+              <div><b>看着变好，其实变坏</b><p>奖励涨 · 越答越长 · KL 又小又平</p></div>
+              <em>展开 ▸</em>
+            </button>
+          </div>
+          <button type="button" class="arl-dashboard" data-panel="arl-dashboard">
+            <b>最小监控面板 · 三层各四条</b>
+            <span>是否正常更新 · 信号是否进梯度 · 结果与效率，外加三个「阈值为 0」的作弊计数器</span>
+            <em>展开面板 ▸</em>
+          </button>
+        </section>
+      </main>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">研究前沿 · Agentic RL in Practice</span>
+      <span class="slide-number" data-current="18" data-total="18"></span>
+    </div>
+    <aside class="notes">
+      <p>这一页讲工程落地：真正按下回车训练后会遇到什么。左边是推理引擎的五个坑，右边是要盯的中间指标。每个卡片点开都是同一个结构——现象、原因、解决、两个框架各自怎么处理，一次只讲一个问题。</p>
+      <p>五个坑串起来其实是一句话：你拿去算梯度的那串 token，未必是引擎真正生成的那串。前缀缓存是换了权重没换缓存；显存让位是训练和推理抢显卡、交接不干净；权重同步是新权重怎么传给引擎、接口不稳；token 保真是转文字再转回来对不上；确定性是排错工具、用完即关。</p>
+      <p>右边指标记住一个次序：奖励动得最晚，要盯会先动的上游指标。第一层看模型还在不在正常更新，第二层看信号有没有真的进梯度，第三层才看结果和效率。还有几条会骗人的曲线——奖励涨、回答变长、KL 又小又平——都要再叠一个指标一起看才不被骗。</p>
+      <p>选型结论：默认上 vLLM，不是因为它更快，是因为它的坑你自己能修；只有超大 MoE、需要部分回滚、权重同步开始主导耗时、或要复现的论文本来就用 SGLang，才切过去。最后留一句排障顺序：先查实现 bug、再看数值、再调步长、最后才动奖励。</p>
+    </aside>
+  </section>
+
   <section class="slide" data-slide-id="r-agent-overview" data-title="R-Agent">
     <div class="ragent-v2">
       <header class="ragent-v2-head" data-anim="fade-down">
@@ -181,7 +379,7 @@
         <section class="ragent-feature-zone">
           <div class="ragent-zone-label"><span>CORE CAPABILITIES</span></div>
           <div class="ragent-feature-grid anim-stagger-list" data-anim-target>
-            <a class="ragent-feature" href="#/13" aria-label="跳转到第 13 页：完整 Agent Loop">
+            <a class="ragent-feature" href="#/18" aria-label="跳转到第 18 页：完整 Agent Loop">
               <div class="ragent-feature-no">01</div>
               <div class="ragent-feature-title">
                 <span class="ragent-feature-mark">EXECUTE</span>
@@ -193,7 +391,7 @@
               <p>动态注册文件、Shell、Python、Web、Memory、Todo 与 Delegate；大输出转 artifact、长上下文自动压缩，让长任务持续推进</p>
             </a>
 
-            <a class="ragent-feature" href="#/14" aria-label="跳转到第 14 页：受控自动实验闭环">
+            <a class="ragent-feature" href="#/19" aria-label="跳转到第 19 页：受控自动实验闭环">
               <div class="ragent-feature-no">02</div>
               <div class="ragent-feature-title">
                 <span class="ragent-feature-mark">AUTORESEARCH</span>
@@ -205,7 +403,7 @@
               <p>自动改代码、运行 train / eval、读取 metrics、保留改进与总结失败；预算、超时、monitor / stop 和固定评测共同约束实验边界</p>
             </a>
 
-            <a class="ragent-feature" href="#/15" aria-label="跳转到第 15 页：端到端科研链路">
+            <a class="ragent-feature" href="#/20" aria-label="跳转到第 20 页：端到端科研链路">
               <div class="ragent-feature-no">03</div>
               <div class="ragent-feature-title">
                 <span class="ragent-feature-mark">RESEARCH</span>
@@ -221,7 +419,7 @@
               <p>不止生成摘要，而是围绕研究价值、实验可信度、可复现性和关键实现路径形成可复用判断</p>
             </a>
 
-            <a class="ragent-feature" href="#/15" aria-label="跳转到第 15 页：GUI 交互与 Cockpit">
+            <a class="ragent-feature" href="#/20" aria-label="跳转到第 20 页：GUI 交互与 Cockpit">
               <div class="ragent-feature-no">04</div>
               <div class="ragent-feature-title">
                 <span class="ragent-feature-mark">EVOLVE</span>
@@ -371,29 +569,36 @@
           <header><h3>大模型对齐</h3></header>
           <section class="moo-md-section moo-md-conflict">
             <h4>目标冲突</h4>
-            <p>冲突包括准确性、多样性、用户偏好和安全性</p>
+            <p>准确性 · 多样性 · 用户偏好 · 安全性</p>
           </section>
-          <div class="moo-md-method-label">方法</div>
-          <div class="moo-application-methods">
-            <section class="moo-md-method">
+          <div class="moo-md-method-label">四条技术路线 · 点方法名看详情</div>
+          <div class="moo-align-dirs">
+            <section class="moo-align-dir">
               <h4>优势融合技巧</h4>
-              <p><strong>GDPO NVIDIA ICML'26</strong>： 先归一化再加权能先消除不同奖励尺度/方差的影响，让权重真正表达“偏好重要性”</p>
-              <p><strong>GD^2PO Qwen 2026-6</strong>：按奖励维度解耦筛选 rollout：选用奖励一致性更高的样本作为置信的 rollout 样本参与训练</p>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-gdpo"><b>GDPO</b><span>NVIDIA · 分维度归一化</span></button>
+                <button type="button" class="moo-align-chip" data-panel="moo-gd2po"><b>GD²PO</b><span>Qwen · 冲突感知过滤</span></button>
+              </div>
             </section>
-            <section class="moo-md-method">
-              <h4>模型结构和损失函数优化技巧</h4>
-              <p><strong>Panacea Neurips'26</strong>：把 LoRA 的适配参数改造成可随“偏好权重/目标权重”动态生成或调节的 Pareto LoRA，使同一个基座模型能根据不同目标权衡，在多个优化目标之间切换到对应的 Pareto 最优响应</p>
+            <section class="moo-align-dir">
+              <h4>模型结构 / 损失函数</h4>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-panacea"><b>Panacea</b><span>NeurIPS'24 · Pareto LoRA</span></button>
+              </div>
             </section>
-            <section class="moo-md-method">
+            <section class="moo-align-dir">
               <h4>奖励函数设计</h4>
-              <p>如果强调转化率，可以采用几何平均</p>
-              <p>对于强约束优化，可以使用拉格朗日乘子法增加 margin/惩罚函数</p>
-              <p><strong>Projection Optimization ICML'26</strong>：对于明确的目标，可以使用目标逼近方法，例如可以将多目标向量映射到凸包上，根据投影点反推权重；</p>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-projection"><b>Projection Opt.</b><span>ICML'25 · 凸包投影</span></button>
+                <span class="moo-align-note">几何平均 · 拉格朗日乘子法</span>
+              </div>
             </section>
-            <section class="moo-md-method">
+            <section class="moo-align-dir">
               <h4>动态调整优化权重</h4>
-              <p><strong>ArmoRM ACL'24</strong>：根据问题类型动态路由 Reward 权重，而不是使用固定的权重组合</p>
-              <p><strong>KiMi M3</strong>：根据问题难度调整思维链长度的惩罚</p>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-armorm"><b>ArmoRM</b><span>ACL'24 · MoE 门控路由</span></button>
+                <button type="button" class="moo-align-chip" data-panel="moo-kimi"><b>Kimi k1.5</b><span>难度自适应长度惩罚</span></button>
+              </div>
             </section>
           </div>
         </article>
@@ -402,65 +607,75 @@
           <header><h3>搜索与推荐</h3></header>
           <section class="moo-md-section moo-md-conflict">
             <h4>目标冲突</h4>
-            <p>冲突包括召回率和准确率、内容多样性、转化率等目标</p>
+            <p>召回率 · 准确率 · 内容多样性 · 转化率</p>
           </section>
-          <div class="moo-md-method-label">方法</div>
-          <div class="moo-application-methods">
-            <section class="moo-md-method">
+          <div class="moo-md-method-label">四条技术路线 · 点方法名看详情</div>
+          <div class="moo-align-dirs moo-rec-dirs">
+            <section class="moo-align-dir">
               <h4>召回阶段</h4>
-              <p><strong>MIND CIKM'19</strong>：将相关性、兴趣探索和长尾覆盖建模为多路候选，不同人群动态分配召回权重</p>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-mind"><b>MIND</b><span>CIKM'19 · 多兴趣召回</span></button>
+              </div>
             </section>
-            <section class="moo-md-method">
+            <section class="moo-align-dir">
               <h4>精排阶段</h4>
-              <ul>
-                <li><strong>多任务学习框架（MMoE、PLE）</strong>：通过共享底层表征 + 门控机制动态分配任务专属专家，缓解多个任务间负向迁移。</li>
-                <li><strong>损失权重调优（PE-LTR、MGDA）</strong>：用帕累托有效学习排序或多目标梯度下降自动平衡各任务梯度方向与损失权重，替代人工调参，找到任务间的Pareto最优解。</li>
-              </ul>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-mmoe"><b>MMoE / PLE</b><span>门控专家 · 抑制负迁移</span></button>
+                <button type="button" class="moo-align-chip" data-panel="moo-mgda"><b>PE-LTR / MGDA</b><span>Pareto 梯度平衡</span></button>
+              </div>
             </section>
-            <section class="moo-md-method">
-              <h4>重排</h4>
-              <p><strong>Pantheon CIKM'25</strong>：提出 Iterative Pareto Policy Optimization (IPPO)，用强化学习迭代搜索个性化的 Pareto 最优排序，直接用精排模型的多任务头作为输入，替代整个公式化融合排序</p>
-              <p><strong>PreferRec 2026</strong>：发现用户间的 Pareto 偏好结构是可迁移的，显式建模并跨用户迁移 Pareto 偏好，减少每个用户的探索成本</p>
+            <section class="moo-align-dir">
+              <h4>重排阶段</h4>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-pantheon"><b>Pantheon</b><span>CIKM'25 · Pareto 重排</span></button>
+                <button type="button" class="moo-align-chip" data-panel="moo-preferrec"><b>PreferRec</b><span>2026 · 偏好迁移</span></button>
+              </div>
             </section>
-            <section class="moo-md-method">
-              <h4>Auto-Research 进行 vt 超参调优，模型结构优化</h4>
-              <p><strong>字节 Agentuna</strong>：字节跳动推出的 Agent 驱动的推荐系统自迭代框架，通过智能体自动完成超参数搜索、策略调优和实验验证，替代人工调参，实现推荐链路的自动化优化</p>
-              <p><strong>快手 AgentX</strong>：落地的多 Agent 推荐系统自迭代系统，由 Brainstorm（生成实验提案）、Developing（编码实现）、Evaluation（A/B 验证）、SGPO（语义梯度自进化）四个 Agent 闭环</p>
+            <section class="moo-align-dir">
+              <h4>Auto-Research</h4>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-agentuna"><b>Agentuna</b><span>字节 · 推荐自迭代</span></button>
+                <button type="button" class="moo-align-chip" data-panel="moo-agentx"><b>AgentX</b><span>快手 · 多 Agent 闭环</span></button>
+              </div>
             </section>
           </div>
         </article>
 
         <article class="moo-application-card is-agent">
-          <header><h3>Agent 决策和 Self-Evolution</h3></header>
+          <header><h3>Agent 自我改进</h3></header>
           <section class="moo-md-section moo-md-conflict">
-            <h4>目标冲突</h4>
-            <p>任务完成率与推理长度、工具成本、响应时间、安全风险等需要权衡</p>
+            <h4>多目标核心</h4>
+            <p>能力 · 安全 · 成本 · 鲁棒性 · 泛化</p>
           </section>
-          <div class="moo-md-method-label">方法</div>
-          <div class="moo-application-methods">
-            <section class="moo-md-method">
-              <h4>CoT 路径搜索</h4>
-              <p><strong>Tree of Thoughts (ToT)、rStar-Math</strong>：CoT 路径搜索，使用 MCTS 权衡探索和利用，使用多目标过程奖励函数优化 CoT</p>
-              <p><strong>KiMi K3</strong>：CoT 长度优化，在不限制推理效果的前提下控制 CoT 长度</p>
+          <div class="moo-md-method-label">三条演化主线 · 点论文名看详情</div>
+          <div class="moo-align-dirs moo-agent-dirs">
+            <section class="moo-align-dir">
+              <h4>Self-Evolution · 优化 Prompt / Pipeline</h4>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-gepa"><b>GEPA</b><span>ICLR'26 Oral · Pareto 反思进化</span></button>
+                <button type="button" class="moo-align-chip" data-panel="moo-dspy"><b>DSPy</b><span>可编译的自优化 LM 程序</span></button>
+              </div>
             </section>
-            <section class="moo-md-method">
-              <h4>Self Evolution Harness</h4>
-              <p><strong>GEPA ICLR'26 Oral</strong>：在不断使用过程中构造更适配用户的 Agent，方式是根据经验不断构造总结对应 Skill 并优化（Hermes Agent），同时平衡三个维度：质量（成功率）、效率（Token 消耗）、泛化（未见任务表现）</p>
+            <section class="moo-align-dir">
+              <h4>RSI · 改进优化器 / Agent 自身</h4>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-stop"><b>STOP</b><span>COLM'24 · 递归改进器</span></button>
+                <button type="button" class="moo-align-chip" data-panel="moo-dgm"><b>DGM</b><span>ICLR'26 · 开放式代码进化</span></button>
+              </div>
             </section>
-            <section class="moo-md-method">
-              <h4>Auto-Research </h4>
-              <p><strong>Karpathy autoresearch、pi-autoresearch（开源插件）</strong>：核心模式：改代码 → 跑基准 → 看指标 → 保留 / 回滚 → 重复；但是基准可能包含多个目标，每个版本需要 Archive 进行搜索优化；</p>
-            </section>
-            <section class="moo-md-method">
-              <h4>Ai4Sci</h4>
-              <p><strong>Sakana AI，Nature；AutoResearchClaw；EvoScientist</strong>：多 Agent 闭环 + 贝叶斯优化实验设计 + 渐进式 Agent 树搜索 + 实验管理 Agent</p>
+            <section class="moo-align-dir">
+              <h4>AutoResearch · 自动科研闭环</h4>
+              <div class="moo-align-chips">
+                <button type="button" class="moo-align-chip" data-panel="moo-ai-scientist"><b>The AI Scientist</b><span>Sakana AI · 端到端科研</span></button>
+                <button type="button" class="moo-align-chip" data-panel="moo-alphaevolve"><b>AlphaEvolve</b><span>DeepMind · 多指标代码进化</span></button>
+              </div>
             </section>
           </div>
         </article>
       </main>
     </div>
     <div class="deck-footer">
-      <span class="mono">科研迁移 · 多目标优化应用 · <a class="footer-link" href="#/4">返回论文页</a></span>
+      <span class="mono">科研迁移 · 多目标优化应用 · <a class="footer-link" href="#/6">返回论文页</a></span>
       <span class="slide-number" data-current="5" data-total="18"></span>
     </div>
     <aside class="notes">
@@ -470,11 +685,305 @@
       <p>搜索与推荐</p>
       <p>目标冲突：冲突包括召回率和准确率、内容多样性、转化率等目标</p>
       <p>方法包括召回阶段、精排阶段、重排、Auto-Research 进行 vt 超参调优，模型结构优化</p>
-      <p>Agent 决策和 Self-Evolution</p>
-      <p>目标冲突：任务完成率与推理长度、工具成本、响应时间、安全风险等需要权衡</p>
-      <p>方法包括 CoT 路径搜索、Self Evolution Harness、Auto-Research、Ai4Sci</p>
+      <p>Agent 自我改进这一栏按优化对象分成三条线：Self-Evolution 优化 Prompt 与 Pipeline，代表是 GEPA 和 DSPy；RSI 让优化器或 Agent 代码改进自己，代表是 STOP 和 DGM；AutoResearch 把选题、实验、写作与评审闭环自动化，代表是 The AI Scientist 和 AlphaEvolve。</p>
+      <p>多目标优化贯穿三条线：既要提升能力，也要兼顾安全、成本、鲁棒性和泛化。GEPA 与 AlphaEvolve 显式维护 Pareto 或多指标评估，其他工作则在多任务效用、多基准或科研评审准则下进行隐式多目标搜索。</p>
     </aside>
   </section>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal" id="al2-panel-moo-gdpo" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div>
+          <span class="al2-modal-tag">优势融合 · GDPO · NVIDIA</span>
+          <h3>分维度归一化的多奖励策略优化</h3>
+        </div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">GRPO 在多奖励设定下把<b>多维奖励向量直接标量化再做组内归一化</b>，让不同 rollout 的优势塌缩到相近值，训练信号分辨率降低、收敛差甚至早期崩溃。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>先加权、再归一化，尺度大的奖励维度会淹没其他维度，优势区分度被抹平。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方法</span><div class="arlx-v"><p>每个奖励维度<b>独立计算组内均值 / 标准差再归一化</b>，最后按权重叠加——先消除尺度与方差差异，再让权重真正表达偏好重要性。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>在 tool calling、math、code 三类任务上，正确性与约束遵循均稳定优于 GRPO，是多奖励 RL 的通用替代。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-align-gdpo.png" alt="GDPO 分维度归一化流程图"><figcaption>每个奖励维度单独归一化后再加权求和 → Policy Gradient</figcaption></figure>
+        <p class="moo-align-src">论文：GDPO — Group reward-Decoupled Normalization Policy Optimization (arXiv 2601.05242)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal" id="al2-panel-moo-gd2po" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div>
+          <span class="al2-modal-tag">优势融合 · GD²PO · Qwen</span>
+          <h3>冲突感知的解耦筛选</h3>
+        </div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">即使做了分维度归一化，同一条 rollout 仍可能<b>部分维度是正优势、另一部分是负优势</b>，聚合时相互抵消，训练信号再次被削弱。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>多维优势方向不一致的样本混进梯度，等于让模型同时往相反方向学。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方法</span><div class="arlx-v"><p><b>冲突感知过滤</b>：检测每条 rollout 各维优势的符号一致性，把严重冲突的样本掩掉，只让基本同向的置信样本进梯度。<b>Query 级重加权</b>：按 query 内整体奖励共识调整更新强度。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>在 tool calling 与人类偏好对齐上，相比 GRPO / DAPO / GDPO 一致且显著提升——先剔除冲突再更新，能保住有效优势的量级。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-align-gd2po.png" alt="GD²PO 冲突感知过滤流程图"><figcaption>多维符号一致则保留、冲突则 mask 丢弃，再做 query 级重加权</figcaption></figure>
+        <p class="moo-align-src">论文：GD²PO — Group-Dynamic reward-Decoupled Policy Optimization (arXiv 2606.16771)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal" id="al2-panel-moo-panacea" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div>
+          <span class="al2-modal-tag">模型结构 · Panacea · NeurIPS'24</span>
+          <h3>把 LoRA 变成 Pareto LoRA</h3>
+        </div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">传统对齐把多维偏好压成一个标量奖励，训出的模型只能追求平均效果，<b>无法在推理期按用户 / 场景切换 Pareto 前沿上的不同权衡</b>。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>为每种偏好权重单独训一个模型（MORLHF / Rewarded Soups）代价极高，也无法在线切换。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方法</span><div class="arlx-v"><p>把对齐重塑为<b>多维偏好优化</b>：用 SVD 型低秩适配，把 LoRA 的奇异值层做成可注入偏好权重向量的模块。推理时把偏好向量当奇异值注入，<b>同一基座即可沿 Pareto 前沿滑动</b>。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>首次证明单一 LLM 能在线、Pareto 最优地表达指数级大的偏好谱，训练开销远低于「一权重一模型」。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-align-panacea.png" alt="Panacea Pareto LoRA 流程图"><figcaption>偏好向量 λ 注入 LoRA 奇异值 Σ(λ)，同一基座切换到对应权衡的输出</figcaption></figure>
+        <p class="moo-align-src">论文：Panacea — Pareto Alignment via Preference Adaptation for LLMs (arXiv 2402.02030)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal" id="al2-panel-moo-projection" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div>
+          <span class="al2-modal-tag">奖励设计 · Projection Optimization · ICML'25</span>
+          <h3>用凸包投影处理非线性聚合</h3>
+        </div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">现有 MORLHF 几乎全靠<b>线性加权聚合</b>，无法表达「最差目标最大化」等非线性偏好；唯一的非线性方案一改聚合参数就得重训，代价极高。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>非线性目标（max-min / 几何平均）无法直接用线性 RLHF 求解。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方法</span><div class="arlx-v"><p>把非线性最大化<b>拆成一系列线性子问题</b>：每步把多目标向量在偏好凸包上做投影，反推等效线性权重后用现成算法求解，迭代到收敛；还扩展到 multi-group 场景。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>取得次线性 regret，且「单目标最优策略训好后近乎零成本」——把非线性聚合纳入 MORLHF 工具箱。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-align-projection.png" alt="Projection Optimization 凸包投影迭代流程图"><figcaption>非线性目标 → 转投影问题 → 反推线性权重 → 求解 → 收敛为 Pareto 最优策略</figcaption></figure>
+        <p class="moo-align-src">论文：Projection Optimization — A General Framework for Multi-Objective & Multi-Group RLHF (arXiv 2502.15145)　补充：几何平均适合乘性指标、拉格朗日乘子法适合硬约束</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal" id="al2-panel-moo-armorm" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div>
+          <span class="al2-modal-tag">动态权重 · ArmoRM · ACL'24</span>
+          <h3>按上下文路由奖励权重的 MoE 奖励模型</h3>
+        </div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">传统奖励模型输出<b>黑盒标量分数</b>，把多维偏好硬压成一个数，既不可解释也易 reward hacking；固定权重的多目标 RM 又无法按「当前 query 更看重哪一维」自适应。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>不同 query 的偏好侧重不同，一套固定权重无法通吃。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方法</span><div class="arlx-v"><p><b>ArmoRM</b> 多维绝对评分，每维对应可解释目标（honesty / verbosity / safety）；<b>Gating MoE</b> 用浅层 MLP 门控按 prompt 上下文自动决定各维权重组合。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>ArmoRM-Llama3-8B 在 RewardBench 上取得 SOTA，超过 GPT-4 as judge——动态、上下文相关的权重优于固定权重，也更可解释。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-align-armorm.png" alt="ArmoRM 门控加权奖励模型流程图"><figcaption>多目标 RM 出各维分数，Gating MLP 按上下文出权重，加权聚合成最终奖励</figcaption></figure>
+        <p class="moo-align-src">论文：ArmoRM — Interpretable Preferences via Multi-Objective Reward Modeling and MoE (arXiv 2406.12845)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal" id="al2-panel-moo-kimi" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div>
+          <span class="al2-modal-tag">动态权重 · Kimi k1.5</span>
+          <h3>按题目难度动态调节思维链长度惩罚</h3>
+        </div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">长 CoT 模型倾向「想得越久越对」，容易<b>过度思考、token 通胀</b>；但一刀切压缩长度又会伤害难题正确率——需要按难度自适应的长度惩罚。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>正确率与效率是一对冲突目标，固定的长度惩罚会误伤难题。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方法</span><div class="arlx-v"><p>reward 中加<b>长度奖励</b>：同 prompt 采样多条后用组内 min/max 长度归一化，对正确答案越短奖励越高（最长 → -0.5）、对错误答案显式加长惩罚；配合 long2short 把长 CoT 能力蒸馏到短 CoT。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>用最少手工奖励设计做到 SOTA 级推理，短 CoT 在 AIME / MATH500 / LiveCodeBench 上大幅超越 GPT-4o 与 Claude Sonnet 3.5。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-align-kimi.png" alt="Kimi k1.5 长度奖励流程图"><figcaption>按对错分支给长度奖励 / 惩罚，合入总奖励后 Policy Update，再 long2short</figcaption></figure>
+        <p class="moo-align-src">论文：Kimi k1.5 — Scaling Reinforcement Learning with LLMs (arXiv 2501.12599)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal moo-rec-modal" id="al2-panel-moo-mind" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm moo-rec-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">召回阶段 · MIND · CIKM'19</span><h3>多兴趣召回</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <p class="moo-rec-modal-line">MIND 将相关性、兴趣探索与长尾覆盖拆成多路候选，并按不同人群动态分配召回权重。</p>
+    </div>
+  </div>
+
+  <div class="al2-modal moo-rec-modal" id="al2-panel-moo-mmoe" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm moo-rec-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">精排阶段 · MMoE / PLE</span><h3>门控专家协同</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <p class="moo-rec-modal-line">MMoE 与 PLE 用共享表征和门控专家为不同任务分配容量，从而缓解点击、转化等目标之间的负迁移。</p>
+    </div>
+  </div>
+
+  <div class="al2-modal moo-rec-modal" id="al2-panel-moo-mgda" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm moo-rec-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">精排阶段 · PE-LTR / MGDA</span><h3>Pareto 梯度平衡</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <p class="moo-rec-modal-line">PE-LTR 与 MGDA 自动协调各任务的梯度方向和损失权重，以更少人工调参逼近 Pareto 最优解。</p>
+    </div>
+  </div>
+
+  <div class="al2-modal moo-rec-modal" id="al2-panel-moo-pantheon" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm moo-rec-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">重排阶段 · Pantheon · CIKM'25</span><h3>强化学习搜索个性化排序</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <p class="moo-rec-modal-line">Pantheon 用 IPPO 直接基于精排模型的多任务输出，迭代搜索每位用户的 Pareto 最优重排策略。</p>
+    </div>
+  </div>
+
+  <div class="al2-modal moo-rec-modal" id="al2-panel-moo-preferrec" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm moo-rec-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">重排阶段 · PreferRec · 2026</span><h3>跨用户迁移 Pareto 偏好</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <p class="moo-rec-modal-line">PreferRec 显式学习并跨用户迁移 Pareto 偏好结构，减少为每位用户重新探索权衡点的成本。</p>
+    </div>
+  </div>
+
+  <div class="al2-modal moo-rec-modal" id="al2-panel-moo-agentuna" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm moo-rec-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">Auto-Research · Agentuna · 字节</span><h3>推荐系统自动迭代</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <p class="moo-rec-modal-line">Agentuna 让 Agent 自动完成超参数搜索、策略调优与实验验证，把推荐链路的人工调参变成可持续自迭代。</p>
+    </div>
+  </div>
+
+  <div class="al2-modal moo-rec-modal" id="al2-panel-moo-agentx" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card al2-modal-card-sm moo-rec-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">Auto-Research · AgentX · 快手</span><h3>多 Agent 实验闭环</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <p class="moo-rec-modal-line">AgentX 用 Brainstorm、Developing、Evaluation 与 SGPO 四类 Agent 串起提案、开发、验证和语义梯度自进化闭环。</p>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal moo-agent-modal" id="al2-panel-moo-gepa" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">SELF-EVOLUTION · GEPA · ICLR'26 ORAL</span><h3>用自然语言反馈进化 Prompt</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">传统 RL 只利用一个稀疏分数，浪费了推理过程、工具调用和错误消息中大量可读信息；贪心改 Prompt 又容易困在局部最优。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>用 policy gradient 学 Prompt 需要大量 rollout，却没有真正读懂一次失败为什么失败。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方案</span><div class="arlx-v"><p><b>反思式变异</b>读取完整 trace 并改写 Prompt；<b>Pareto 候选池</b>保留各训练样本上最擅长的候选；多模块系统还能做 System-Aware Merge。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>6 个 benchmark × 2 个模型上，相比 GRPO 平均 <b>+6%</b>、最高 <b>+20%</b>，rollout 仅需 <b>1/35</b>。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-agent-gepa.png" alt="GEPA 候选池、Pareto 过滤和反思式变异循环"><figcaption>候选池 → Pareto 过滤 → 反思变异 / 模块合并 → 小批量评估 → 回到候选池</figcaption></figure>
+        <p class="moo-align-src">论文：GEPA — Genetic-Pareto Reflective Prompt Evolution（arXiv 2507.19457）· 已集成为 dspy.GEPA</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal moo-agent-modal" id="al2-panel-moo-dspy" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">SELF-EVOLUTION · DSPy</span><h3>把 Prompt 工程变成可编译程序</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">RAG、Agent 和 CoT pipeline 依赖手写 Prompt：换模型、换任务或增加一步推理都要重新调，系统难以复用和系统优化。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>在实际工程中 Prompt 对 LLM pipeline 的影响巨大，称作上下文脆弱性（prompt-brittleness）。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方案</span><div class="arlx-v"><p><b>Signatures</b> 声明输入输出，<b>Modules</b> 组合 Predict / CoT / ReAct / Retrieve，<b>Optimizers</b> 根据 metric 自动选 demos、改 instruction 或微调权重。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>同一程序跨 GPT-3.5、Llama2、T5 编译，无需手写 Prompt；GSM8K 提升 <b>25–65%</b>，HotPotQA 提升 <b>30–46%</b>。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-agent-dspy.png" alt="DSPy Signatures、Modules 和 Teleprompters 编译循环"><figcaption>Signatures 定义 WHAT，Modules 定义 HOW，Optimizer 根据数据与指标持续 compile</figcaption></figure>
+        <p class="moo-align-src">论文：DSPy — Compiling Declarative Language Model Calls into Self-Improving Pipelines（arXiv 2310.03714）</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal moo-agent-modal" id="al2-panel-moo-stop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">RSI · STOP · COLM'24</span><h3>让改进器递归改进自己</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">LLM 已能通过脚手架优化程序，但遗传算法、树搜索、Self-Refine 等策略仍由人写死；不同任务需要的改进方法并不相同。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>Agent 可以改任务代码，却不能改变“自己如何改进任务代码”的机制。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方案</span><div class="arlx-v"><p>先写一个接收“程序 + 效用函数”的 seed improver，再把 <b>improver 自身作为输入</b>交给它优化，递归生成遗传算法、bandit、模拟退火、beam / 树搜索等策略。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>模型参数不变，改进后的脚手架仍在代码合成、拼图与字符串任务等多类目标上显著优于 seed，同时暴露了绕过 sandbox 的安全风险。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-agent-stop.png" alt="STOP 自动探索出的自改进策略"></figure>
+        <p class="moo-align-src">论文：Self-Taught Optimizer（STOP）— Recursively Self-Improving Code Generation（arXiv 2310.02304）</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal moo-agent-modal" id="al2-panel-moo-dgm" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">RSI · DARWIN GÖDEL MACHINE · ICLR'26</span><h3>用开放式进化让 Agent 自改代码</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">经典 Gödel Machine 要先证明修改一定有益，现实中难以做到；现代 Coding Agent 的工具、Prompt 与上下文策略又长期被固定架构限制。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>怎样让 Agent 改自己的代码，同时避免贪心爬山只保留一个短期最优版本？</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方案</span><div class="arlx-v"><p>把“可证明有益”放宽成<b>基准上的经验验证</b>；维护不断增长的 Agent Archive，从多样父代采样、Self-modify、跑 benchmark，通过后加入档案，保留进化跳板。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>SWE-bench 从 <b>20.0% → 50.0%</b>，Polyglot 从 <b>14.2% → 30.7%</b>，显著优于无自改进或无开放式探索的基线。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-agent-dgm.png" alt="Darwin Gödel Machine 开放式进化循环"><figcaption>从 Archive 选父代 → Self-modify → Benchmark 验证 → 新 Agent 加入 Archive</figcaption></figure>
+        <p class="moo-align-src">论文：Darwin Gödel Machine（arXiv 2505.22954）· UBC / Vector / Sakana AI</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal moo-agent-modal" id="al2-panel-moo-ai-scientist" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">AUTORESEARCH · THE AI SCIENTIST · 2024</span><h3>端到端跑通开放式科学发现</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">以往 LLM Agent 只承担科研流程的一段；真正的自动科研需要把新颖性、可行性、实验成功率与论文质量同时纳入闭环。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>头脑风暴、写代码、跑实验和写论文彼此割裂，不能用评审反馈持续改进整个研究流程。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方案</span><div class="arlx-v"><p><b>Idea Generation</b> 做选题与新颖性检查，<b>Experiment Iteration</b> 修改代码、执行实验和收集图表，<b>Paper Write-up</b> 自动写作与评审；评审结果回流下一轮。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>每篇论文成本约 <b>15 美元</b>；自动 reviewer 可达顶会接受阈值，与人类评审的平衡准确率相近（65% vs 66%）。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-agent-ai-scientist.png" alt="The AI Scientist 端到端科研流程"><figcaption>Idea Generation → Experiment Iteration → Paper Write-Up → Review Feedback</figcaption></figure>
+        <p class="moo-align-src">论文：The AI Scientist — Towards Fully Automated Open-Ended Scientific Discovery（arXiv 2408.06292）</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal moo-align-modal moo-agent-modal" id="al2-panel-moo-alphaevolve" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">AUTORESEARCH · ALPHAEVOLVE · DEEPMIND</span><h3>同时优化多指标的进化式编程 Agent</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="arlx-body">
+        <p class="arlx-lead">FunSearch 只能进化短小函数和单一指标；真实科研与工程代码更长，还要同时权衡吞吐、能耗、正确性等多个目标。</p>
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem"><span class="arlx-k">问题</span><div class="arlx-v"><p>函数级、单指标搜索无法覆盖真实的跨函数代码与多目标工程约束。</p></div></div>
+          <div class="arlx-step is-fix"><span class="arlx-k">方案</span><div class="arlx-v"><p>LLM 集群变异整份代码；Program Database 保存候选、分数与反馈并采样多样父代；Evaluator Pool 用<b>多个可执行评估函数并行打分</b>。</p></div></div>
+          <div class="arlx-step is-cause"><span class="arlx-k">结论</span><div class="arlx-v"><p>4×4 复矩阵乘法降到 <b>48 次标量乘</b>，50+ 数学开放问题约 <b>20%</b> 找到 SOTA 新构造，并改善 Google 调度、TPU 电路和 Attention runtime。</p></div></div>
+        </div>
+        <figure class="moo-align-fig"><img src="assets/images/moo-agent-alphaevolve.png" alt="AlphaEvolve Prompt Sampler、LLM、Evaluator Pool 和 Program Database 循环"><figcaption>Prompt Sampler ↔ LLM Ensemble ↔ Evaluator Pool ↔ Program Database</figcaption></figure>
+        <p class="moo-align-src">论文：AlphaEvolve — A Gemini-powered Coding Agent for Designing Advanced Algorithms（arXiv 2506.13131）</p>
+      </div>
+    </div>
+  </div>
 
   <section class="slide" data-slide-id="doubao-creation-memory" data-title="Doubao Creation Memory">
     <div class="creation-memory-page">
@@ -497,9 +1006,8 @@
               <span>01 · SUMMARY</span>
               <h3>从每日主动消息中抽取可用创作兴趣</h3>
               <div class="memory-v11-stage-points">
-                <p><b>意图筛选</b><span>使用意图识别模型筛出图片 / 视频创作消息，排除非创作型请求</span></p>
-                <p><b>信息提取</b><span>将每日、多轮相同意图的消息合并为单个兴趣点，降低重复表达影响</span></p>
-                <p><b>噪声过滤</b><span>过滤工具向、恶搞向、政治向兴趣，保留可服务推荐和创作激发的偏好信号</span></p>
+                <p><b>筛选</b><span>识别图文 / 视频创作意图，排除非创作请求</span></p>
+                <p><b>归纳</b><span>合并多轮同类表达，过滤噪声并抽取兴趣点</span></p>
               </div>
             </article>
 
@@ -507,10 +1015,21 @@
               <span>02 · MERGE</span>
               <h3>将局部兴趣聚合为稳定的高阶偏好</h3>
               <div class="memory-v11-stage-points">
-                <p><b>兴趣聚类路由</b><span>按照 RQ-Kmeans 码本路由，并根据 cluster 大小动态调整分类粒度</span></p>
-                <p><b>高阶兴趣归纳</b><span>将相邻或相关兴趣凝练为代表性更强、泛化性更好的高阶兴趣点</span></p>
+                <p><b>聚类</b><span>RQ-Kmeans 路由，按 cluster 大小调整粒度</span></p>
+                <p><b>合并</b><span>把相关兴趣凝练为稳定、可泛化的高阶偏好</span></p>
               </div>
             </article>
+
+            <button type="button" class="memory-v11-training-card memory-rl-open" data-panel="creation-training">
+              <span>03 · POST-TRAINING</span>
+              <span class="memory-v11-training-flow">
+                <span><b>SFT</b><small>拒绝采样 + 两阶段蒸馏</small></span>
+                <i>→</i>
+                <span><b>RL</b><small>Constrained Reward GDPO</small></span>
+              </span>
+              <p>可信样本冷启动 → 规则 / 相关性 / 个性化业务对齐</p>
+              <em>展开训练方法与线上效果 ▸</em>
+            </button>
           </section>
         </div>
 
@@ -536,11 +1055,71 @@
     <aside class="notes">
       <p>这一页展开 Doubao Creation Memory核心目标是把用户每天主动发出的创作消息，从上下文不完整、表达重复且夹杂噪声的原始信号，转成层次化、可复用的用户兴趣表征</p>
       <p>Summary 阶段先用意图模型筛选图文和视频创作消息，合并相同意图，并过滤工具、恶搞、政治等非目标兴趣每个兴趣点统一记录风格、主题、细节、IP、用途和 Embedding，让兴趣既可解释，也能直接进入下游模型</p>
-      <p>在 Merge 阶段，RQ-Kmeans 码本负责按兴趣点聚合，并根据 cluster 大小自适应调整分类粒度；Merge LLM 再把局部兴趣归纳为更高阶、兼具代表性和泛化性的偏好工程上，整条链路覆盖千万量级日增消息，通过数据生产、消息队列、触发调度、集群 LLM 推理与 Abase 存储持续稳定产出</p>
+      <p>在 Merge 阶段，RQ-Kmeans 码本负责按兴趣点聚合，并根据 cluster 大小自适应调整分类粒度；Merge LLM 再把局部兴趣归纳为更高阶、兼具代表性和泛化性的偏好。</p>
+      <p>右侧新增 SFT → RL 训练入口。SFT 通过拒绝采样与两阶段蒸馏建立稳定冷启动；RL 用规则约束、相关性和个性化信号继续对齐业务目标。点击卡片可以展开原训练页的完整方法与实验效果。</p>
+      <p>工程上，整条链路覆盖千万量级日增消息，通过数据生产、消息队列、触发调度、集群 LLM 推理与 Abase 存储持续稳定产出。</p>
     </aside>
   </section>
 
-  <section class="slide" data-slide-id="creation-memory-training" data-title="Creation Memory Training & Impact">
+  <div class="al2-modal memory-rl-modal creation-training-modal" id="al2-panel-creation-training" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">CREATION MEMORY · POST-TRAINING</span><h3>SFT 冷启动 → RL 业务对齐</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="creation-training-modal-body">
+        <section class="creation-training-modal-stage is-sft">
+          <header><span>01 · SFT</span><h4>拒绝采样 + 两阶段 In-Context Distillation</h4></header>
+          <div class="creation-training-sft-grid">
+            <figure>
+              <img src="assets/images/image_1785067942.png" alt="两阶段 In-Context Distillation：闭源 Teacher 到中型模型再到服务小模型">
+              <figcaption>闭源 Teacher → 中型模型 → 服务小模型</figcaption>
+            </figure>
+            <div class="creation-training-stage-points">
+              <p><b>数据筛选</b><span>LLM-as-Judge 检查相关性与全面性；主动创作精排分过滤低价值样本。</span></p>
+              <p><b>蒸馏路径</b><span>先让中型模型吸收 Teacher 能力，再蒸馏到线上小模型，平衡质量与服务成本。</span></p>
+              <p><b>作用</b><span>建立稳定冷启动，使后续 RL 从格式正确、内容可信的策略开始。</span></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="creation-training-modal-stage is-rl">
+          <header><span>02 · RL</span><h4>Constrained Reward GDPO</h4></header>
+          <p class="creation-training-rl-intro">同一 Prompt 采样 \(G\) 条回答；每个目标先在组内形成相对优势，再按业务权重组合，避免量纲与方差互相污染。</p>
+          <div class="creation-training-rl-grid">
+            <section class="creation-training-formula creation-training-formula-clean">
+              <span>GRPO Objective</span>
+              <div class="display-math creation-training-equation is-loss">\[
+                \mathcal L=-\frac1{\sum_iT_i}\sum_{i,t}\Big[\min\big(\rho_{i,t}\hat A_i,\operatorname{clip}(\rho_{i,t},1-\epsilon,1+\epsilon)\hat A_i\big)-\beta D_{\mathrm{KL}}\big(\pi_\theta\parallel\pi_{\mathrm{ref}}\big)\Big]
+              \]</div>
+              <span>GDPO Advantage</span>
+              <div class="display-math creation-training-equation">\[
+                \hat A_i=\frac{R_i-\bar R}{\sqrt{\frac1G\sum_k(R_k-\bar R)^2+10^{-8}}}
+              \]</div>
+              <span>Reward Function</span>
+              <div class="display-math creation-training-equation is-reward">\[
+                A=r_1\cdot\left(w_2A_2+w_3A_3\right)
+              \]</div>
+            </section>
+            <div class="creation-training-rewards">
+              <p><b>\(r_1\)</b><span>规则约束：格式、错误字符、重复和长度</span></p>
+              <p><b>\(A_2\)</b><span>相关性：Judge 判断兴趣是否贴合输入</span></p>
+              <p><b>\(A_3\)</b><span>个性化：主动创作精排模型分数</span></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="creation-training-impact">
+          <div><span>ONLINE IMPACT</span><b>Short-Term Memory → MLLM-Emb → 社区精排</b></div>
+          <article><strong>+0.1751%</strong><span>创作高活用户 · LT3</span></article>
+          <article><strong>+0.0881%</strong><span>做同款展示 · LT3</span></article>
+          <article><strong>+0.2025%</strong><span>创作发消息 · LT7</span></article>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <section class="slide" data-slide-id="creation-memory-training" data-title="Creation Memory Training & Impact" data-slide-hidden="true">
     <div class="creation-training-page">
       <header class="creation-training-head" data-anim="fade-down">
         <div>
@@ -644,7 +1223,7 @@
 
         <div class="memory-one-model" data-anim="fade-left">
           <article class="memory-pomdp-card">
-            <div class="memory-pomdp-title"><span>POMDP</span><b>Procedure</b></div>
+            <div class="memory-pomdp-title"><span>POMDP</span><b>两阶段-one step</b></div>
             <div class="memory-prompt-stages">
               <button type="button" class="memory-prompt-stage memory-rl-open" data-panel="memory-stage-write" aria-label="查看第一阶段：用户兴趣 Memory 维护模块">
                 <span>STAGE 01 · WRITE</span><b>Memory Update</b><p>profile + 旧 Memory + 当日消息 → 新 Memory</p>
@@ -670,26 +1249,28 @@
         </div>
       </div>
 
-      <section class="memory-basic-flow" data-anim="fade-up">
-        <header class="memory-basic-head"><span>ONE MODEL TRAINING</span><b>Gemini 标注 → 32B SFT → 两阶段 RL → 8B OPD</b></header>
-        <div class="memory-basic-stages">
-          <button type="button" class="memory-basic-stage memory-rl-open" data-panel="memory-basic-sft"><span>01</span><b>Gemini 3 Pro → 32B SFT</b><p>真实分布采样 · Judge 拒绝采样<br>2,385 steps · train / val 同步收敛</p></button>
-          <i>→</i>
-          <section class="memory-basic-rl-stage">
-            <header><span>02</span><b>Qwen3-32B · Two-Stage RL</b></header>
-            <div>
-              <button type="button" class="memory-rl-open" data-panel="memory-basic-rl"><small>STAGE I</small><b>Short Horizon</b><p>&lt;15 turn · avg 4.8</p></button>
-              <i>→</i>
-              <button type="button" class="memory-rl-open" data-panel="memory-basic-rl"><small>STAGE II</small><b>Long Horizon</b><p>&gt;30 turn · avg 38.3</p></button>
-            </div>
-          </section>
-          <i>→</i>
-          <button type="button" class="memory-basic-stage memory-rl-open" data-panel="memory-opd"><span>03</span><b>32B Teacher → 8B OPD</b><p>Student on-policy 采样<br>Teacher 逐 token 蒸馏</p></button>
-        </div>
-        <div class="memory-basic-foundations">
-          <button type="button" class="memory-rl-open" data-panel="memory-basic-data"><b>DATA</b><span>30 万用户 · 1 万 UID SFT 采样 · 76,320 train / 2,400 val</span></button>
-          <button type="button" class="memory-rl-open" data-panel="memory-basic-reward"><b>REWARD</b><span>精排 + LLM Judge + 下游 API · 各路 Advantage 后加权</span></button>
-          <button type="button" class="memory-rl-open" data-panel="memory-basic-infra"><b>INFRA</b><span>slime · 32×A100 80GB · TP8 / DP4 · seq 8192</span></button>
+      <section class="agentic-memory-survey" data-anim="fade-up">
+        <header class="agentic-memory-head">
+          <div><b>Agentic Memory 调研</b></div>
+          <!-- <em>点击卡片查看方法、结果与论文原图</em> -->
+        </header>
+        <div class="agentic-memory-grid">
+          <button type="button" class="agentic-memory-card" data-panel="agentic-memagent">
+            <span class="agentic-memory-copy"><span class="agentic-memory-paper-head"><b>MemAgent</b><cite>ICLR 2026 Oral · Hongli Yu et al.</cite></span><p>启发：共享读写策略，用终局回报学习固定预算内“该记什么”。</p></span>
+            <span class="agentic-memory-arrow" aria-hidden="true">↗</span>
+          </button>
+          <button type="button" class="agentic-memory-card" data-panel="agentic-memory-r2">
+            <span class="agentic-memory-copy"><span class="agentic-memory-paper-head"><b>Memory-R2</b><cite>arXiv 2026 · Sikuan Yan et al.</cite></span><p>启发：用共享骨干与局部重放，校准不同记忆状态下的信用分配。</p></span>
+            <span class="agentic-memory-arrow" aria-hidden="true">↗</span>
+          </button>
+          <button type="button" class="agentic-memory-card" data-panel="agentic-memory-r1">
+            <span class="agentic-memory-copy"><span class="agentic-memory-paper-head"><b>Memory-R1</b><cite>ACL 2026 Long Paper · Sikuan Yan et al.</cite></span><p>启发：把记忆增、改、删、保留变成由最终答案监督的可学习动作。</p></span>
+            <span class="agentic-memory-arrow" aria-hidden="true">↗</span>
+          </button>
+          <button type="button" class="agentic-memory-card" data-panel="agentic-mem1">
+            <span class="agentic-memory-copy"><span class="agentic-memory-paper-head"><b>MEM1</b><cite>arXiv 2025 · Zijian Zhou et al.</cite></span><p>启发：把推理与记忆合成 Internal State，并将信用细化到 token 级。</p></span>
+            <span class="agentic-memory-arrow" aria-hidden="true">↗</span>
+          </button>
         </div>
       </section>
 
@@ -707,90 +1288,398 @@
       <p><strong>这一页先不讲 RL 算法，先回答为什么要把任务做成 One Model。</strong>真实兴趣看不见，我们每天只能观察用户发来的图文和视频，所以这是一个 POMDP：定长 Memory 相当于 belief state，用有限容量保存对未来创作最有用的信息；最终 Title、Desc 以及线上反馈才是终端回报。右上角是两次独立 LLM 调用：第一阶段从 profile、旧 Memory 和当日消息中维护长期兴趣，第二阶段读取这份 Memory，再结合 context、历史标题和 mode 生成 1 到 8 组创作提案。</p>
       <p>第一，分开训练会切断信用。Memory Writer 收不到最终回报，只能按照人工摘要规范学习，容易保留“读起来顺”的信息，却丢掉画风、题材和新鲜度这些真正能驱动创作的要素。第二，Memory 是 Writer 与 Reader 之间的协议。两个独立模型容易各自形成私有约定；共享参数则像给自己写便签，写和读天然使用同一个编码习惯。</p>
       <p>第三，多轮会把小错放大。每次覆盖式更新都建立在上一版 Memory 上，单轮接口错配会不断污染后续状态。所以 One Model 的价值不是少部署一个模型，而是让终端信用、内部协议和长程状态三件事同时闭环。</p>
-      <p><strong>底部是实际训练主链。</strong>先用 Gemini 3 Pro 打标并训练 Qwen3-32B；RL 分为短轨迹和长轨迹两阶段，第一阶段使用小于 20 turn、平均 4.8 turn 的样本，第二阶段使用大于 30 turn、平均 38.3 turn 的样本；最后把 RL 后的 32B Teacher 通过 OPD 蒸馏到 Qwen3-8B。Data、Reward 和 Infra 三块可以继续展开看具体配置。</p>
+      <p><strong>底部是我在方案设计前调研的四条 Agentic Memory 路线。</strong>MemAgent 说明固定预算下的覆盖式重写可以由终局回报学会；Memory-R2 处理不同 memory state 对组内信用比较的污染；Memory-R1 证明记忆增删改查本身可以成为 RL 动作；MEM1 则进一步把 reasoning 与 memory 合成 Internal State，并把信用细化到 token。四张卡片都可以展开查看论文问题、方法、结果和原图。</p>
     </aside>
   </section>
 
-  <section class="slide" data-slide-id="memory-rl-objectives" data-title="One Model Post-Training">
-    <div class="memory-rl-page memory-compare-page">
-      <header class="memory-rl-head memory-compare-head" data-anim="fade-down">
+  <section class="slide" data-slide-id="data-process-reward-design" data-title="Data Process and Reward Design">
+    <div class="data-reward-page">
+      <header class="data-reward-head" data-anim="fade-down">
         <div>
-          <span class="section-label">doubao creation memory / three-step comparison</span>
-          <h2>Random Trajectory Window RL</h2>
+          <span class="section-label">doubao creation memory / training signal engineering</span>
+          <h2>Data Process and Reward Design</h2>
         </div>
-        <div class="memory-rl-meta"><strong>LOCAL → GLOBAL → WINDOWED</strong><span>从单步组内优势，逐步走向长程状态信用</span></div>
+        <!-- <p>先把 Teacher 轨迹变成可信状态链，再让低方差业务信号沿多轮稳定回传</p> -->
       </header>
 
-      <main class="memory-plan-layout memory-plan-v2">
-        <section class="memory-plan-primary-v2" data-anim="fade-right">
-          <header><span>PLAN 03 · RECOMMENDED</span><b>随机窗口强化：局部计算，长程信用</b></header>
-          <div class="memory-plan-visual">
-            <a class="memory-plan-step12" href="#memory-plan3-zoom">
-              <iframe class="plan3-inline-frame" src="assets/plan3_reinforce_ppt.html" title="Plan 3 步骤 1 和 2：随机抽取局部窗口，并从同一起点并行 rollout" tabindex="-1"></iframe>
-            </a>
-            <button type="button" class="memory-plan-why memory-rl-open" data-panel="memory-plan3-advantages">为什么 Plan 3 更合理</button>
-          </div>
-          <div class="memory-plan-formulas">
-            <article>
-              <span>③ MEMORY UPDATE</span><b>承担窗口内未来后果</b>
-              <div class="display-math">\[\widetilde A_{i+k}^{\mathcal M,(n)}=\sum_{j=k}^{K}\gamma^{j-k}A_{i+j}^{(n)}\]</div>
-            </article>
-            <article>
-              <span>④ SUGGESTION</span><b>只承担当前位置奖励</b>
-              <div class="display-math">\[\widetilde A_{i+k}^{\mathcal S,(n)}=A_{i+k}^{(n)}\]</div>
-            </article>
-            <article class="is-gmpo">
-              <span>⑤ GMPO</span><b>用几何平均稳定长输出</b>
-              <div class="display-math">\[r_i^{geo}=\exp\!\left(\frac{1}{|o_i|}\sum_t\log\rho_{i,t}\right),\quad \mathcal J=\mathbb E[\operatorname{clip}(r_i^{geo})\hat A_i]\]</div>
-            </article>
+      <main class="data-reward-layout">
+        <section class="data-process-panel" data-anim="fade-right">
+          <header>
+            <h3>Data Process</h3>
+            <button type="button" class="data-reward-open" data-doc-preview="data-cleaning">查看完整文档 ↗</button>
+          </header>
+          <div class="data-reward-outline">
+            <article><b>1. 清除 Teacher 过程噪声</b><ul><li>删除校验重试、自我修正和英文元推理</li><li>过滤嵌套 think 标签与 few-shot 内容复制</li></ul></article>
+            <article><b>2. 校验结构与多轮状态</b><ul><li>Parser 校验 think / decision / memory 和固定槽位</li><li>逐 UID 回放状态链，检查次数、天数和日期不变量</li></ul></article>
+            <article><b>3. 检测生成退化</b><ul><li>NFKC、UTF-8、长度分位与截断检测</li><li>n-gram 循环、连续字符循环和语义级去重</li></ul></article>
+            <article><b>4. 数据隔离与可追溯</b><ul><li>按 UID 切分 train / valid，SFT 与 RL 数据不同源</li><li>失败样本记录原因码，支持规则回归与质量分析</li></ul></article>
           </div>
         </section>
 
-        <section class="memory-plan-side" data-anim="fade-left">
-          <div class="memory-plan-baselines">
-            <a href="#memory-plan1-zoom">
-              <header><span>PLAN 01 · LOCAL</span><b>单步 GRPO</b></header>
-              <div class="memory-plan-baseline-visual"><iframe class="plan-baseline-frame" src="assets/plan1_grpo_ppt.html" title="Plan 1 单个 Memory 状态下的并行 GRPO 方案" tabindex="-1"></iframe></div>
-              <p><b>失败原因：</b>Memory 更新轨迹没有进入训练；update 并非真正 on-policy，也感知不到未来 Memory 状态。</p>
-            </a>
-            <a href="#memory-plan2-zoom">
-              <header><span>PLAN 02 · GLOBAL</span><b>长轨迹 Agentic RL</b></header>
-              <div class="memory-plan-baseline-visual"><iframe class="plan-baseline-frame" src="assets/plan2_agentic_rl_ppt.html" title="Plan 2 完整长轨迹终端奖励方案" tabindex="-1"></iframe></div>
-              <p><b>失败原因：</b>多轮 update 共用一个终端信号，非可验证奖励下信用严重混淆；完整轨迹连 32 卡也难负担。</p>
-            </a>
+        <section class="reward-design-panel" data-anim="fade-left">
+          <header>
+            <h3>Reward Design</h3>
+            <button type="button" class="data-reward-open" data-doc-preview="reward-design">查看完整文档 ↗</button>
+          </header>
+          <div class="data-reward-outline reward-outline">
+            <article><b>1. 三类信号严格分离</b><ul><li>Raw reward 只描述结果；advantage 决定训练方向</li><li>格式与状态机错误由 local penalty 单独处理</li></ul></article>
+            <article><b>2. 正式目标由 Funnel 主导</b><ul><li>Funnel / Safety / Diversity = 0.90 / 0.09 / 0.01</li><li>Click / Download 仅用于诊断；Safety 为 soft-only，不再整组清零</li></ul></article>
+            <article><b>3. Suggestion：同状态相对偏好</b><ul><li>同一 Memory state 采样 K=4，逐 head 中心化与尺度归一</li><li>0.4×effective-std deadzone；本地错误触发 penalty-only</li></ul></article>
+            <article><b>4. Memory：Paired-Prestate 差分</b><ul><li>同 request、同 seed 比较 updated 与 prestate 的后续收益</li><li>只让通过 floor / SNR / sign / LOO 的 top-bottom branches 获得信用</li></ul></article>
+            <article><b>5. 缺失与尺度 Fail-Closed</b><ul><li>缺失 head 标记 unavailable，不伪造为 0 reward</li><li>absolute-floor soft shrink + previous-rollout EMA scale，最终分量 clip</li></ul></article>
           </div>
-
-          <section class="memory-plan-results">
-            <header><span>EXPERIMENTS</span><b>已知证据与本项目消融</b></header>
-            <div class="memory-exp-gallery">
-              <a class="memory-exp-card is-recall" href="#memory-exp-recall-zoom">
-                <img src="assets/images/exp-memory-recall.png" alt="不同训练方案随 Memory 更新轮数变化的 Recall 曲线">
-                <span>LONG-HORIZON RECALL</span>
-              </a>
-              <a class="memory-exp-card is-chunk" href="#memory-exp-chunk-zoom">
-                <img src="assets/images/exp-reward-chunk.png" alt="不同 Chunk 长度下的训练 Reward 曲线">
-                <span>REWARD × CHUNK</span>
-              </a>
-              <a class="memory-exp-card is-crossplay" href="#memory-exp-same-model-zoom">
-                <img src="assets/images/exp-same-model.png" alt="不同 Memory Updater 和 Suggestion Generator 组合的最终 Reward 矩阵">
-                <span>SAME MODEL CROSS-PLAY</span>
-              </a>
-            </div>
-          </section>
         </section>
       </main>
     </div>
     <div class="deck-footer">
-      <span class="mono">工业实践 · One Model Post-Training · <a class="footer-link" href="#/9">返回问题定义</a></span>
-      <span class="slide-number" data-current="10" data-total="19"></span>
+      <span class="mono">工业实践 · Data Quality × Reward Engineering · <a class="footer-link" href="#/10">返回 One Model</a></span>
+      <span class="slide-number" data-current="12" data-total="18"></span>
     </div>
     <aside class="notes">
-      <p><strong>这一页比较三种信用分配方案。</strong>Plan 1 只在同一个 Memory 状态下采样下一步更新和建议。问题是 Memory 更新轨迹没有真正进入训练过程：要么 update 不是 on-policy，要么它完全看不到自己对未来 Memory 状态的影响，所以单步比较不能解决长期信用。</p>
-      <p>Plan 2 虽然 rollout 了完整轨迹，但所有 Memory update 共用同一个终端信号。在可验证任务里还可以用唯一正确答案降低噪声，在推荐、内容质量这类非可验证奖励中，同一个分数无法区分到底是哪一天的更新起了作用；而且完整长轨迹成本太高，32 张卡也难以负担。</p>
-      <p>Plan 3 只把步骤一和二画成图：随机抽取固定长度 K 的窗口，再从同一起点并行 rollout N 条轨迹。下面三个公式分别说明信用怎样落回动作：Memory update 获取窗口内未来折扣优势，Suggestion 只获取当前优势，最后用 GMPO 稳定长输出。点击“为什么 Plan 3 更合理”可以继续展开五项设计理由。</p>
-      <p><strong>右下角是三组本项目实验。</strong>第一张长程 Recall 曲线显示，随着 Memory 更新轮数增加，RL 与 OPD 的记忆保持明显优于 Gemini 3 Pro、SFT 和 Baseline。第二张比较 Chunk 长度，4096 的 Reward 最高、2048 次之、1024 最低，说明单步信息容量会影响训练上限。第三张是 Memory Updater 与 Suggestion Generator 的交叉矩阵，RL→RL 得分最高为 0.86，跨模型组合普遍下降，支持同模型读写协议更一致。三张图都可以点击放大。</p>
+      <p><strong>这一页分成 Data 和 Reward 两部分。</strong>左侧的数据清洗不是通用的脏词过滤，而是围绕两阶段 Memory 任务做五层门禁：先移除 Teacher 重试和元推理痕迹，再检查输出 Schema，然后跨轮验证 Memory 状态不变量，接着检测编码、长度、重复和循环退化，最后按 UID 隔离 SFT 与 RL 并记录每条失败原因。</p>
+      <p><strong>右侧更新为当前 memory_RL4 的正式实现。</strong>首先区分 raw reward、advantage 与 local penalty：Funnel、Safety、Diversity 是服务端绝对观测，但真正进入训练的是相对偏好或 paired-prestate 差分；格式、重复和非法状态转移则走本地 penalty，不能混成一条 reward 曲线。</p>
+      <p>Suggestion 在同一 Memory state 下采样 K=4，逐 head 做中心化、effective scale 和 deadzone，再按 0.90 / 0.09 / 0.01 聚合。Memory update 使用同 request、同 seed 的 updated-prestate 配对差分，并依次通过 exact pair、absolute floor、SNR、符号一致性、LOO 与 top/bottom branch gate；缺失信号一律 unavailable，不填 0。</p>
     </aside>
   </section>
+
+  <section class="slide" data-slide-id="memory-rl-objectives" data-title="Temporal Credit Assignment">
+    <div class="memory-rl-page memory-credit-page">
+      <header class="memory-rl-head memory-compare-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">doubao creation memory / temporal credit assignment</span>
+          <h2>Memory Credit Assignment</h2>
+        </div>
+        <div class="memory-rl-meta"><strong>PAST BASELINE → FUTURE RETURN</strong><span>不退化 + 能承接：为 Memory 更新分配时序信用</span></div>
+      </header>
+
+      <main class="memory-credit-layout">
+        <section class="memory-credit-primary" data-anim="fade-right">
+          <header>
+            <div><span>CURRENT · V2</span><b>未来 Return − 过去 Baseline</b></div>
+            <button type="button" class="data-reward-open" data-doc-preview="baseline-credit-assignment">查看完整文档 ↗</button>
+          </header>
+          <figure class="memory-credit-figure">
+            <img src="assets/images/baseline-credit-timeline-cropped.png" alt="沿轨迹使用过去折扣 baseline 和未来归一化 return 计算时序 advantage">
+            <figcaption>位置 \(t\) 左侧衡量历史平均水平，右侧衡量本次 Memory 对未来表现的贡献。</figcaption>
+          </figure>
+          <div class="memory-credit-formulas">
+            <article>
+              <span>01 · BASELINE</span>
+              <div class="display-math">\[\begin{aligned}b_t^k&amp;=\frac{\rho\mu_k+\sum_{j&lt;t,\,j\in V}\lambda^{t-j-1}\bar{r}_j^k}{\rho+\sum_{j&lt;t,\,j\in V}\lambda^{t-j-1}}\\[-2pt]\rho&amp;=1,\quad H_p=3,\quad \lambda=0.8\end{aligned}\]</div>
+              <!-- <div class="display-math">\[\begin{aligned}b_t^k&amp;= r_{r-1}^k\end{aligned}\]</div> -->
+            </article>
+            <article>
+              <span>02 · FUTURE RETURN</span>
+              <div class="display-math">\[\begin{aligned}\bar G_t^k&amp;=\frac{\sum_{j\ge t,\,j\in V}\gamma^{j-t}\bar{r}_j^k}{\sum_{j\ge t,\,j\in V}\gamma^{j-t}}\\[-2pt]\gamma&amp;=0.95,\qquad V_{\ge t}=\varnothing\Rightarrow A_t^k=0\end{aligned}\]</div>
+            </article>
+            <article class="is-suggestion">
+              <span>03 · SUGGESTION ADVANTAGE</span>
+              <div class="display-math memory-credit-equation-stack">\[\begin{aligned}A_{S,t}^{k}&amp;=r_t^k-b_{t+1}^k\\A_{S,t}^{q}&amp;=.9A_{S,t}^{Funnel}+.09A_t^{J_d}+ .01A_t^{J_s}\\A_{S,t}&amp;=\operatorname{clip}_{final}\!\left(\operatorname{clip}_{quality}(A_{S,t}^{q})+P_{S,t}\right)\end{aligned}\]</div>
+            </article>
+            <article class="is-advantage">
+              <span>04 · MEMORY ADVANTAGE</span>
+              <div class="display-math memory-credit-equation-stack">\[\begin{aligned}A_{M,t}^{k}&amp;=\begin{cases}\bar G_t^k-b_t^k,&amp;V_{\ge t}\ne\varnothing\\P_{M,t},&amp;\mathrm{fallback}\end{cases}\\A_{M,t}^{q}&amp;=.9A_{M,t}^{Funnel}+.01 A_t^{J_d}+ .09A_t^{J_s} \\A_{M,t}&amp;=\operatorname{clip}_{final}\!\left(\operatorname{clip}_{quality}(A_{M,t}^{q})+P_{M,t}\right)\end{aligned}\]</div>
+            </article>
+          </div>
+        </section>
+
+        <aside class="memory-credit-side" data-anim="fade-left">
+          <div class="memory-plan-baselines">
+            <a href="#memory-plan1-zoom">
+              <header><span>PLAN 01 · LOCAL</span><b>单步 GRPO</b></header>
+              <div class="memory-plan-baseline-visual"><iframe class="plan-baseline-frame" src="assets/plan1_grpo_ppt.html" title="Plan 1 单个 Memory 状态下的并行 GRPO 方案" tabindex="-1"></iframe></div>
+              <p><b>失败原因：</b>Memory update 没有真正进入 on-policy 轨迹，也看不到对未来状态的影响。</p>
+            </a>
+            <a href="#memory-plan2-zoom">
+              <header><span>PLAN 02 · GLOBAL</span><b>完整长轨迹 RL</b></header>
+              <div class="memory-plan-baseline-visual"><iframe class="plan-baseline-frame" src="assets/plan2_agentic_rl_ppt.html" title="Plan 2 完整长轨迹终端奖励方案" tabindex="-1"></iframe></div>
+              <p><b>失败原因：</b>多轮 update 共用终端信号，信用混淆且完整长轨迹难以承载。</p>
+            </a>
+            <a class="is-plan3-failed" href="#memory-plan3-zoom">
+              <header><span>PLAN 03 · FAILED</span><b>随机窗口并行 Rollout</b></header>
+              <div class="memory-plan-baseline-visual is-plan3"><iframe class="plan-baseline-frame" src="assets/plan3_reinforce_ppt.html" title="Plan 3 随机窗口并行 Rollout 方案" tabindex="-1"></iframe></div>
+              <p><b>失败原因：</b>单个 UID 采样量过大；多窗口 × 多轨迹使推理 token、Judge 调用和显存成本成倍增长。</p>
+            </a>
+          </div>
+        </aside>
+      </main>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · Temporal Credit Assignment · <a class="footer-link" href="#/10">返回问题定义</a> · <a class="footer-link" href="#/13">下一页：PPO 与 Infra</a></span>
+      <span class="slide-number" data-current="12" data-total="18"></span>
+    </div>
+    <aside class="notes">
+      <p><strong>这一页是当前采用的时序信用分配。</strong>旧 Plan 3 需要对一个 UID 的多个随机窗口各自并行 rollout，采样量和推理成本都过高，因此已经判定失败。现在不再额外制造多条分支，而是直接复用单条真实轨迹上的有效位置。</p>
+      <p>过去方向用最近三个有效位置的折扣平均，再加跨 batch EMA 先验，回答“这次更新后是否比此前更好”；未来方向计算归一化折扣 return，回答“这次 Memory 是否为后续效果铺路”。两者相减得到 Memory advantage，同时约束不退化和长期承接。</p>
+      <p>左下角四块依次给出 baseline、future return、Suggestion advantage 和 Memory advantage 的完整计算。Suggestion 只减历史 baseline，不累计未来；Memory 用 future return 减 past baseline。两者分别做多目标加权、quality clip、当前动作 penalty 和 final clip。</p>
+      <p>右侧三张卡片保持同一格式并都可点击放大。Plan 3 的失败原因不是信用思想错误，而是单 UID 的窗口和并行轨迹组合使推理成本不可接受；当前方案因此改为复用单条真实轨迹。</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-slide-id="memory-ppo-infra" data-title="PPO Loss &amp; Async Infra">
+    <div class="memory-ppo-page">
+      <header class="memory-rl-head memory-compare-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">doubao creation memory / optimization &amp; systems</span>
+          <h2>PPO Loss &amp; Async Infra</h2>
+        </div>
+        <div class="memory-ppo-doc-access"><button type="button" class="data-reward-open" data-doc-preview="ppo-loss-infra">查看完整文档 ↗</button></div>
+      </header>
+
+      <main class="memory-ppo-simple-layout">
+        <section class="memory-ppo-simple-panel is-infra" data-anim="fade-right">
+          <header><span>4.3.4 · INFRA</span><h3>异步流水线与长尾治理</h3></header>
+          <div class="memory-ppo-simple-flow">
+            <span>generate(n)</span><i>→</i><span>reward(n)</span><strong>∥</strong><span>train(n−1)</span><i>→</i><span>sync</span><i>→</i><span>generate(n+1)</span>
+          </div>
+          <div class="memory-ppo-simple-copy">
+            <p><b>Reward / Train 异步</b>Reward(n) 与 Train(n−1) 并行，完成后同步新权重再生成 n+1；两段耗时接近，可显著压缩每轮等待。</p>
+            <p><b>一轮 Off-policy</b>训练使用上一批 rollout 数据，因此只有一批次延迟；右侧 TIS 对整条轨迹的重要性采样比进行修正。</p>
+            <p><b>数据集课程学习 · 8 → 15 → 30</b>训练初期将轨迹长度上限设为 8，稳定后依次提升到 15 和 30，让策略逐步适应更长的 Memory 状态与信用跨度。</p>
+            <p><b>75% 轨迹提前停止</b>当前 batch 75% 轨迹完成即进入 reward / train，剩余 25% 下批续跑，避免最长轨迹阻塞所有 GPU。</p>
+          </div>
+          <!-- <div class="memory-ppo-simple-note"><b>取舍：</b>提前停止会让截断附近的轨迹前后 off policy，但是对于 rollout 时间节省巨大。</div> -->
+        </section>
+
+        <section class="memory-ppo-simple-panel is-loss" data-anim="fade-left">
+          <header><span>4.3.3 · LOSS</span><h3>PPO-Clip + TIS + KL3 + Entropy</h3></header>
+          <div class="display-math memory-ppo-simple-main">\[\begin{aligned}L^{CLIP}(\theta)&amp;=\mathbb E_{\tau\sim\pi_{old}}\!\left[\frac1{|\tau|}\sum_{t\in\tau}\omega_\tau(\theta)\,\min\!\left(r_tA_t,\operatorname{clip}(r_t,1-\epsilon,1+\epsilon)A_t\right)\right]\\r_t(\theta)&amp;=\frac{\pi_\theta(a_t|s_t)}{\pi_{old}(a_t|s_t)},\qquad \omega_\tau=\operatorname{clip}\!\left(\frac{\pi_{old}(\tau)}{\pi_{rollout}(\tau)},0.5,2\right)\end{aligned}\]</div>
+          <p class="memory-ppo-simple-desc">PPO-Clip 限制更新幅度，TIS 修正异步流水线带来的一轮策略延迟；轨迹比使用所有 token 概率比的几何平均。</p>
+          <div class="display-math memory-ppo-simple-reg">\[\begin{aligned}L^{KL}(\theta)&amp;=-\beta_{KL}\,\mathbb E_t[D_{KL}(\pi_\theta\|\pi_{ref})]\\L^{ENT}(\theta)&amp;=+\beta_H\,\mathbb E_t[H[\pi_\theta]]\\L(\theta)&amp;=L^{CLIP}(\theta)+L^{KL}(\theta)+L^{ENT}(\theta)\end{aligned}\]</div>
+          <div class="memory-ppo-simple-divider"></div>
+          <span class="memory-ppo-simple-kicker">LOSS REDUCTION · TOKEN → ACTION → UID → BATCH</span>
+          <div class="display-math memory-ppo-simple-reduction">\[L=\frac1B\sum_{u=1}^{B}\frac1{2L_u}\sum_{t=1}^{L_u}\sum_{a\in\{M,S\}}\frac1{N_{u,t,a}}\sum_{j=1}^{N_{u,t,a}}A_{u,t,a,j}\log\pi_\theta(a_{u,t,a,j}|s_{u,t})\]</div>
+          <p class="memory-ppo-simple-desc">先按 token 求均值，再让每个位置的 Memory / Suggestion 均权，最后跨 UID 求平均；无 policy token 则 zero-mask，整批无有效 advantage 时跳过更新。</p>
+        </section>
+      </main>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · PPO Loss &amp; Async Infra · <a class="footer-link" href="#/12">返回信用分配</a> · <a class="footer-link" href="#/14">下一页：OPD</a></span>
+      <span class="slide-number" data-current="13" data-total="19"></span>
+    </div>
+    <aside class="notes">
+      <p><strong>这一页讲有了 Advantage 以后，策略到底如何更新。</strong>PPO-Clip 控制单次更新步幅；由于 reward_and_convert 与上一批 train 并行，rollout 策略会比训练策略慢一轮，所以用轨迹级 TIS 修正这一个 batch 的 off-policy 偏差。KL3 把策略锚定在 SFT 模型附近，Entropy 奖励则防止过早收敛。</p>
+      <p><strong>Loss 归约严格分三层。</strong>先在每个 action 内按 policy token 求均值，避免长输出天然梯度更大；再让一个 UID 的每个位置、每类 action 各占固定权重；最后跨 batch 的 UID 求平均。因此长轨迹、长回答和大 UID 都不会仅凭长度主导更新。</p>
+      <p><strong>工程上使用 Reward / Train 异步流水线。</strong>生成完成后，当前批次算 reward 的同时训练上一批次；训练数据再按轨迹长度上限 8 → 15 → 30 做课程学习，逐步扩大长期信用跨度。长尾方面，75% 轨迹完成即可推进，剩余 25% 放到下一批续跑，避免最慢轨迹阻塞整卡。</p>
+    </aside>
+  </section>
+
+  <section class="slide" data-slide-id="memory-rl-experiments" data-title="One Model Experiments &amp; Ablations">
+    <div class="memory-experiment-page">
+      <header class="memory-rl-head memory-compare-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">doubao creation memory / evidence · ablation · reasoning</span>
+          <h2>Experiment &amp; Capability Evidence</h2>
+        </div>
+        <!-- <div class="memory-rl-meta"><strong>EVIDENCE → ABLATION → DECISION</strong><span>用实验拆解长期记忆、上下文容量与同模型读写协议</span></div> -->
+      </header>
+      <main class="memory-experiment-grid">
+        <article class="memory-experiment-card" data-anim="fade-up">
+          <header><span>01 · LONG-HORIZON</span><b>多轮 Memory Recall</b></header>
+          <a href="#memory-exp-recall-zoom"><img src="assets/images/exp-memory-recall.png" alt="不同训练方案随 Memory 更新轮数变化的 Recall 曲线"></a>
+          <p>随着更新轮数增加，RL 与 OPD 的记忆保持明显优于 Gemini 3 Pro、SFT 和 Baseline，证明长期状态能力需要训练闭环。</p>
+        </article>
+        <article class="memory-experiment-card" data-anim="fade-up">
+          <header><span>02 · CONTEXT CAPACITY</span><b>Reward × Chunk</b></header>
+          <a href="#memory-exp-chunk-zoom"><img src="assets/images/exp-reward-chunk.png" alt="不同 Chunk 长度下的训练 Reward 曲线"></a>
+          <p>4096 chunk 的 Reward 最高、2048 次之、1024 最低，说明单步可见信息容量会直接限制策略上限。</p>
+        </article>
+        <article class="memory-experiment-card" data-anim="fade-up">
+          <header><span>03 · CROSS-PLAY</span><b>同模型读写协议</b></header>
+          <a href="#memory-exp-same-model-zoom"><img src="assets/images/exp-same-model.png" alt="不同 Memory Updater 和 Suggestion Generator 组合的最终 Reward 矩阵"></a>
+          <p>RL Updater → RL Generator 得分最高为 <b>0.86</b>；跨模型组合普遍下降，支持共享参数形成更一致的 Memory 协议。</p>
+        </article>
+        <article class="memory-experiment-card is-reasoning" data-anim="fade-up">
+          <header><span>04 · REWARD TREND</span><b>Memory Update 提升 Funnel</b></header>
+          <figure class="memory-funnel-figure">
+            <img src="assets/images/memory-funnel-reward-delta.svg" alt="相邻两个位置的 Funnel Reward 平均差分随 Rollout Step 变化的曲线">
+            <figcaption>Mean Δ Funnel Reward · 虚线为零差分</figcaption>
+          </figure>
+          <p>相邻位置的 Funnel Reward 平均差分由负逐步转正，后期多数时间保持在零线上方，说明 Memory 持续更新后，下游 Funnel Reward 整体提高。</p>
+          <button type="button" class="memory-inference-text-open memory-rl-open" data-panel="memory-inference-case" aria-label="展开具体兴趣外推示例">展开具体兴趣外推示例 ▸</button>
+        </article>
+      </main>
+      <!-- <section class="memory-experiment-verdict"><span>DECISION</span><b>保留实验结论，放弃高成本的 Plan 3 采样方式</b><p>下一轮验证聚焦历史窗口 \(H_p\)、折扣 \(\lambda/\gamma\)、EMA 先验与 penalty / clip，而不是继续扩大单 UID rollout 数量。</p></section> -->
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · Evidence &amp; Ablation · <a class="footer-link" href="#/14">返回 OPD</a></span>
+      <span class="slide-number" data-current="15" data-total="20"></span>
+    </div>
+    <aside class="notes">
+      <p><strong>这一页不只展示指标，也展示模型推理能力本身的变化。</strong>前三张图分别回答长期 Memory 是否需要训练闭环、单步上下文容量是否限制策略上限，以及 Writer 与 Reader 是否应该共享模型协议。</p>
+      <p><strong>第四张图直接展示模型能力随 Memory Update 的变化。</strong>纵轴是相邻两个位置的 Funnel Reward 平均差分，虚线表示零差分；曲线从训练早期的负值逐渐转正，后期大多数时间保持在零线上方，说明更新后的 Memory 越来越能提升下游 Suggestion 的 Funnel Reward。</p>
+      <p>具体兴趣外推案例放在折叠页里，作为定性补充：模型不会因为一次诗句请求就直接写入稳定文学兴趣，而是把“诗句 / 文学表达”与已有“油画风格”组合，外推为更具体的复合兴趣，再由唐诗、宋词油画主题的 Suggestions 验证。</p>
+    </aside>
+  </section>
+
+  <div class="al2-modal memory-rl-modal memory-inference-modal" id="al2-panel-memory-inference-case" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">EXAMPLE · EXTRAPOLATED INTEREST</span><h3>具体兴趣外推示例</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="memory-inference-plain-body">
+        <section class="memory-inference-plain-text">
+          <p><strong>#油画艺术风格表现</strong> [短期兴趣]</p>
+
+          <h4>新消息：</h4>
+          <p>任凭深夜风雨急，摊前有酒有知己<br>可以把这句放在图里吗，谢谢</p>
+
+          <h4>模型推理的关键逻辑：</h4>
+          <p>一次添加诗句不能直接形成稳定兴趣；<br>但“诗句 / 文学表达”与已有“油画风格”形成两类证据，<br>可以谨慎外推为文学意境和油画风格的结合。</p>
+
+          <h4>输出：</h4>
+          <p><strong>#文学意境与油画风格的结合</strong> [外推兴趣]</p>
+
+          <h4>紧随其后的 Suggestion：</h4>
+          <p>生成唐诗意境油画<br>生成宋词意象画框<br>生成园林油画书签<br>上传风景照片 · 油画肌理强化</p>
+
+          <h4>对应指标：</h4>
+          <p>quality_memory = 1.0<br>U_funnel = 0.32238</p>
+
+          <h4>这个案例的链路比较完整：</h4>
+          <p>直接证据：用户主动把诗句加入画面<br>已有兴趣：油画艺术风格<br>外推组合：文学意境 × 油画风格<br>下游激活：Suggestions 确实生成了唐诗 / 宋词油画主题</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <section class="slide" data-slide-id="on-policy-distillation" data-title="On-Policy Distillation">
+    <div class="opd-page">
+      <header class="memory-rl-head opd-head" data-anim="fade-down">
+        <div>
+          <span class="section-label">doubao creation memory / on-policy distillation</span>
+          <h2>On-Policy Distillation</h2>
+        </div>
+        <div class="opd-headline"><b>ON-POLICY</b><i>+</i><b>DENSE SIGNAL</b><span>让 Teacher 在 Student 真正访问到的状态上逐 token 指路</span></div>
+      </header>
+
+      <main class="opd-layout">
+        <section class="opd-compare" data-anim="fade-right">
+          <header><span>WHY OPD</span><b>SFT 与 RL 各缺一半</b></header>
+          <figure><img src="assets/images/opd-combination.jpg" alt="SFT、RL 与 OPD 的采样策略和奖励信号对比"></figure>
+          <div class="opd-compare-points">
+            <p><b>SFT</b><span>监督密集，但训练状态来自固定离线答案</span></p>
+            <p><b>RL</b><span>状态来自当前策略，但通常只有稀疏终局奖励</span></p>
+            <p class="is-opd"><b>OPD</b><span>Student 自己采样，Teacher 对每个 token 给反馈</span></p>
+          </div>
+        </section>
+
+        <section class="opd-core" data-anim="fade-left">
+          <header><span>HOW IT WORKS</span><b>在线状态上的教师分布匹配</b></header>
+          <div class="opd-flow">
+            <article><span>01</span><b>Student Rollout</b><p>当前策略生成真实轨迹</p></article>
+            <i>→</i>
+            <article><span>02</span><b>Teacher Score</b><p>相同 prefix 上逐 token 评分</p></article>
+            <i>→</i>
+            <article><span>03</span><b>Update Student</b><p>拉近 Student 与 Teacher 分布</p></article>
+          </div>
+          <figure class="opd-objective-figure"><img src="assets/images/opd-objective.png" alt="Teacher 对 Student trajectory 提供逐 token 条件概率"><figcaption>Teacher 的 next-token probability 就是密集反馈</figcaption></figure>
+          <div class="opd-actions">
+            <button type="button" class="opd-open" data-panel="opd-objective"><span>01 · OBJECTIVE</span><b>为什么是 On-Policy？</b><em>展开 ▸</em></button>
+            <button type="button" class="opd-open" data-panel="opd-implementation"><span>02 · IMPLEMENTATION</span><b>GKD-style vs. PG-style</b><em>展开 ▸</em></button>
+            <button type="button" class="opd-open" data-panel="opd-foresight"><span>03 · MECHANISM</span><b>Foresight：少走弯路</b><em>展开 ▸</em></button>
+          </div>
+        </section>
+      </main>
+
+      <section class="opd-verdict" data-anim="fade-up">
+        <span>ENGINEERING CHOICE</span>
+        <b>当前选 PG-style</b>
+        <p>Qwen3 + Megatron 链路已在 8B  Student/ 32B Teacher 上稳定验证；同时与现有 RL rollout、advantage 和 KL 机制直接兼容</p>
+      </section>
+    </div>
+    <div class="deck-footer">
+      <span class="mono">工业实践 · On-Policy Distillation · <a class="footer-link" href="#/13">返回 PPO 与 Infra</a> · <a class="footer-link" href="#/15">下一页：Experiment</a></span>
+      <span class="slide-number" data-current="14" data-total="20"></span>
+    </div>
+    <aside class="notes">
+      <p><strong>这一页回答为什么在 SFT 和 RL 之外，还需要 OPD。</strong>SFT 的优点是每个 token 都有监督，训练稳定；缺点是答案来自离线 Teacher，Student 真正上线后会访问到不同的状态。RL 正好相反：它在当前策略自己的轨迹上训练，但通常只有一个终局奖励，信用分配很稀疏。</p>
+      <p>OPD 把两者拼在一起。Student 先按照当前策略生成轨迹，Teacher 再站在 Student 实际到达的每个 prefix 上给 next-token 分布，因此数据是 on-policy 的，监督又是 token 级密集的。对 Agent 更重要，因为规划、工具返回和长轨迹会持续制造离线数据没有覆盖的新状态。</p>
+      <p>实现有两条路线：GKD-style 直接做完整分布匹配，更稳定；PG-style 把 Teacher 相对 Student 的 logprob 差改写成 advantage，更容易复用 PPO / GRPO 工程链路。当前 Qwen3.5 + Megatron 的实验选择 PG-style，因为它在 9B、122B、397B Teacher 上已经稳定验证，而 GKD/top-k KL 仍有 logits processor 兼容问题。</p>
+      <p>为什么 OPD 高效，可以用 foresight 理解：RL 要靠试错找山峰，OPD 让 Teacher 在 Student 当前状态上直接指出更好的局部方向，因此更早锁定关键模块和最终有效的更新子空间，用更少参数更新达到相近或更高效果。</p>
+    </aside>
+  </section>
+
+  <script>
+    (() => {
+      const opd = document.querySelector('[data-slide-id="on-policy-distillation"]');
+      const experiments = document.querySelector('[data-slide-id="memory-rl-experiments"]');
+      if (opd && experiments && opd.parentNode === experiments.parentNode) {
+        opd.parentNode.insertBefore(opd, experiments);
+      }
+    })();
+  </script>
+
+  <div class="al2-modal rsi-modal arl-modal opd-modal" id="al2-panel-opd-objective" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card opd-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">OPD · OBJECTIVE</span><h3>在 Student 真正访问到的状态上学习 Teacher</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="opd-modal-body opd-objective-body">
+        <section class="opd-modal-copy">
+          <p class="opd-modal-lead">给定 Prompt，先由当前 Student 自己生成轨迹，再让 Teacher 在这些真实 prefix 上给出 next-token 分布。</p>
+          <div class="opd-definition-flow">
+            <article><span>STATE</span><b>sₜ = (x, ŷ&lt;ₜ)</b><p>状态不是离线答案，而是 Student 已经走到的位置。</p></article>
+            <i>→</i>
+            <article><span>DISTRIBUTION</span><b>pₜ = Student · qₜ = Teacher</b><p>两者在同一个 prefix 上预测下一个 token。</p></article>
+            <i>→</i>
+            <article><span>OBJECTIVE</span><b>min D(pₜ, qₜ)</b><p>让 Student 在自己的状态分布上逐步逼近 Teacher。</p></article>
+          </div>
+          <div class="opd-kldiv-grid">
+            <article><span>FORWARD KL · SFT 常见</span><b>Mean-Seeking</b><p>更重视 Teacher 的高频正确 token，早期学习快、覆盖更广。</p></article>
+            <article><span>REVERSE KL · OPD 常见</span><b>Mode-Seeking</b><p>更关注 Student 已采到但 Teacher 不支持的行为，对复杂推理尾部更敏感。</p></article>
+          </div>
+        </section>
+        <figure class="opd-modal-figure is-objective"><img src="assets/images/opd-objective.png" alt="Teacher 在 Student 轨迹上给出逐 token 条件概率"><figcaption>颜色越深，Teacher 与 Student 在该 token 上的 reverse KL 越大，监督越强。</figcaption></figure>
+        <!-- <footer class="opd-modal-takeaway"><b>不要机械地认为 RKL 一定更好</b><span>足够训练后 FKL / RKL 可收敛到相近结果；真正差异在 head 与 tail token 的学习速度，应按任务分布选择。</span></footer> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal opd-modal" id="al2-panel-opd-implementation" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card opd-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">OPD · IMPLEMENTATION</span><h3>GKD-style 与 PG-style：同一目标，两条工程路径</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="opd-modal-body opd-implementation-body">
+        <article class="opd-impl-card">
+          <header><span>01 · DISTRIBUTION MATCHING</span><h4>GKD-style</h4><b>完整比较 pₜ 与 qₜ</b></header>
+          <figure><img src="assets/images/opd-gkd-flow.png" alt="GKD-style 在 Student trajectory 上比较 Teacher token 分布"></figure>
+          <p><strong>优势：</strong>每个 token 位置都有完整分布监督，稳定、接近现有 KD / SFT 工程。</p>
+          <p><strong>挑战：</strong>依赖 logits processor、top-k KL 与训练框架兼容；当前 Qwen3.5 + Megatron 路径曾出现不稳定。</p>
+        </article>
+        <article class="opd-impl-card is-selected">
+          <header><span>02 · POLICY GRADIENT</span><h4>PG-style</h4><b>把 Teacher 当作密集奖励模型</b></header>
+          <figure><img src="assets/images/opd-pg-choice.png" alt="PG-style 和 GKD-style 训练 loss 对比"></figure>
+          <p><strong>优势：</strong>用 log qₜ(yₜ) − log pₜ(yₜ) 构造 sampled-token advantage，可直接复用 PPO / GRPO 的 baseline、KL 与 rollout。</p>
+          <p><strong>当前选择：</strong>在 Qwen3.5 + Megatron 上已由 9B、122B、397B Teacher 稳定验证，因此作为主实现。</p>
+        </article>
+        <!-- <footer class="opd-modal-takeaway"><b>选型不是算法优劣排名</b><span>GKD-style 更接近标准蒸馏；PG-style 更适合已经拥有稳定 RL 基础设施、希望最小成本接入 OPD 的团队。</span></footer> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="al2-modal rsi-modal arl-modal opd-modal" id="al2-panel-opd-foresight" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card rsi-modal-card opd-modal-card">
+      <header class="al2-modal-head">
+        <div><span class="al2-modal-tag">OPD · WHY IT WORKS</span><h3>Foresight：更早找到正确的山峰与方向</h3></div>
+        <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
+      </header>
+      <div class="opd-modal-body opd-foresight-body">
+        <figure class="opd-evidence-figure is-foresight"><img src="assets/images/opd-foresight.jpg" alt="RL 和 OPD 的 foresight 路径对比"><figcaption>RL 靠试错寻找方向；OPD 由 Teacher 在当前状态直接指出更有效的局部方向。</figcaption></figure>
+        <figure class="opd-evidence-figure is-update"><img src="assets/images/opd-param-update.jpg" alt="OPD 与 PPO、GRPO、DAPO 参数更新效率对比"><figcaption>同等参数更新范数下，OPD 在不同模型规模与数据集上达到更高准确率。</figcaption></figure>
+        <section class="opd-foresight-points">
+          <article><span>01</span><b>少探索错误方向</b><p>Teacher 直接在 Student 当前状态提供局部行为指导，减少无效 rollout。</p></article>
+          <article><span>02</span><b>更早分配关键模块</b><p>更新集中到推理能力更关键的参数区域，低收益模块更早停止消耗预算。</p></article>
+          <article><span>03</span><b>更稳定的更新子空间</b><p>训练早期的主导方向就更接近最终有效方向，用更小参数变化完成能力迁移。</p></article>
+        </section>
+        <footer class="opd-modal-takeaway"><b>业务含义</b><span>OPD 直接校正 Student 在真实 rollout 状态中暴露的问题，因此比 SFT mix 或 SFT + 稀疏 RL 更快形成有效能力迁移。</span></footer>
+      </div>
+    </div>
+  </div>
 
   <section class="slide" data-slide-id="generative-suggestion" data-title="Generative Suggestion Recommendation">
     <div class="suggestion-page">
@@ -822,7 +1711,7 @@
               <h3>先选对用户此刻值得探索的兴趣</h3>
               <ul>
                 <li>新用户用 <strong>UCB Boost</strong> 平衡 cluster 兴趣探索与利用</li>
-                <li>兴趣过多时，用回访兴趣与未反应兴趣构造正负样本，和用户画像做对比学习，得到共鸣打分器</li>
+                <li>兴趣较多时，用回访兴趣与未反应兴趣构造正负样本，和用户画像做对比学习，得到共鸣打分器</li>
               </ul>
             </article>
 
@@ -2217,7 +3106,7 @@
       </section>
     </div>
     <div class="deck-footer">
-      <span class="mono">个人项目 · R-Agent Agent Loop · <a class="footer-link" href="#/3">返回第 3 页</a></span>
+      <span class="mono">个人项目 · R-Agent Agent Loop · <a class="footer-link" href="#/5">返回第 5 页</a></span>
       <span class="slide-number" data-current="12" data-total="18"></span>
     </div>
     <aside class="notes">
@@ -2322,7 +3211,7 @@
       </footer>
     </div>
     <div class="deck-footer">
-      <span class="mono">个人项目 · R-Agent AutoResearch · <a class="footer-link" href="#/3">返回第 3 页</a></span>
+      <span class="mono">个人项目 · R-Agent AutoResearch · <a class="footer-link" href="#/5">返回第 5 页</a></span>
       <span class="slide-number" data-current="13" data-total="18"></span>
     </div>
     <aside class="notes">
@@ -2422,7 +3311,7 @@
       </footer>
     </div>
     <div class="deck-footer">
-      <span class="mono">个人项目 · 学术调研工作流 × Cockpit · <a class="footer-link" href="#/3">返回第 3 页</a></span>
+      <span class="mono">个人项目 · 学术调研工作流 × Cockpit · <a class="footer-link" href="#/5">返回第 5 页</a></span>
       <span class="slide-number" data-current="14" data-total="18"></span>
     </div>
     <aside class="notes">
@@ -2603,200 +3492,72 @@
     </aside>
   </section>
 
-  <section class="slide" data-slide-id="agent-rl-challenges" data-title="Agent RL: Hard Problems &amp; Fixes">
-    <div class="arl-page">
-      <header class="arl-head" data-anim="fade-down">
-        <div>
-          <span class="section-label">research frontier / agent reinforcement learning</span>
-          <h2>Agent RL 难点</h2>
-        </div>
-        <!-- <p>难点 → 机制 → 药方 → 副作用，六条一次讲清；每个「新算法」都不是创新点，而是一张病历</p> -->
-      </header>
+  <div class="doc-preview-modal" id="doc-preview-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="doc-preview-card">
+      <header><div><span>FULL DOCUMENT</span><h3 data-doc-title>Document Preview</h3></div><button type="button" data-doc-close>关闭 ✕</button></header>
+      <article class="doc-preview-content" data-doc-content></article>
+    </div>
+  </div>
 
-      <div class="arl-premise" data-anim="fade-up">
-        <span class="arl-premise-label">单轮 RLVR 的三个隐含前提，在 Agent 场景同时失效</span>
-        <div class="arl-premise-grid">
-          <article><b>整条采样都由策略生成</b><p>工具 / 环境 token 常占轨迹一半以上</p></article>
-          <i>✕</i>
-          <article><b>采样分布不等于训练分布</b><p>推理与训练两套 kernel，同权重不同 logprob</p></article>
-          <i>✕</i>
-          <article><b>奖励是不干净的信号</b><p>verifier 有缺陷 + reward hacking</p></article>
+  <div class="al2-modal agentic-memory-modal" id="al2-panel-agentic-memagent" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card agentic-memory-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">AGENTIC MEMORY · 01 · arXiv:2507.02259</span><h3>MemAgent：固定预算下，边读边覆盖式重写</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="agentic-memory-modal-body">
+        <figure><img src="assets/images/agentic-memory-memagent.png" alt="MemAgent 将长文本分块，并由同一模型持续覆盖式更新固定长度记忆的架构图"><figcaption>同一 policy 每轮只看 query、上轮 memory 与新 chunk；最终再基于 memory 回答。</figcaption></figure>
+        <div class="agentic-memory-detail">
+          <article><span>PROBLEM</span><h4>长上下文成本随长度快速增长</h4><p>拼接全部历史不仅计算昂贵，超出训练窗口后还会明显退化；普通滑窗又会直接丢失早期关键信息。</p></article>
+          <article><span>METHOD</span><h4>单 policy + 1024-token Memory</h4><p>模型同时负责每轮全量覆盖重写和最终回答；Multi-Conv DAPO 把终局 advantage 广播到所有轮、所有生成 token。</p></article>
+          <article><span>RESULT</span><h4>8K 训练窗口外推到 3.5M token</h4><p>长度扩大约 <b>500×</b> 时只下降 9.4 点；去掉 RL 后，NIAH@512K 从 <b>98 跌到 40</b>。</p></article>
+          <article class="is-takeaway"><span>INSPIRATION</span><h4>本项目应让 Writer 与 Reader 共享参数</h4><p>固定小 Memory 配合更大的 chunk，减少无效重写；“什么值得记”由下游结果定义，而不是摘要规则定义。</p></article>
         </div>
       </div>
-
-      <main class="arl-cards" data-anim="fade-up">
-        <div class="arl-col-head arl-col-head-algo"><span>ALGORITHM SIDE</span><b>算法侧</b></div>
-        <div class="arl-col-head arl-col-head-eng"><span>ENGINEERING SIDE</span><b>工程侧</b></div>
-
-        <button type="button" class="arl-card is-algo" data-panel="arl-credit">
-          <span class="arl-card-no">01</span>
-          <div class="arl-card-body">
-            <b>信用分配难度大</b>
-            <p>20 次 tool call 共享一个 0/1，horizon↑ → 方差↑</p>
-            <em>turn-level · GiGPO · IGPO · <mark>TRACE 2026</mark></em>
-          </div>
-          <span class="arl-card-go">展开 ▸</span>
-        </button>
-
-        <button type="button" class="arl-card is-eng" data-panel="arl-logprob">
-          <span class="arl-card-no">04</span>
-          <div class="arl-card-body">
-            <b>同一份权重，两个 logprob</b>
-            <p>采样用 vLLM、算 logprob 用 FSDP，两套 kernel</p>
-            <em>TIS / MIS · Routing Replay · 统一 FP16</em>
-          </div>
-          <span class="arl-card-go">展开 ▸</span>
-        </button>
-
-        <button type="button" class="arl-card is-algo" data-panel="arl-baseline">
-          <span class="arl-card-no">02</span>
-          <div class="arl-card-body">
-            <b>组内基线带来三种偏置</b>
-            <p>偏置从 loss 分母长出来：长度 / 难度 / 梯度饥饿</p>
-            <em>Dr.GRPO · DAPO 四件套 (0.2 / 0.28) · GSPO</em>
-          </div>
-          <span class="arl-card-go">展开 ▸</span>
-        </button>
-
-        <button type="button" class="arl-card is-eng" data-panel="arl-reward">
-          <span class="arl-card-no">05</span>
-          <div class="arl-card-body">
-            <b>奖励与环境：上限就定在这里</b>
-            <p>verifier 自己就是最大的噪声源</p>
-            <em>权限隔离 → 判据外置 → 奖励复合 → 抽检</em>
-          </div>
-          <span class="arl-card-go">展开 ▸</span>
-        </button>
-
-        <button type="button" class="arl-card is-algo" data-panel="arl-mask">
-          <span class="arl-card-no">03</span>
-          <div class="arl-card-body">
-            <b>token 边界 mask 错误无声</b>
-            <p>算法写错 loss 会飞，mask 写错什么都不发生</p>
-            <em>token-in/out 渲染 · loss mask 自查 · Overlong Filtering</em>
-          </div>
-          <span class="arl-card-go">展开 ▸</span>
-        </button>
-
-        <button type="button" class="arl-card is-eng" data-panel="arl-horizon">
-          <span class="arl-card-no">06</span>
-          <div class="arl-card-body">
-            <b>长时程：上下文墙与长尾墙</b>
-            <p>上下文会撑爆，长尾会绑架整个 step</p>
-            <em>CompactionRL 2026 · partial rollout · 异步</em>
-          </div>
-          <span class="arl-card-go">展开 ▸</span>
-        </button>
-      </main>
-
-      <footer class="arl-takeaway" data-anim="fade-up">
-        <b>排障顺序</b>
-        <span>实现错误 → 数值尺度 → 步长 → 奖励设计。算法只决定你多快撞到环境与 verifier 定下的那个上限。</span>
-      </footer>
     </div>
-    <div class="deck-footer">
-      <span class="mono">研究前沿 · Agent RL Hard Problems &amp; Fixes</span>
-      <span class="slide-number" data-current="17" data-total="18"></span>
-    </div>
-    <aside class="notes">
-      <p>这页不讲 Agent RL 是什么，只讲它在什么地方会崩、崩了怎么救。单轮 RLVR 能跑通靠三个隐含前提：全 on-policy、采样即训练分布、奖励干净——Agent 场景把这三条同时打断了，后面六个难点全是这三处裂缝的下游。</p>
-      <p>左栏算法侧：信用分配（一个标量摊给几十步，解法是往下切粒度，2026 的 TRACE 用参考模型的 log-ratio 做 TD 差分）、组内基线（GRPO 省了 critic 欠了三笔债，记住 clip-higher 是 0.2 配 0.28）、mask（全页最容易露馅的地方，写错什么都不会发生只是 reward 涨得慢）。</p>
-      <p>右栏工程侧：双 logprob（同一份权重两套 kernel，修掉它 Wordle 从 63.9 涨到 77.4）、奖励环境（SWE-bench Verified 被审出 59.4% 失败样本其实是测试本身有缺陷）、长时程（撞两堵墙，CompactionRL 把摘要生成和任务执行一起训进 RL）。</p>
-      <p>收束：训练发散时排查顺序永远是先查实现错误，再校准数值尺度，再调步长，最后才回到奖励设计。先动 reward 的人，通常是在给一个 mask bug 打补丁。</p>
-    </aside>
-  </section>
+  </div>
 
-  <section class="slide" data-slide-id="agent-rl-practice" data-title="Agent RL in Practice: Engine Pitfalls + Metrics">
-    <div class="arl-page arl-practice-page">
-      <header class="arl-head" data-anim="fade-down">
-        <div>
-          <span class="section-label">agent rl in practice / engine pitfalls &amp; metrics</span>
-          <h2>Agent RL 实践</h2>
+  <div class="al2-modal agentic-memory-modal" id="al2-panel-agentic-memory-r2" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card agentic-memory-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">AGENTIC MEMORY · 02 · arXiv:2605.21768</span><h3>Memory-R2：用 Local Rerollout 校准跨 Session 信用</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="agentic-memory-modal-body">
+        <figure><img src="assets/images/agentic-memory-r2.png" alt="Memory-R2 共享骨干、操作中心与 LoGo-GRPO 局部重放架构图"><figcaption>Global 分支学习终局目标；Local 分支从同一个 anchor memory state 重放，得到可比较的干净 baseline。</figcaption></figure>
+        <div class="agentic-memory-detail">
+          <article><span>PROBLEM</span><h4>不同 rollout 的 Memory State 不一致</h4><p>组内样本表面上在比较策略，实际也混入了不同历史状态的影响，导致 GRPO 归一化出现 reward contamination。</p></article>
+          <article><span>METHOD</span><h4>Shared Backbone + LoGo-GRPO</h4><p>Fact Extractor 与 Memory Manager 共享 Qwen2.5-7B；随机抽 session，从缓存的 anchor state 局部重放 4 条轨迹。</p></article>
+          <article><span>RESULT</span><h4>更公平的信用只增加约 12% 计算</h4><p>去掉 curriculum，F1 直接掉 <b>25.5</b>；去掉参数共享，M-Fail 从 <b>6.72 升到 33.00</b>。</p></article>
+          <article class="is-takeaway"><span>INSPIRATION</span><h4>先解决 State 可比性，再谈 Advantage</h4><p>长轨迹训练要分 horizon 课程推进；成本允许时，用 local rerollout 给关键 session 建立更干净的 step-level baseline。</p></article>
         </div>
-        <!-- <p>先修引擎，再看曲线；每个阈值都标可信度</p> -->
-      </header>
-
-      <main class="arl-practice-layout">
-        <section class="arl-pit-column" data-anim="fade-right">
-          <div class="arl-block-head arl-block-head-eng">
-            <div><span>FRAMEWORK PITFALLS</span><b>框架层的坑</b></div>
-            <em>vLLM / SGLang · 用 API 原名记</em>
-          </div>
-          <div class="arl-pit-list">
-            <button type="button" class="arl-pit" data-panel="arl-cache">
-              <span>01</span>
-              <div><b>前缀缓存：权重换了，KV 没换</b><p>更新后 rollout 在用「半新半旧」模型采样</p></div>
-              <code>reset_prefix_cache()</code>
-            </button>
-            <button type="button" class="arl-pit" data-panel="arl-sleep">
-              <span>02</span>
-              <div><b>显存让位：sleep 分级与唤醒粒度</b><p>backward OOM · drafter 丢失 accept=0</p></div>
-              <code>wake_up(['weights'])</code>
-            </button>
-            <button type="button" class="arl-pit" data-panel="arl-weightsync">
-              <span>03</span>
-              <div><b>权重同步接口会改名、会死锁</b><p>collective_rpc 破坏性变更 · src=0 硬编码</p></div>
-              <code>pin ver + smoke test</code>
-            </button>
-            <button type="button" class="arl-pit" data-panel="arl-token">
-              <span>04</span>
-              <div><b>token 漂移，streaming 丢 logprob</b><p>detokenize→tokenize 非幂等＝事实 off-policy</p></div>
-              <code>return_token_ids: true</code>
-            </button>
-            <button type="button" class="arl-pit" data-panel="arl-determinism">
-              <span>05</span>
-              <div><b>确定性是 debug 开关，FP8 KV 会算错</b><p>SGLang 确定性平均掉速 34%，用完即关</p></div>
-              <code>VLLM_BATCH_INVARIANT=1</code>
-            </button>
-          </div>
-          <button type="button" class="arl-verdict" data-panel="arl-engine">
-            <b>默认上 vLLM —— 不是更快，是坑你自己能修</b>
-            <span>命中一条才切 SGLang：MoE 且 EP&gt;1 · partial rollout · 百 B+ 权重同步 · 论文用 slime / AReaL</span>
-            <em>展开对照矩阵 ▸</em>
-          </button>
-        </section>
-
-        <section class="arl-metric-column" data-anim="fade-left">
-          <div class="arl-block-head arl-block-head-metric">
-            <div><span>METRICS TO WATCH</span><b>中间指标</b></div>
-            <em>每个阈值带【定量】/【经验】/【无公开阈值】</em>
-          </div>
-          <div class="arl-metric-list">
-            <button type="button" class="arl-metric" data-panel="arl-generic">
-              <span class="arl-metric-tag">通用 RL</span>
-              <div><b>policy entropy · clip low/high</b><p>KL(π‖π_ref) · 零优势组占比 / ACR</p></div>
-              <em>展开 ▸</em>
-            </button>
-            <button type="button" class="arl-metric" data-panel="arl-agentdelta">
-              <span class="arl-metric-tag">Agent 增量</span>
-              <div><b>可训练 token 占比 · 截断 / overflow</b><p>环境与 verifier 错误率 · straggler / staleness</p></div>
-              <em>展开 ▸</em>
-            </button>
-            <button type="button" class="arl-metric" data-panel="arl-lying">
-              <span class="arl-metric-tag">会骗人</span>
-              <div><b>reward · length · pass@1</b><p>KL 又小又平滑 · 格式合规率 100%</p></div>
-              <em>展开 ▸</em>
-            </button>
-          </div>
-          <button type="button" class="arl-dashboard" data-panel="arl-dashboard">
-            <b>最小监控面板 · 12 条曲线 = 3 层 × 4</b>
-            <span>地基与更新层 · 信号到达层 · 结果与系统层 + 阈值为 0 的硬计数器</span>
-            <em>展开面板 ▸</em>
-          </button>
-        </section>
-      </main>
+      </div>
     </div>
-    <div class="deck-footer">
-      <span class="mono">研究前沿 · Agent RL in Practice</span>
-      <span class="slide-number" data-current="18" data-total="18"></span>
+  </div>
+
+  <div class="al2-modal agentic-memory-modal" id="al2-panel-agentic-memory-r1" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card agentic-memory-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">AGENTIC MEMORY · 03 · arXiv:2508.19828</span><h3>Memory-R1：让模型学习何时增、改、删或不动</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="agentic-memory-modal-body">
+        <figure><img src="assets/images/agentic-memory-r1.png" alt="Memory-R1 对比普通大模型错误删除记忆与强化学习模型正确更新记忆的示意图"><figcaption>第二只狗不是与第一只矛盾：脚本式 Manager 容易 DELETE + ADD，RL Manager 学会正确 UPDATE。</figcaption></figure>
+        <div class="agentic-memory-detail">
+          <article><span>PROBLEM</span><h4>Prompt 规则不会对最终回答负责</h4><p>Vanilla Manager 可能把补充事实误判成冲突；操作看似合规，却删掉回答未来问题所需的旧记忆。</p></article>
+          <article><span>METHOD</span><h4>ADD / UPDATE / DELETE / NOOP 作为 RL 动作</h4><p>Manager 输出“操作 + 新内容”，与 Answer Agent 交替训练、互相冻结；唯一 reward 是最终答案的 Exact Match。</p></article>
+          <article><span>RESULT</span><h4>记忆操作选择本身可以被学会</h4><p>换回 scripted manager，F1 下降 <b>7.5</b>；把 EM 换成 LLM Judge 后，Judge 分上涨但 F1 从 <b>41 跌到 34</b>。</p></article>
+          <article class="is-takeaway"><span>INSPIRATION</span><h4>Judge 更适合门禁，不适合作为唯一目标</h4><p>优先使用精排、规则式连续分或真实下游反馈；否则模型可能通过冗长表达获得高分，却损害实际答案。</p></article>
+        </div>
+      </div>
     </div>
-    <aside class="notes">
-      <p>上一页讲算法，这一页讲你真的按下回车之后会发生什么：引擎层五个坑，加一块能抄走的监控面板。五条坑同一个病根——你算梯度的那条 token 序列，不是引擎真正生成的那条。</p>
-      <p>前缀缓存：权重更新完缓存里还是旧 KV，vLLM 要你自己 reset，官方 issue 写的是 REQUIRED。显存让位：关键不是 sleep 而是唤醒粒度，先 wake_up(['weights']) 同步完再分 KV。权重同步：API 不稳，钉版本、升级前跑 smoke test。token 漂移：return_token_ids:true 是投产比最高的一行；轨迹采集绝不走 streaming。确定性：是 debug 工具不是常开项，RL rollout 不要开 FP8 KV。</p>
-      <p>指标面板：每个阈值都标了是【定量】还是【经验】。Agent RL 里 reward 是最迟才动的曲线，RAGEN 实测 reward std 和熵先掉，所以主通道挂在信号到达层。最要命的骗人曲线是 KL 又小又平滑——采样器一直在用旧策略，你根本没在学，揭穿它靠 staleness 直方图。</p>
-      <p>选型：默认 vLLM 因为坑你自己能修；只有 MoE 且 EP&gt;1、需要 partial rollout、权重同步主导 step、或论文本来就用 slime / AReaL 才切 SGLang。只带一张图走就带监控面板，第 1 条永远是 rollout 与 trainer 的 logprob 差。</p>
-    </aside>
-  </section>
+  </div>
+
+  <div class="al2-modal agentic-memory-modal" id="al2-panel-agentic-mem1" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="al2-modal-card agentic-memory-modal-card">
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">AGENTIC MEMORY · 04 · arXiv:2506.15841</span><h3>MEM1：把推理过程直接沉淀为 Internal State</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="agentic-memory-modal-body">
+        <figure><img src="assets/images/agentic-memory-mem1.png" alt="MEM1 将推理和长期记忆融合为 Internal State，并在多轮行动中持续更新的架构图"><figcaption>Internal State 同时记录“已经知道什么、还缺什么、下一步做什么”，由同一策略持续更新并行动。</figcaption></figure>
+        <div class="agentic-memory-detail">
+          <article><span>PROBLEM</span><h4>外置 Memory 与 Agent Policy 难以端到端协同</h4><p>全历史追加带来 O(n²) 计算和超 horizon OOD；独立记忆模块又容易与推理策略形成协议断层。</p></article>
+          <article><span>METHOD</span><h4>Internal State + Token-level Critic</h4><p>一段自然语言同时承担 reasoning 与 memory；PPO critic 在每个 token 位置估值，并用 2D mask 防止训练时偷看未来历史。</p></article>
+          <article><span>RESULT</span><h4>长任务上更强，也更省显存</h4><p>16-objective 上 EM 提升 <b>3.5×</b>、peak memory 降低 <b>3.7×</b>；SFT 在 6-objective 后崩塌而 RL 保持稳健。</p></article>
+          <article class="is-takeaway"><span>INSPIRATION</span><h4>信用粒度应从轨迹逐步走向 Step / Token</h4><p>不要额外追逐 format reward；先以会话级广播建立闭环，再在成本可控时引入 local rerollout 或 token-level critic。</p></article>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="al2-modal memory-rl-modal memory-basic-modal" id="al2-panel-memory-basic-sft" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card">
@@ -2866,19 +3627,6 @@
     </div>
   </div>
 
-  <div class="al2-modal memory-rl-modal memory-plan-adv-modal" id="al2-panel-memory-plan3-advantages" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card">
-      <header class="al2-modal-head"><div><span class="al2-modal-tag">PLAN 03 · DESIGN RATIONALE</span><h3>随机轨迹窗口 RL</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
-      <div class="memory-plan-adv-body">
-        <article><span>01 · RANDOM WINDOW</span><h4>随机窗口替代长度课程</h4><p>不再假设“短轨迹更容易”。从真实长轨迹随机取起点 M<sub>i</sub>，固定窗口长度 K，并重复 τ 次；训练覆盖轨迹早、中、晚期真实 Memory 状态，包括已经变长、变脏的状态。rollout 成本由 K 固定，与用户累计天数无关。</p></article>
-        <article><span>02 · REAL DENSE REWARD</span><h4>每一步都让 Memory 被真实消费</h4><p>每个 step 都执行 Update Memory → Generate Suggestion → Reward，因此信号密度提高约 K 倍。中间奖励不是人工构造的 Memory 质量分，而是 Memory 被下游生成真实消费后得到的效果，奖励源头仍然是唯一业务目标。</p></article>
-        <article><span>03 · SAME START, SAME POSITION</span><h4>免费基线，同时对冲用户与日期噪声</h4><p>从同一 M<sub>i</sub> 并行采样 N 条轨迹，并只在相同位置做归一化。μ<sub>i+k</sub> 就是该位置的平均水平，不需要 critic；同一用户、同一天、同一起点让绝对点击率和任务难度等策略外因素被对冲，σ 归一化后才能跨位置加权。</p></article>
-        <article><span>04 · CAUSAL CREDIT</span><h4>两类动作承担各自真正造成的后果</h4><p>Memory update 会改变之后所有状态，所以接收从当前位置到窗口末端的折扣优势；Suggestion 给定 Memory 后只影响当前输出，本质是单步 bandit，只接收当前 A。相比终局分过度平摊或每步只看自身，这个分工更符合真实因果。</p></article>
-        <article><span>05 · GMPO</span><h4>长输出需要对极端 token ratio 更鲁棒</h4><p>Memory update 动辄上千 token，单个异常 importance ratio 容易把算术平均和整条梯度带偏。几何平均配合序列级 sign 对 outlier 更不敏感，提供更大的可用 KL 预算并减少训练塌陷。</p></article>
-      </div>
-    </div>
-  </div>
-
   <div class="al2-modal memory-rl-modal memory-stage-modal" id="al2-panel-memory-stage-write" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card">
       <header class="al2-modal-head">
@@ -2937,16 +3685,15 @@
 
   <div class="al2-modal memory-rl-modal memory-one-modal" id="al2-panel-memory-one-credit" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card">
-      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · CLAIM 01</span><h3>信用分配：Memory 必须直接为最终创作回报负责</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
-      <div class="memory-rl-modal-body">
-        <section class="memory-rl-detail-lead"><b>核心判断</b><p>分开训练，信用分配截断，梯度断开，并非 on policy 优化</p></section>
-        <div class="memory-rl-detail-grid two">
-          <article><span>OBJECTIVE GAP</span><h4>两种训练在优化不同的信息</h4><div class="memory-one-compare"><p><b>分训：</b>Memory ↔ 人类摘要偏好</p><p><b>单模型：</b>Memory ↔ Title / Desc 终端回报</p></div><p>只有当“好摘要”恰好是下游创作的充分统计量时，两者才等价；本任务还需要画风、题材、新鲜度与可 prompt 化细节。</p></article>
-          <article><span>END-TO-END CREDIT</span><h4>同一策略同时更新写入与生成</h4><div class="display-math">\[\nabla_\theta J=\mathbb E\left[\sum_{t=1}^{T}A_t\nabla_\theta\log\pi_\theta(m_t|m_{t-1},x_t)+A_{gen}\nabla_\theta\log\pi_\theta(y|m_T)\right]\]</div><p>终端结果定义“什么值得写进 Memory”，不再依赖人工先写一套摘要规范。</p></article>
-          <article><span>EVIDENCE · MEMAGENT</span><h4>轨迹级信用跨 conversation 广播</h4><p><b>MemAgent · arXiv:2507.02259</b> 把损失从 group × token 扩展到 group × conversation × token，让多次 Memory 调用共享终端回报。</p></article>
-          <article><span>EVIDENCE · SUPO</span><h4>压缩步骤与终端任务共享 Reward</h4><p><b>SUPO · arXiv:2510.06727</b> 将含 I 次压缩的轨迹拆成 I+1 条子轨迹并共享 reward，支持“中间状态为最终任务服务”的训练逻辑。</p></article>
+      <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · CLAIM 01</span><h3>Memory </h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
+      <div class="memory-one-readable">
+        <p class="memory-one-thesis"><b>一句话：</b>如果 Writer 看不到最终 Title / Desc 的效果，它学到的就只是“像摘要”，而不是“对创作真正有用的 Memory”。</p>
+        <div class="memory-one-argument">
+          <section class="memory-one-step"><span>01</span><div><h4>Memory 是受限的 belief state，不是普通摘要</h4><p>真实兴趣不可观测，模型只能从每日消息中更新有限长度的 Memory。容量有限时，关键问题不是句子是否通顺，而是哪些画风、题材、近期新鲜度与可 prompt 化细节最能提升下游回报。</p></div></section>
+          <section class="memory-one-step"><span>02</span><div><h4>分训切断了终端信用</h4><p>Summary / Merge 单独训练时，Writer 只能优化代理奖励 <b>r₁</b>（例如人类摘要偏好），从未真正估计 <b>∇θ₁ E[R]</b>。只有当“好摘要”恰好是下游任务的充分统计量时，这个代理目标才不会偏。</p><div class="memory-one-compare"><p><b>分训：</b>Memory ↔ 人类摘要偏好</p><p><b>One Model：</b>Memory ↔ Title / Desc 终端回报</p></div></div></section>
+          <section class="memory-one-step"><span>03</span><div><h4>端到端 RL 让终局结果同时训练写入与生成</h4><div class="display-math memory-one-formula">\[\nabla_\theta J=\mathbb E\!\left[\sum_{t=1}^{T}A_t\nabla_\theta\log\pi_\theta(m_t|m_{t-1},x_t)+A_{gen}\nabla_\theta\log\pi_\theta(y|m_T)\right]\]</div><p>同一个终端 reward 沿时间回传，直接定义“什么值得写进 Memory”。MemAgent 的 multi-conv loss 与 SUPO 的共享 reward 子轨迹都采用了这类跨步骤信用传播。</p></div></section>
         </div>
-        <!-- <p class="memory-one-citation"><b>证据边界：</b>论文支持多轮中间状态的端到端信用分配；“好摘要不等于好创作 Memory”是本业务任务定义下的工程推论，需要通过 One Model vs 分训消融验证。</p> -->
+        <p class="memory-one-verdict"><b>结论：</b>One Model 的关键价值不是少部署一个模型，而是把“写什么”与“最后有没有用”放回同一个优化目标中。工程上仍需通过 One Model vs 分训消融验证收益。</p>
       </div>
     </div>
   </div>
@@ -2954,12 +3701,16 @@
   <div class="al2-modal memory-rl-modal memory-one-modal" id="al2-panel-memory-one-protocol" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card">
       <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · CLAIM 02</span><h3>协议对齐：独立 Writer / Reader 会形成不兼容的私有语言</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
-      <div class="memory-rl-modal-body memory-one-protocol-body">
+      <div class="memory-one-readable memory-one-protocol-body">
         <figure class="memory-one-evidence-figure"><img src="assets/images/crossplay_matrix.png" alt="Hanabi 中独立策略 self-play 与 cross-play 的 N×N 配对矩阵"><figcaption>对角线是同策略 self-play，非对角线是独立种子 cross-play。左图只有对角线高分，说明协议只对“自己”有效；Other-Play 让非对角线普遍变亮。</figcaption></figure>
-        <div class="memory-one-evidence-copy">
-          <article><span>MECHANISM</span><h4>写得规整，不代表读者真的在听</h4><p><b>Lowe et al., AAMAS 2019</b> 将 emergent communication 分成 positive signaling 与 positive listening，证明二者可以分离：发送者的符号很稳定，接收者的行为却完全不受消息影响。</p><cite>On the Pitfalls of Measuring Emergent Communication · arXiv:1903.05168</cite></article>
-          <article><span>CROSS-PLAY EVIDENCE</span><h4>协议私有化会造成可量化的协作损失</h4><p>Hanabi 中 SAD 的 self-play 为 <b>23.97 / 25</b>，独立策略 cross-play 只有 <b>2.52</b>；加入 Other-Play 后 cross-play 提升到 <b>15.32</b>，加 AUX 后达到 <b>22.07</b>。</p><cite>Hu et al., Other-Play for Zero-Shot Coordination · arXiv:2003.02979</cite></article>
-          <article class="is-conclusion"><span>WHY ONE MODEL</span><h4>共享参数 = Writer 与 Reader 固定在矩阵对角线</h4><p>同一个模型写 Memory、也由同一个模型读取 Memory，就像给自己写便签：编码习惯和解码习惯来自同一套参数。它不能自动保证内容正确，但显著减少跨模型协议错配。</p></article>
+        <div class="memory-one-protocol-copy">
+          <p class="memory-one-thesis"><b>一句话：</b>Memory 是 Writer 写给 Reader 的接口协议；两个模型各自训练，即使“写得规整”，也不等于另一方真的读懂并使用。</p>
+          <div class="memory-one-mini-steps">
+            <section><span>01 · 机制</span><h4>发送稳定 ≠ 接收有效</h4><p>Lowe et al.（AAMAS 2019）区分 positive signaling 与 positive listening：同一情境总写同一种信息，只能证明写者稳定；替换信息后读者行为不变，才说明读者根本没在使用它。</p></section>
+            <section><span>02 · 证据</span><h4>Cross-play 把协议错配变成可测量差距</h4><p>Hanabi 中 SAD self-play 得分 <b>23.97 / 25</b>，与独立策略配对时仅 <b>2.52</b>；Other-Play 提升到 <b>15.32</b>，叠加 AUX 后达到 <b>22.07</b>。</p></section>
+            <section><span>03 · One Model</span><h4>共享参数让写入与读取天然共用一套语言</h4><p>同一个模型写 Memory、也由它读取，相当于始终在 cross-play 矩阵的“对角线”上：编码分布一致，Writer / Reader 能力同步演进，也减少一个模型升级后另一个尚未适配的 gap。</p></section>
+          </div>
+          <p class="memory-one-verdict"><b>结论：</b>共享参数不能保证 Memory 内容一定正确，但能显著降低接口私有化与能力错位。更多样的双任务训练是否还能缓解熵坍缩，应作为独立消融验证。</p>
         </div>
       </div>
     </div>
@@ -2968,15 +3719,17 @@
   <div class="al2-modal memory-rl-modal memory-one-modal" id="al2-panel-memory-one-compounding" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card">
       <header class="al2-modal-head"><div><span class="al2-modal-tag">ONE MODEL · CLAIM 03</span><h3>误差累积：单轮接口错配会在长程 Memory 中复利</h3></div><button type="button" class="al2-modal-close" data-close>关闭 ✕</button></header>
-      <div class="memory-rl-modal-body">
-        <!-- <section class="memory-rl-detail-lead is-warning"><b>从常数损失到复利损失</b><p>每次覆盖式重写都依赖上一版 Memory；本轮被遗漏或误写的信息，会改变下一轮的输入状态并继续传播。</p></section> -->
-        <div class="memory-rl-detail-grid two">
-          <article><span>TOY MODEL</span><h4>T 轮后的可用信息近似指数衰减</h4><div class="memory-one-decay"><div class="display-math">\[I_T\approx I_0(1-\varepsilon)^T\]</div><p>若单轮错配率 ε=5%，10 轮后剩约 60%；20 轮后只剩约 36%。这不是论文定理，而是解释复利风险的简化模型。</p></div></article>
-          <article><span>LONG-HORIZON EVIDENCE</span><h4>不做 horizon curriculum，长程性能显著恶化</h4><p>相关长程 Memory 实验报告 F1 从 <b>0.47 降至 0.27</b>，漏检率超过 <b>70%</b>，说明短轨迹可用并不能保证扩轮稳定。</p><cite>Long-horizon memory training study · arXiv:2605.21768</cite></article>
-          <article><span>TRAINING RESPONSE</span><h4>让 ε 本身进入优化，而不是事后修补</h4><ul><li>终端 reward 回传到全部 Memory 更新轮次。</li><li>4 → 8 → 12 turn 逐步扩轮，每次扩轮密集观察。</li><li>按 held-out 20+ turn 集检查信息保真与漏检。</li></ul></article>
-          <article><span>RELATED DESIGNS</span><h4>现有工作怎样处理跨轮信用</h4><p><b>MemAgent · 2507.02259</b> 使用 multi-conv loss；<b>SUPO · 2510.06727</b> 将含多次压缩的轨迹拆分后共享 reward。它们都避免只给最后一步学习信号。</p></article>
+      <div class="memory-one-readable">
+        <p class="memory-one-thesis is-warning"><b>一句话：</b>每轮 Memory 都建立在上一版上，因此单轮的小错不是一次性损失，而会进入下一轮输入并持续复利。</p>
+        <div class="memory-one-compound-layout">
+          <section class="memory-one-equation-panel"><span>简化模型</span><div class="display-math">\[I_T\approx I_0(1-\varepsilon)^T\]</div><p>若每轮接口错配率 ε=5%，10 轮后可用信息约剩 <b>60%</b>，20 轮后约剩 <b>36%</b>。这不是严格定理，而是解释“常数劣势如何被多轮放大”的直观模型。</p></section>
+          <div class="memory-one-mini-steps">
+            <section><span>01 · 为什么会累积</span><h4>一次遗漏会改变后续所有状态</h4><p>覆盖式更新以 m<sub>t-1</sub> 为输入；本轮漏掉的偏好、误写的标签，会直接成为下一轮判断的错误前提。</p></section>
+            <section><span>02 · 公开证据</span><h4>短程可用，不代表扩轮稳定</h4><p>Memory-R2（arXiv:2605.21768）中，缺少 horizon curriculum 时 F1 从 <b>0.47 跌到 0.27</b>，漏检率超过 <b>70%</b>。</p></section>
+            <section><span>03 · 训练响应</span><h4>让 ε 本身成为被优化的对象</h4><p>将终端 reward 回传至全部 Memory 轮，并按 4 → 8 → 12 turn 渐进扩轮；在 held-out 20+ turn 集上持续检查信息保真与漏检。</p></section>
+          </div>
         </div>
-        <!-- <p class="memory-one-citation"><b>工程判据：</b>One Model 的必要性应通过“轮数 T × 方案”的交互曲线验证：如果单模型主要解决累积错配，优势应随 T 增大，而不是只在单轮上体现常数差。</p> -->
+        <p class="memory-one-verdict"><b>结论：</b>MemAgent 的 multi-conv loss 与 SUPO 的共享 reward 子轨迹都说明：长程记忆需要“一个终端奖励沿时间传播”，而不是为每轮单独制造摘要标签。</p>
       </div>
     </div>
   </div>
@@ -3358,164 +4111,103 @@
     <div class="al2-modal-card al2-middleware-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">① MIDDLEWARE · 横切能力插槽</span>
-          <h3>中间件：主循环外进行状态检测与处理</h3>
-          <!-- <p class="al2-middleware-headline"><b>把 _loop 想成交通警察</b>：Middleware 是摄像头、限高杆和消毒通道；它能观察或拦截经过的流程，但不负责决定车辆往哪里走</p> -->
+          <span class="al2-modal-tag">① MIDDLEWARE · 10 个生命周期 HOOK</span>
+          <h3>中间件：在 Agent Loop 的关键节点插入可控逻辑</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
       <div class="al2-modal-body al2-middleware-body">
         <section class="al2-middleware-flow">
           <div class="al2-middleware-section-head">
-            <!-- <div><span>真实运行顺序</span><b>10 HOOKS · 8 已有内置实现</b></div> -->
-            <!-- <em>按注册顺序执行 · 异常记录后继续</em> -->
+            <div><span>Hook 生命周期</span><b>WHEN · WHAT</b></div>
+            <em>一次 ReAct 迭代中的关键检查点</em>
           </div>
-          <p class="al2-middleware-provider-note">这里的 Provider 指“当前覆盖这个 Hook 的 Middleware 实现”；同一 Hook 可注册多个，并按链中顺序执行</p>
-          <div class="al2-middleware-track">
-            <section class="al2-mw-stage">
-              <header><span>01–04</span><b>模型前后</b><em>准备 → 压缩 → LLM → 路由</em></header>
-            <article class="al2-mw-step">
-              <span>01</span>
-              <div>
-                <b><code>before_iteration</code></b>
-                <p>一轮刚开始；此时工具和模型回复尚未准备</p>
-                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>SoftIterationBudgetMiddleware</code></small>
-              </div>
-              <em>软提醒</em>
-            </article>
-            <div class="al2-mw-core-step"><span>TOOLS</span><b>allowed ∩ Skill policy − excluded → 得到候选 schema</b></div>
-            <article class="al2-mw-step">
-              <span>02</span>
-              <div>
-                <b><code>before_model</code></b>
-                <p>模型请求前：先隐藏未提升工具，再按需压缩上下文</p>
-                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>DeferredToolFilter</code><code>ContextCompression</code></small>
-              </div>
-              <em>过滤 / 压缩</em>
-            </article>
-            <article class="al2-mw-step al2-mw-step-event">
-              <span>03</span>
-              <div>
-                <b><code>after_context_compression</code> <i>条件触发</i></b>
-                <p>仅压缩成功并提交状态后，读取压缩前原文和压缩结果</p>
-                <small class="al2-mw-provider al2-mw-provider-optional"><i>配置可选</i><code>MemoryWriteMiddleware</code></small>
-              </div>
-              <em>Memory</em>
-            </article>
-            <div class="al2-mw-core-step al2-mw-core-llm"><span>LLM</span><b>构建临时 request_messages → 调用模型 → 写入 assistant history</b></div>
-            <article class="al2-mw-step">
-              <span>04</span>
-              <div>
-                <b><code>after_model</code></b>
-                <p>模型已回答，但还没判断“调用工具还是返回文本”</p>
-                <small class="al2-mw-provider al2-mw-provider-empty"><i>当前接入</i>暂无内置 Middleware · 可扩展响应统计 / 路由观测</small>
-              </div>
-              <em>观察</em>
-            </article>
-            </section>
-            <section class="al2-mw-stage">
-              <header><span>05–10</span><b>工具与收尾</b><em>否决 → 执行 → 预算 → 追踪 → 清洗</em></header>
-            <article class="al2-mw-step al2-mw-step-guard">
-              <span>05</span>
-              <div>
-                <b><code>before_tool</code></b>
-                <p><code>tool_call_guard</code> 通过后触发；返回原因即可阻止 handler</p>
-                <small class="al2-mw-provider al2-mw-provider-child"><i>子 Agent 专用</i><code>LoopDetectionMiddleware</code></small>
-              </div>
-              <em>可否决</em>
-            </article>
-            <div class="al2-mw-core-step al2-mw-core-tool"><span>TOOL</span><b>注入 session → 权限复查 → handler / 隔离子进程 / delegate</b></div>
-            <article class="al2-mw-step al2-mw-step-rewrite">
-              <span>06</span>
-              <div>
-                <b><code>after_tool_execution</code></b>
-                <p>逐个处理原始结果：同步运行状态，并执行单结果预算</p>
-                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>ToolRuntimeState</code><code>ToolOutputBudget</code></small>
-              </div>
-              <em>单结果</em>
-            </article>
-            <article class="al2-mw-step al2-mw-step-rewrite">
-              <span>07</span>
-              <div>
-                <b><code>after_tool_batch</code></b>
-                <p>同一 assistant turn 的结果全部就绪后，约束整批总量</p>
-                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>ToolOutputBudgetMiddleware</code></small>
-              </div>
-              <em>整批预算</em>
-            </article>
-            <article class="al2-mw-step al2-mw-step-event">
-              <span>08</span>
-              <div>
-                <b><code>before_tool_message</code></b>
-                <p>预算完成后、外部回调前：记录事件并更新结构化索引</p>
-                <small class="al2-mw-provider al2-mw-provider-main"><i>内核运行时</i><code>ToolResultTrackingMiddleware</code></small>
-              </div>
-              <em>追踪</em>
-            </article>
-            <article class="al2-mw-step al2-mw-step-rewrite">
-              <span>09</span>
-              <div>
-                <b><code>after_tool</code></b>
-                <p><code>on_tool_end</code> 后、写入历史前：清洗模型最终会看到的文本</p>
-                <small class="al2-mw-provider al2-mw-provider-optional"><i>配置可选</i><code>ToolResultSanitizationMiddleware</code></small>
-              </div>
-              <em>安全清洗</em>
-            </article>
-            <article class="al2-mw-step">
-              <span>10</span>
-              <div>
-                <b><code>after_iteration</code></b>
-                <p>全部工具结果写入后，或最终文本返回前；适合轮级统计</p>
-                <small class="al2-mw-provider al2-mw-provider-empty"><i>当前接入</i>暂无内置 Middleware · 预留轮级统计 / 清理</small>
-              </div>
-              <em>观察</em>
-            </article>
-            </section>
+          <p class="al2-middleware-provider-note">同一 Hook 可挂载多个 Middleware，并按照 MiddlewareChain 中的顺序依次执行。</p>
+          <div class="al2-mw-table" role="table" aria-label="Middleware Hook 生命周期">
+            <div class="al2-mw-table-head" role="row">
+              <span role="columnheader">Hook</span><span role="columnheader">触发时机</span><span role="columnheader">主要能力</span>
+            </div>
+            <div class="al2-mw-table-row" role="row">
+              <code role="cell">before_iteration</code><span role="cell">每次 ReAct 迭代开始</span><p role="cell">注入预算提醒，初始化本轮状态</p>
+            </div>
+            <div class="al2-mw-table-row" role="row">
+              <code role="cell">before_model</code><span role="cell">请求模型前</span><p role="cell">过滤工具，检查并按需压缩上下文</p>
+            </div>
+            <div class="al2-mw-table-row al2-mw-table-row-conditional" role="row">
+              <code role="cell">after_context_compression</code><span role="cell">上下文压缩成功后</span><p role="cell">读取压缩前后内容，自动抽取 Memory</p>
+            </div>
+            <div class="al2-mw-table-row" role="row">
+              <code role="cell">after_model</code><span role="cell">收到模型回复后</span><p role="cell">自定义检查、统计，或更新运行状态</p>
+            </div>
+            <div class="al2-mw-table-row al2-mw-table-row-guard" role="row">
+              <code role="cell">before_tool</code><span role="cell">工具执行前</span><p role="cell">权限检查与循环检测；可直接否决调用</p>
+            </div>
+            <div class="al2-mw-table-row" role="row">
+              <code role="cell">after_tool_execution</code><span role="cell">单个 handler 返回后</span><p role="cell">改写单次结果、同步状态并将大结果落盘</p>
+            </div>
+            <div class="al2-mw-table-row" role="row">
+              <code role="cell">after_tool_batch</code><span role="cell">本轮全部工具完成后</span><p role="cell">统一控制整批工具结果的总预算</p>
+            </div>
+            <div class="al2-mw-table-row" role="row">
+              <code role="cell">before_tool_message</code><span role="cell">Tool Message 写回历史前</span><p role="cell">记录事件，更新 Artifact / Delegation 索引</p>
+            </div>
+            <div class="al2-mw-table-row" role="row">
+              <code role="cell">after_tool</code><span role="cell">最终 Tool Message 写入前</span><p role="cell">清洗输出，防御 Prompt Injection</p>
+            </div>
+            <div class="al2-mw-table-row" role="row">
+              <code role="cell">after_iteration</code><span role="cell">一轮迭代结束后</span><p role="cell">执行轮级统计、清理等自定义收尾</p>
+            </div>
           </div>
         </section>
 
         <section class="al2-middleware-explain">
           <div class="al2-middleware-section-head">
-            <div><b>WHY · WHAT · BOUNDARY</b></div>
+            <div><span>两条关键设计</span><b>CONTROL · RESILIENCE</b></div>
           </div>
-          <div class="al2-middleware-why">
-            <span>为什么要中间件化？</span>
-            <p>Memory、安全、观测、循环检测都属于“横切能力”如果全部写成 <code>_loop</code> 里的 <code>if</code>，主循环会同时负责流程和所有增强逻辑；现在每项能力只实现自己需要的 Hook，能够独立启停和测试</p>
+          <div class="al2-middleware-highlights">
+            <article class="al2-middleware-highlight al2-middleware-highlight-control">
+              <span>01 · 可干预控制流</span>
+              <b>Middleware 不只是“监听器”</b>
+              <p><code>before_tool</code> 可以返回拒绝原因，让主循环跳过这次工具调用。</p>
+            </article>
+            <article class="al2-middleware-highlight al2-middleware-highlight-resilience">
+              <span>02 · 单点故障隔离</span>
+              <b>一个中间件报错，不拖垮 Agent</b>
+              <p>异常会被捕获并记录到 <code>MiddlewareChain.errors</code>，主循环继续运行。</p>
+            </article>
           </div>
-          <div class="al2-middleware-actions">
-            <article><b>状态检测</b><span>读取 <code>AgentContext</code>，记录状态和统计</span></article>
-            <article><b>危险过滤</b><span><code>before_tool</code> 返回原因，工具不执行</span></article>
-            <article><b>上下文处理</b><span>状态同步、结果外置和整轮预算分阶段完成</span></article>
-            <article><b>Memory 写入</b><span>压缩成功后再抽取 Memory，避免错误提交</span></article>
+
+          <div class="al2-middleware-chain">
+            <div class="al2-middleware-subhead">
+              <span>内核链顺序</span>
+              <em>始终安装 · 从前到后执行</em>
+            </div>
+            <ol>
+              <li><span>01</span><code>DeferredToolFilterMiddleware</code></li>
+              <li><span>02</span><code>ContextCompressionMiddleware</code></li>
+              <li><span>03</span><code>ToolRuntimeStateMiddleware</code></li>
+              <li><span>04</span><code>ToolResultTrackingMiddleware</code></li>
+              <li class="is-extension"><span>05</span><code>调用方 / 配置中间件</code><em>扩展位</em></li>
+              <li><span>06</span><code>ToolOutputBudgetMiddleware</code></li>
+              <li><span>07</span><code>SoftIterationBudgetMiddleware</code></li>
+            </ol>
           </div>
+
           <div class="al2-middleware-builtins">
-            <span>中间件分层</span>
+            <span>按需启用</span>
             <article class="al2-mw-builtin-group">
-              <b>通常存在的中间件</b>
-              <p><code>DeferredToolFilter</code> · <code>ContextCompression</code> · <code>ToolRuntimeState</code> · <code>ToolResultTracking</code> · <code>ToolOutputBudget</code> · <code>SoftIterationBudget</code></p>
+              <b><code>ToolResultSanitizationMiddleware</code></b>
+              <p>清洗工具输出，降低 Prompt Injection 风险</p>
             </article>
             <article class="al2-mw-builtin-group">
-              <b>配置可选的中间件</b>
-              <p><code>ToolResultSanitization</code> 清洗注入；<code>MemoryWrite</code> 在压缩成功后抽取长期事实</p>
+              <b><code>MemoryWriteMiddleware</code></b>
+              <p>在上下文压缩成功后抽取长期记忆</p>
             </article>
-            <article class="al2-mw-builtin-group">
-              <b>子 Agent 专用中间件</b>
-              <p><code>LoopDetection</code> 拒绝连续重复调用；子 Agent 仍自动拥有完整内核运行时链</p>
+            <article class="al2-mw-builtin-group al2-mw-builtin-child">
+              <b><code>LoopDetectionMiddleware</code></b>
+              <p>子 Agent 专用，拒绝连续重复调用</p>
             </article>
           </div>
-          <div class="al2-middleware-construction">
-            <b>中间件运行顺序</b>
-            <span>内核链始终安装；显式传入 <code>middlewares=[...]</code> 只替换“配置可选链”，不会移除压缩、预算、追踪等运行时不变量</span>
-          </div>
-          <div class="al2-middleware-boundary">
-            <b>Middleware 不负责什么？</b>
-            <ul>
-              <li>不决定 <code>while</code> 是否继续，也不替代工具注册表；真正控制权仍在 <code>RAgent._loop()</code></li>
-              <li>请求视图、LLM 重试和 handler 副作用仍由 Loop 负责；Middleware 负责压缩触发、结果预算、追踪与清洗</li>
-              <li>单个中间件异常默认 <b>fail-open</b>：错误写入 <code>middleware.errors</code>，主循环继续；强安全策略仍应放在确定性 guard</li>
-            </ul>
-          </div>
-          <!-- <div class="al2-code">core/middleware/base.py · core/middleware/builtins.py · core/agent.py · tools/delegate_tool.py</div> -->
         </section>
       </div>
     </div>
@@ -4327,23 +5019,23 @@
     </div>
   </div>
 
-  <!-- ===== Agent RL · Slide 16 L1 detail panels ===== -->
+  <!-- ===== Agentic RL · Slide 16 L1 detail panels ===== -->
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-credit" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="al2-modal-card rsi-modal-card">
       <header class="al2-modal-head">
         <div>
           <span class="al2-modal-tag">L1-1 · CREDIT ASSIGNMENT</span>
-          <h3>信用分配：一个标量，几十步动作</h3>
+          <h3>信用分配</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
       <div class="rsi-modal-body">
         <div class="arl-pain">
-          <b>病理</b>
-          <p>20 次 tool call 共享一个 0/1 结果，horizon 越长方差越大；失败轨迹里那些真正推进任务的动作，和最后那一步错误拿到<mark>完全相同的负优势</mark>。</p>
+          <b>困难</b>
+          <p>多步操作共享同一个 advantage，horizon 越长方差越大；有作用的动作会拿到<mark>完全相同的负优势</mark>。</p>
         </div>
         <section class="arl-section">
-          <header><span>粒度阶梯</span><b>从整条轨迹往下切</b></header>
+          <!-- <header><span>粒度阶梯</span><b>从整条轨迹往下切</b></header> -->
           <table class="arl-table">
             <thead><tr><th>方案</th><th>粒度</th><th>机制</th><th>风险</th></tr></thead>
             <tbody>
@@ -4351,20 +5043,22 @@
               <tr><td>turn-level reward</td><td>每轮</td><td>最终结果 + 中间奖励</td><td>中间奖励最容易被 hack</td></tr>
               <tr><td>GiGPO</td><td>episode + step</td><td>组中组，两层分组同时估 episode 级与 step 级优势</td><td>需能对齐「相同状态」的分组键，环境不可复现即失效</td></tr>
               <tr><td>IGPO</td><td>每轮</td><td>turn reward = 产生正确答案概率的<b>边际增量</b></td><td>依赖标准答案 + 额外前向</td></tr>
-              <tr><td>leave-one-out</td><td>组内</td><td>留一法优势估计，稳住非稳态 web 环境</td><td>组内样本相关性高时收益有限</td></tr>
+              <tr><td>leave-one-out(RLOO)</td><td>组间</td><td>留一法优势估计，稳住非稳态 web 环境</td><td>组内样本相关性高时收益有限</td></tr>
+              <tr><td>TRACE</td><td>每轮</td><td>用参考模型的 log-ratio 做 TD 差分</td><td>有 gold-answer 并且要求每一步对正确答案有直接收益</td></tr>
+              <tr><td>SAO、KIMI K3</td><td>每轮</td><td>采样单轨迹，训练 critic 模型</td><td>训练难度大，需要仔细训练调优 critic</td></tr>
             </tbody>
           </table>
         </section>
-        <section class="arl-highlight">
+        <!-- <section class="arl-highlight">
           <header><span>2026 亮点</span><b>TRACE · 用参考模型的 log-ratio 做 TD 差分</b></header>
           <ul>
             <li>把 rollout 表示为 <b>tool-call 边界上的状态转移</b>；用 frozen reference model 取 gold-answer log-prob，转成 log-ratio state value，对相邻状态做 <b>TD 差分</b>得到 per-action reward。</li>
             <li>不需要额外 critic，也不需要 process label；one-step log-ratio TD 项在冗余 tool call 上会自动 telescope 抵消。</li>
             <li>纯 RL、无冷启动 SFT，closed-web <b>BrowseComp-Plus</b>：Qwen3-4B <b>7.2 → 35.6</b>，Qwen3-30B-A3B <b>8.4 → 42.6</b>。</li>
           </ul>
-        </section>
+        </section> -->
         <div class="arl-anti">
-          <b>反面案例</b>
+          <b>reward hacking 示例</b>
           <p>给「工具调用格式正确」发 0.2 分 → 模型输出格式完美但不解题。更安全的是负向惩罚：连续两轮相似度 &gt; 80% 扣 0.5 分，打断死循环。</p>
         </div>
       </div>
@@ -4376,7 +5070,7 @@
       <header class="al2-modal-head">
         <div>
           <span class="al2-modal-tag">L1-2 · GROUP BASELINE</span>
-          <h3>组内基线：去掉 critic 的三个偏置</h3>
+          <h3>长轨迹 RL 偏置</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
@@ -4387,24 +5081,30 @@
             <ol class="arl-debt">
               <li><b>长度偏置</b><p>loss 除以 <code>|o_i|</code>，负优势时对超长错误回答的惩罚被摊薄 → 学会「答错就写长一点」。长度爆炸是<b>算法侧成因</b>，不是 reward 设计问题。</p></li>
               <li><b>难度偏置</b><p>用组内 <code>std(R)</code> 归一化，给几乎全对 / 全错的题赋予异常大的梯度权重，让信息量最低的样本主导优化。</p></li>
-              <li><b>梯度饥饿</b><p>二元奖励下组内全对或全错时中心化优势<b>严格为 0</b>——它决定的是你的<b>有效 batch size</b>，不只是收敛速度。</p></li>
+              <li><b>Advantage 消失</b><p>熵容易降低，只能解决简单问题，缺乏探索，能力受限。基座模型通常会训练 critic 函数</p></li>
             </ol>
-            <pre class="arl-formula-block">GRPO (seq-mean)  L = (1/G) Σ_i [ (1/|o_i|) Σ_t min(r·Â, clip(r)·Â) ]
+            <!-- <pre class="arl-formula-block">GRPO (seq-mean)  L = (1/G) Σ_i [ (1/|o_i|) Σ_t min(r·Â, clip(r)·Â) ]
 DAPO (token-mean) L = 1/(Σ_i|o_i|) · Σ_i Σ_t min(r·Â, clip(r)·Â)
-                     ↑ 长序列 token 不再被 1/|o_i| 稀释</pre>
+                     ↑ 长序列 token 不再被 1/|o_i| 稀释</pre> -->
           </section>
           <section class="arl-section">
-            <header><span>DAPO 四件套</span><b>Qwen2.5-32B：lr 1e-6，prompt batch 512，每 prompt 16 响应</b></header>
+            <header><span>长度偏置解决思路</span></header>
             <table class="arl-table">
-              <thead><tr><th>补丁</th><th>治的病</th><th>数值 / 机制</th></tr></thead>
+              <thead><tr><th>算法</th><th>方法</th><th>解决的问题</th></tr></thead>
+              <tbody>
+                <tr><td>DAPO</td><td>Token-level PG Loss</td><td>长 CoT 被稀释，导致长轨迹惩罚力度不够，生成越来越长</td></tr>
+                <tr><td>Dr.GRPO</td><td>替换为长度无关的常数</td><td>既不会因为长度而被稀释，也不会因为长度而被放大</td></tr>
+                <tr><td>GSPO/GMPO</td><td>使用几何平均</td><td>长序列上减少方差累积，同时利于 MOE 模型训练</td></tr>
+                <tr><td>StepPO</td><td>Multi-Turn RL,action使用几何平均</td><td>可以兼容超长动作，同时更符合 MDP 定义</td></tr>
+              <!-- <thead><tr><th>补丁</th><th>治的病</th><th>数值 / 机制</th></tr></thead>
               <tbody>
                 <tr><td>Clip-Higher</td><td>熵崩塌</td><td>解耦裁剪：<code>eps_low=0.2</code>，<code>eps_high=0.28</code></td></tr>
                 <tr><td>Dynamic Sampling</td><td>零梯度组</td><td>过滤全对 / 全错组，补采填满 batch</td></tr>
                 <tr><td>Token-level PG Loss</td><td>长 CoT 被稀释</td><td>分母 = batch 内有效 token 总数</td></tr>
-                <tr><td>Overlong Shaping</td><td>截断噪声</td><td>最大 <b>16384</b> + <b>4096</b> 软惩罚缓冲；先 Filtering 再软惩罚</td></tr>
+                <tr><td>Overlong Shaping</td><td>截断噪声</td><td>最大 <b>16384</b> + <b>4096</b> 软惩罚缓冲；先 Filtering 再软惩罚</td></tr> -->
               </tbody>
             </table>
-            <p class="arl-note">DAPO 显式令 <b>beta = 0</b>（去掉 KL），因长 CoT 本需大幅偏移；防漂移担子落到 clip、overlong 与格式奖励。偏好对齐任务里工业实践仍常把 beta 放 <b>0.01–0.1</b>。</p>
+            <!-- <p class="arl-note">DAPO 显式令 <b>beta = 0</b>（去掉 KL），因长 CoT 本需大幅偏移；防漂移担子落到 clip、overlong 与格式奖励。偏好对齐任务里工业实践仍常把 beta 放 <b>0.01–0.1</b>。</p> -->
           </section>
         </div>
         <div class="arl-highlight arl-highlight-compact">
@@ -4412,7 +5112,8 @@ DAPO (token-mean) L = 1/(Σ_i|o_i|) · Σ_i Σ_t min(r·Â, clip(r)·Â)
           <div class="arl-subgrid">
             <article>
               <b>熵：R = −a·e^H + b</b>
-              <p>性能是拿熵换来的，熵耗尽性能封顶。干预阶梯从脆到稳：entropy bonus（几乎无效，0.01 直接炸熵）→ Clip-Cov（只断极高协方差 token）→ KL-Cov（中期熵维持基线 10× 以上）。诊断信号要成对看：生成熵持续下滑 <b>且</b> 上界 clip fraction 长期高位。</p>
+              <p>性能是拿熵换来的，熵耗尽性能封顶。干预阶梯从脆到稳：entropy bonus（几乎无效，0.01 直接炸熵）→ Clip-Cov（只断极高协方差 token）→ KL-Cov（中期熵维持基线 10× 以上）+ 上界 clip fraction 长期高位。</p>
+              <b>基座模型使用的基本都是 decoupled PPO，不 clip 策略，仅 clip IS。这样做截断更加严格，但是梯度没有断（CISPO、SAO）</b>
             </article>
             <article>
               <b>ratio 粒度：MoE 上的生死线</b>
@@ -4479,8 +5180,8 @@ advantage    -       -              Â                 -             Â         
       </header>
       <div class="rsi-modal-body">
         <div class="arl-pain">
-          <b>病理</b>
-          <p>PPO 的 importance ratio 假设「old policy 就是当初采样的那个分布」。真实 RL 栈里这句话<b>从第一步就不成立</b>——采样用推理引擎，算 logprob 用训练引擎，同一份权重两套 kernel。<mark>唯一必须上盘的指标：train / rollout logprob 绝对差（均值 + 尾部分位）。</mark></p>
+          <b>原因</b>
+          <p>采样用推理引擎，算 logprob 用训练引擎，同一份权重两套 kernel</p>
         </div>
         <div class="arl-two-col">
           <section class="arl-section">
@@ -4491,7 +5192,7 @@ advantage    -       -              Â                 -             Â         
                 <tr><td><b>batch 非不变性</b></td><td>vLLM 锁 RMSNorm max_block_size=1024</td></tr>
                 <tr><td><b>BF16 舍入累积</b></td><td>≈−0.00012，序列越长差异越大</td></tr>
                 <tr><td><b>累加精度 bug</b></td><td>超 flat-index 512 出错，FP32 累加即消失</td></tr>
-                <tr><td><b>chunked prefill</b></td><td>decode 与 prefill logprob 不一致</td></tr>
+                <tr><td><b>chunked prefill</b></td><td>decode 与 prefill 因为数据 shape 不一样就使用不同的 Flash Attention kernel，导致不一致</td></tr>
                 <tr><td><b>MoE routing 漂移</b></td><td>MoE 上 diff 显著大于 dense</td></tr>
               </tbody>
             </table>
@@ -4499,18 +5200,19 @@ advantage    -       -              Â                 -             Â         
           <section class="arl-section">
             <header><span>修正手段与代价</span><b>偏差换方差</b></header>
             <ul class="arl-fixes">
-              <li><b>TIS</b>：序列级 IS 权重在阈值 c 处截断 <code>min(sg[π/μ], c)</code>——阈值成新超参。</li>
-              <li><b>MIS</b>：只保留 ratio ≤ C 的序列——更简单，但系统性丢掉「最偏离」的新行为样本。</li>
+              <li><b>TIS</b>：Token 级 IS 权重在阈值 c 处截断 <code>min(sg[π/μ], c)</code></li>
+              <li><b>MIS</b>：序列级 IS 乘积，保留 ratio ≤ C 的序列</li>
               <li><b>Routing Replay / R3</b>（MoE）：把推理时路由决策回放到训练侧对齐专家。</li>
               <li><b>精度硬解</b>：训推统一 FP16 而非 BF16，最「土」但最有效。</li>
             </ul>
           </section>
         </div>
         <div class="arl-evidence">
-          <b>证据</b>
-          <span>消除训推不一致后 Wordle 解题率 63.9% → 77.4%。</span>
-          <span>2026｜TIM：零 mismatch 诊断环境证明仅 token 级微小数值分歧就能独立导致崩溃，应作一阶因素。</span>
-          <span>2026｜QaRL：训练前向对齐到量化 rollout，Qwen3-30B-A3B 数学 +5.5。</span>
+          <b>Agentic RL 加剧不一致</b>
+          <span>长短轨迹导致需要的推理时间不同，长轨迹在多次更新后已经 off policy</span>
+          <span>环境 Reward 获取困难，常常需要先 rollout，然后 train 和评估同时进行，训练的样本来自上一轮更新</span>
+          <span>更长的轨迹导致累积误差，分布很难统一</span>
+          <span>工具也会更新，分布会发生偏移</span>
         </div>
       </div>
     </div>
@@ -4607,386 +5309,533 @@ advantage    -       -              Â                 -             Â         
     </div>
   </div>
 
-  <!-- ===== Agent RL · Slide 17 L1 detail panels ===== -->
+  <!-- ===== Agentic RL · Slide 17 L1 detail panels ===== -->
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-cache" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-1 · STALE PREFIX CACHE</span>
-          <h3>前缀缓存：权重换了，KV 没换</h3>
+          <span class="al2-modal-tag">框架坑 01 · 前缀缓存</span>
+          <h3>换了权重，缓存却还是旧的</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <div class="arl-pain">
-          <b>病理</b>
-          <p>RL 特有、普通推理部署完全遇不到——权重更新后前缀缓存里仍是<mark>旧权重算出的 KV</mark>，之后的 rollout 就在用一个「半新半旧」的模型采样。</p>
+      <div class="arlx-body">
+        <p class="arlx-lead">RL 每训练一步就要更新一次模型权重，但推理引擎为了加速会把算过的 <b>KV 缓存</b>存下来复用。这个缓存不会自己跟着权重更新。</p>
+
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem">
+            <span class="arlx-k">现象</span>
+            <div class="arlx-v">
+              <p>权重已经更新，采样却还在用<mark>旧权重算出的缓存</mark>，等于拿一个「半新半旧」的模型在生产数据。训练会慢慢跑偏，但不报错。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-cause">
+            <span class="arlx-k">原因</span>
+            <div class="arlx-v">
+              <p>缓存是为「同一个模型反复推理」设计的，它默认权重不变。RL 把这个前提打破了——权重每步都变，缓存却没人通知它作废。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-fix">
+            <span class="arlx-k">解决</span>
+            <div class="arlx-v">
+              <p>规矩很简单：<b>每次更新权重后，立刻清一次缓存</b>，再开始下一轮采样。</p>
+            </div>
+          </div>
         </div>
-        <div class="arl-two-col">
-          <section class="arl-section">
-            <header><span>vLLM</span><b>要你自己清</b></header>
-            <ul class="arl-tight">
-              <li>对 TP worker 原地权重编辑后<b>必须</b>调 <code>llm.reset_prefix_cache()</code>；官方 issue 标注 "REQUIRED after each edit"。</li>
-              <li>MoE 走 <code>collective_rpc</code> 下发 update plan，需 <code>VLLM_ALLOW_INSECURE_SERIALIZATION=1</code>。</li>
+
+        <p class="arlx-fw-title">两个引擎怎么处理</p>
+        <div class="arlx-fw2">
+          <div class="arlx-fw">
+            <header><b>vLLM</b><span class="arlx-pill is-warn">要手动清</span></header>
+            <ul>
+              <li>更新权重后<b>必须</b>自己调 <code>reset_prefix_cache()</code>，官方文档标注这是「必需」步骤。</li>
+              <li>忘了这一步，故障没有任何提示——这是它最容易踩的坑。</li>
             </ul>
-          </section>
-          <section class="arl-section">
-            <header><span>SGLang</span><b>默认帮你清</b></header>
-            <ul class="arl-tight">
-              <li><code>update_weights_from_*</code> 自带 <code>flush_cache</code> 且<b>默认 True</b>，更新后自动清 RadixAttention；但要求<b>调用前引擎空闲</b>。</li>
-              <li>赢在默认值。但你手动关掉 flush_cache 又没确保空闲，事故形态与 vLLM 忘记 reset 完全一样。</li>
+          </div>
+          <div class="arlx-fw">
+            <header><b>SGLang</b><span class="arlx-pill is-good">默认帮你清</span></header>
+            <ul>
+              <li>更新权重时<b>自动清缓存</b>，省了一道手动操作。</li>
+              <li>前提是调用时引擎处于空闲；若手动关掉自动清理，故障形态和 vLLM 完全一样。</li>
             </ul>
-          </section>
+          </div>
         </div>
-        <div class="arl-selfcheck">
-          <b>唯一症状与证据</b>
-          <pre>watch:  train_rollout_logprob_abs_diff  随 step 缓慢单调上升（不是 spike）
-check:  1) update 之后有没有 reset / flush   2) update 时引擎是否空闲</pre>
-          <p>一个值得知道但<b>不宜过度解读</b>的对照：slime(SGLang) 侧该指标 30 step 内从 ≈0.011 升到 ≈0.036，vime(vLLM) 侧平坦——这是单一来源社区报告，是「必须监控这个指标」的理由，不是「SGLang 更差」的证据。</p>
+
+        <div class="arlx-take">
+          <b>怎么发现它</b>
+          <p>盯住一个指标：<b>采样端和训练端算出的 logprob 差值</b>。如果它随训练步数缓慢往上爬（不是突然跳变），八成就是缓存没清。</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-sleep" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-2 · SLEEP / WAKE GRAIN</span>
-          <h3>显存让位：sleep 分级与三个真实事故</h3>
+          <span class="al2-modal-tag">框架坑 02 · 显存让位</span>
+          <h3>训练和推理抢同一张显卡</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <section class="arl-section">
-          <header><span>vLLM sleep 分级</span><b>关键在唤醒粒度</b></header>
-          <table class="arl-table">
-            <thead><tr><th>动作</th><th>语义</th><th>RL 场景怎么用</th></tr></thead>
-            <tbody>
-              <tr><td><code>sleep(level=1)</code></td><td>权重 offload 到 CPU，丢弃 KV cache</td><td>常规 colocate 默认档</td></tr>
-              <tr><td><code>sleep(level=2)</code></td><td>权重与 KV 都丢弃，CPU 只留 rope buffer</td><td>显存极紧才用，注意副作用</td></tr>
-              <tr><td><code>wake_up(tags=['weights'])</code></td><td>只唤醒权重，同步完再分配 KV</td><td><b>关键</b>：避开权重同步瞬间的显存尖峰</td></tr>
-            </tbody>
-          </table>
-          <p class="arl-note">SGLang 的 <code>release_memory_occupation(tags=['kv_cache'|'weights'])</code> 可分别释放，v0.5 起有 <code>--enable-weights-cpu-backup</code>；但 verl 集成里 torch_memory_saver 只支持<b>单例</b>，KV 与权重被迫一起 pause/resume——文档里的细粒度语义，集成层可能被抹平。</p>
-        </section>
-        <section class="arl-section">
-          <header><span>三个真实事故</span><b>根因 / 处置</b></header>
-          <table class="arl-table">
-            <thead><tr><th>事故</th><th>现象</th><th>根因 / 处置</th></tr></thead>
-            <tbody>
-              <tr><td>长推理 GRPO 释放不及时</td><td>actor 在 FSDP backward 阶段 OOM</td><td>rollout 引擎显存没及时 sleep；改用 <code>wake_up(['weights'])</code></td></tr>
-              <tr><td>colocate + speculative decoding</td><td>acceptance rate <b>精确塌到 0</b></td><td>level=2 丢了 drafter 权重、refit 只更新 policy → 关 spec decoding 或让 refit 覆盖 drafter</td></tr>
-              <tr><td>同一张 GPU 多进程</td><td>NCCL 无法正常工作</td><td>张量传递走 CUDA-IPC；verl 注入 vLLMColocateWorkerExtension 处理 IPC 权重加载</td></tr>
-            </tbody>
-          </table>
-        </section>
-        <div class="arl-defense">
+      <div class="arlx-body">
+        <p class="arlx-lead">为省成本，RL 常让<b>推理引擎</b>和<b>训练器</b>挤在同一批 GPU 上（叫 colocate）。谁用显卡谁就得先让另一方「睡觉」腾地方，交接不干净就会出事。</p>
+
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem">
+            <span class="arlx-k">现象</span>
+            <div class="arlx-v">
+              <p>典型症状：训练算梯度时<mark>显存不够直接崩（OOM）</mark>；或推理侧唤醒后加速功能失灵，性能悄悄掉一截。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-cause">
+            <span class="arlx-k">原因</span>
+            <div class="arlx-v">
+              <p>让位不是「开关一按就干净」的。睡得太浅，显存没真正腾出来；睡得太深，把加速需要的辅助模型也一起丢了，醒来时缺东西。<b>关键在唤醒的粒度</b>——先唤醒什么、后分配什么。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-fix">
+            <span class="arlx-k">解决</span>
+            <div class="arlx-v">
+              <p>把顺序固定下来：<b>先只唤醒权重、完成同步，再分配 KV 缓存</b>，避开同步瞬间的显存尖峰。并且在 colocate 下默认关掉投机解码这类会丢辅助模型的功能。</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="arlx-fw-title">两个引擎怎么处理</p>
+        <div class="arlx-fw2">
+          <div class="arlx-fw">
+            <header><b>vLLM</b><span class="arlx-pill is-good">粒度可控</span></header>
+            <ul>
+              <li>睡眠分两档：只卸权重，或权重和缓存都丢。</li>
+              <li>提供<b>按需唤醒</b> <code>wake_up(['weights'])</code>，能先同步权重再补缓存，正好躲过显存尖峰。</li>
+            </ul>
+          </div>
+          <div class="arlx-fw">
+            <header><b>SGLang</b><span class="arlx-pill is-warn">文档细，集成糙</span></header>
+            <ul>
+              <li>官方接口同样支持分别释放权重和缓存。</li>
+              <li>但常见训练框架的集成层把它<b>简化成一起 睡/醒</b>，文档里的细粒度未必真的用得上。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arlx-take">
           <b>默认姿势</b>
-          <span>RL colocate 下先关掉 speculative decoding；先 <code>wake_up(['weights'])</code> 再分配 KV；把「rollout 引擎显存已释放」做成同步前的断言，而不是靠祈祷。</span>
+          <p>colocate 下先关投机解码；<b>先唤醒权重、再分配缓存</b>；把「推理侧显存已释放」写成一句断言去检查，而不是靠运气。</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-weightsync" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-3 · WEIGHT-SYNC API</span>
-          <h3>权重同步：一边自己写扩展，一边用内置接口</h3>
+          <span class="al2-modal-tag">框架坑 03 · 权重同步</span>
+          <h3>训练器算出的新权重，怎么传给推理引擎</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <div class="arl-two-col">
-          <section class="arl-section">
-            <header><span>vLLM</span><b>给你一个注入点</b></header>
-            <ul class="arl-tight">
-              <li>实现自定义 <code>WorkerExtension</code> 处理训推权重同步，如用 CUDA IPC handle。</li>
-              <li>API 历史不稳：v0.8.1 时 <code>collective_rpc</code> 在 V1 引擎默认是坏的；2026-02 又发生 RPC 参数 <code>unique_reply_rank</code> → <code>target_ranks</code> 的破坏性改名。</li>
-              <li><b>纪律</b>：把版本钉死写进 requirements，升级前跑权重同步端到端 smoke test。</li>
-            </ul>
-          </section>
-          <section class="arl-section">
-            <header><span>SGLang</span><b>成品接口，大模型上优势明确</b></header>
-            <ul class="arl-tight">
-              <li><code>update_weights_from_tensor / from_distributed</code>；借 Mooncake P2P RDMA，1T 参数 Kimi-K2 权重传输 <b>53s → 7.2s</b>。</li>
-              <li>verl 集成中分片 delta 同步比标准 NCCL 快约 <b>1.3–1.55×</b>，32B 从 ≈18s 降到 ≈11s。</li>
-              <li><b>坑</b>：<code>update_weights_from_distributed</code> 把 broadcast 的 <code>src</code> 硬编码成 0，多 process group 拓扑会挂死。</li>
-            </ul>
-          </section>
+      <div class="arlx-body">
+        <p class="arlx-lead">每训练一步，都要把最新权重从训练器搬到推理引擎。模型越大（几百亿到上万亿参数），这一步越慢、越容易出问题，甚至能主导整步耗时。</p>
+
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem">
+            <span class="arlx-k">现象</span>
+            <div class="arlx-v">
+              <p>训练<mark>卡在权重同步这一步不动了</mark>，GPU 占用归零，却也不报错；或者升级完框架版本后，同步接口突然对不上。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-cause">
+            <span class="arlx-k">原因</span>
+            <div class="arlx-v">
+              <p>同步接口还在快速演进，<b>参数名会改、默认行为会变</b>；有的实现把「从谁开始广播」写死成固定值，一旦多机拓扑不匹配就死锁。这类问题往往是接口本身的坑，不是网络问题。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-fix">
+            <span class="arlx-k">解决</span>
+            <div class="arlx-v">
+              <p>两条纪律：<b>把框架版本号钉死</b>，升级前先跑一遍权重同步的小测试；卡住时先用工具抓调用栈看是不是卡在广播，<b>别一上来就怀疑网络</b>。</p>
+            </div>
+          </div>
         </div>
-        <div class="arl-selfcheck">
-          <b>排障与 MoE 断言</b>
-          <pre>症状：训练 hang 在权重同步，GPU 利用率归零且无报错
-第一步：py-spy dump  → 看是不是卡在 broadcast，而不是先怀疑网络
-第二步：核对版本号与 API 签名是否被上游改过</pre>
-          <p>MoE 专属：<code>update_weights_from_tensor</code> 在 EP&gt;1 时因融合 buffer 形状不一致抛 AssertionError，设 <b>EP=1</b> 可绕开。好消息：P2P 传输随节点数扩展性好，<b>MoE 高 EP 应优先 P2P 而非 NCCL broadcast</b>。</p>
+
+        <p class="arlx-fw-title">两个引擎怎么处理</p>
+        <div class="arlx-fw2">
+          <div class="arlx-fw">
+            <header><b>vLLM</b><span class="arlx-pill is-warn">要自己写扩展</span></header>
+            <ul>
+              <li>只给一个「注入点」，同步逻辑得自己实现，灵活但要维护。</li>
+              <li>接口历史上出过<b>破坏性改名</b>，所以「钉版本 + 升级前测试」在这里尤其重要。</li>
+            </ul>
+          </div>
+          <div class="arlx-fw">
+            <header><b>SGLang</b><span class="arlx-pill is-good">成品接口，大模型快</span></header>
+            <ul>
+              <li>提供现成同步接口，超大模型上优势明显——万亿参数传输能从<b> 53 秒降到 7 秒级</b>。</li>
+              <li>坑在于某些接口把广播源写死，多机拓扑下需要注意配置。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arlx-take">
+          <b>大模型经验</b>
+          <p>参数规模上到百亿以上、且权重同步开始主导每步耗时时，<b>点对点直传比传统广播更值得优先考虑</b>——这也是切换到 SGLang 的典型理由之一。</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-token" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-4 · TOKEN FIDELITY</span>
-          <h3>token 保真：漂移与 streaming 采集禁区</h3>
+          <span class="al2-modal-tag">框架坑 04 · token 保真</span>
+          <h3>TITO</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <div class="arl-pain">
-          <b>根因</b>
-          <p>detokenize 后再 tokenize 对很多 tokenizer <b>不是幂等</b>的，喂给 loss 的 token 序列 ≠ 模型实际生成的序列，更新变成事实上的 <mark>off-policy</mark>。症状：loss 噪声大、KL 无故抬升，但生成质量目测正常。</p>
+      <div class="arlx-body">
+        <p class="arlx-lead">模型生成的是一串 token（词的编号）。如果中途把它转成文字、再转回 token 去做训练，两次结果可能<b>对不上</b>，训练就用错了序列。</p>
+
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem">
+            <span class="arlx-k">现象</span>
+            <div class="arlx-v">
+              <p>loss 噪声很大、KL 无缘无故往上抬，但你去看生成的文字又觉得<mark>一切正常</mark>——因为错的是 token 序列，肉眼看文字看不出来。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-cause">
+            <span class="arlx-k">原因</span>
+            <div class="arlx-v">
+              <p>「token→文字→token」这个来回，对很多分词器<b>不是可逆的</b>：转回来的编号和原始编号有出入。于是训练看到的序列 ≠ 模型真实生成的序列，等于偷偷变成了「离线数据」在训练。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-fix">
+            <span class="arlx-k">解决</span>
+            <div class="arlx-v">
+              <p>两点：让引擎<b>直接返回原始 token 编号</b>，不要中间那道文字转换；采集训练轨迹时<b>不要用流式（streaming）输出</b>，流式模式在收尾和特殊标记处容易丢信息。</p>
+            </div>
+          </div>
         </div>
-        <div class="arl-two-col">
-          <section class="arl-section">
-            <header><span>一行配置的解</span><b>投产比最高</b></header>
-            <ul class="arl-tight">
-              <li>vLLM 在 OpenAI 兼容端点传 <code>"return_token_ids": true</code>，直接拿 prompt 与输出的<b>精确 token id</b>。</li>
-              <li>SGLang 侧原生支持 token-in-token-out 轨迹。</li>
+
+        <p class="arlx-fw-title">两个引擎怎么处理</p>
+        <div class="arlx-fw2">
+          <div class="arlx-fw">
+            <header><b>vLLM</b><span class="arlx-pill is-good">一行配置解决</span></header>
+            <ul>
+              <li>接口里加一句 <code>return_token_ids: true</code>，直接拿到精确 token——<b>投入产出比最高的一行改动</b>。</li>
+              <li>流式模式在遇到特殊标记时可能和非流式结果分叉，采集别用流式。</li>
             </ul>
-          </section>
-          <section class="arl-section">
-            <header><span>两个 streaming 陷阱</span><b>结论：采集别用 streaming</b></header>
-            <ul class="arl-tight">
-              <li><b>vLLM</b>：因 max_tokens / stop 终止时若解析器停在未升格的 <code>&lt;tool_call&gt;</code> 开标签，streaming 与非 streaming 结果分叉。</li>
-              <li><b>SGLang</b>：开 reasoning / tool-call parser 时 <code>choice_logprobs</code> 只挂常规内容分支，<b>纯 reasoning / 纯 tool chunk 整块丢 logprob</b>。</li>
+          </div>
+          <div class="arlx-fw">
+            <header><b>SGLang</b><span class="arlx-pill is-good">原生支持</span></header>
+            <ul>
+              <li>原生支持「token 进、token 出」，天然规避这个问题。</li>
+              <li>但开启推理/工具解析时，流式下<b>纯推理或纯工具片段可能整块丢概率值</b>，同样不建议流式采集。</li>
             </ul>
-          </section>
+          </div>
         </div>
-        <div class="arl-selfcheck">
-          <b>顺手带走的 mask 自查（同一病根的另一面）</b>
-          <pre>assert loss_mask[user | tool | system 段] == 0     # 三种 role 必须全 0
-print( loss_mask.sum() / attention_mask.sum() )    # agent 轨迹应显著 &lt; 1</pre>
-          <p>正确做法是把 user / tool / system 三类 role 视作被 mask 的观测（loss_mask=0），策略以它们为条件但不在其上训练。</p>
+
+        <div class="arlx-take">
+          <b>顺带一提</b>
+          <p>同一个病根还有另一面：算 loss 时要把<b>用户、工具、系统这三类内容屏蔽掉</b>（它们是环境给的，不是模型生成的），只训练模型自己说的部分。</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-determinism" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-5 · DETERMINISM / FP8</span>
-          <h3>确定性是 debug 开关，不是默认项</h3>
+          <span class="al2-modal-tag">框架坑 05 · 确定性</span>
+          <h3>确定性是排错工具，不是常开设置</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <div class="arl-pain">
-          <b>定位</b>
-          <p>确定性不是常开项，是<b>对拍工具</b>：临时打开把 train / rollout logprob 差压到 0，定位完立刻关掉。</p>
+      <div class="arlx-body">
+        <p class="arlx-lead">GPU 计算天生有微小随机误差，同样的输入两次结果也会略有不同。「确定性模式」能把误差消掉，方便你排查问题，但它很贵。</p>
+
+        <div class="arlx-flow">
+          <div class="arlx-step is-problem">
+            <span class="arlx-k">现象</span>
+            <div class="arlx-v">
+              <p>怀疑训练端和采样端算出的概率对不上，却分不清是<mark>真有 bug 还是正常的浮点误差</mark>，无从下手。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-cause">
+            <span class="arlx-k">原因</span>
+            <div class="arlx-v">
+              <p>平时两端有微小误差是正常的。但如果误差异常大，就说明实现有问题。要区分这两种情况，需要一个能把误差临时压到零的「对拍」环境。</p>
+            </div>
+          </div>
+          <div class="arlx-step is-fix">
+            <span class="arlx-k">解决</span>
+            <div class="arlx-v">
+              <p>用法就三步：<b>临时打开确定性模式 → 定位问题 → 立刻关掉</b>。它只是 debug 工具，不能留在正式训练里，因为会明显拖慢速度。</p>
+            </div>
+          </div>
         </div>
-        <div class="arl-two-col">
-          <section class="arl-section">
-            <header><span>vLLM</span><b>一个环境变量</b></header>
-            <ul class="arl-tight">
-              <li><code>VLLM_BATCH_INVARIANT=1</code> 开 batch-invariant kernel，把 logprob 差压到 0，用于 20 步对拍。</li>
-              <li>代价是吞吐下降，对拍完即关。</li>
+
+        <p class="arlx-fw-title">两个引擎怎么处理</p>
+        <div class="arlx-fw2">
+          <div class="arlx-fw">
+            <header><b>vLLM</b><span class="arlx-pill is-good">一个开关</span></header>
+            <ul>
+              <li>设一个环境变量即可开启，把两端概率差压到零，跑二十来步对拍就够。</li>
+              <li>代价是吞吐下降，<b>对拍完立刻关</b>。</li>
             </ul>
-          </section>
-          <section class="arl-section">
-            <header><span>SGLang</span><b>一个 flag，但更贵</b></header>
-            <ul class="arl-tight">
-              <li>确定性模式平均<b>掉速 34%</b>，只在定位阶段临时开。</li>
+          </div>
+          <div class="arlx-fw">
+            <header><b>SGLang</b><span class="arlx-pill is-warn">同样支持但更贵</span></header>
+            <ul>
+              <li>也有对应开关，但平均<b>掉速约三分之一</b>，只在定位阶段临时开。</li>
             </ul>
-          </section>
+          </div>
         </div>
-        <div class="arl-anti">
-          <b>硬禁区：RL rollout 不要开 FP8 KV cache</b>
-          <p>FP8 KV 会改变 logprob 语义，logprob 会从大概<b>第 96 个 token</b>开始发散。确定性开关只用于「对拍→定位→关掉」，不要留在生产配置里。</p>
+
+        <div class="arlx-take">
+          <b>一条硬禁区</b>
+          <p>RL 采样时<b>不要开 FP8 精度的 KV 缓存</b>——它会改变概率的含义，生成到后面会明显跑偏。这跟确定性无关，是必须避开的独立坑。</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-engine" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">ENGINE VERDICT · vLLM vs SGLang</span>
-          <h3>默认 vLLM，四个硬条件才翻转 SGLang</h3>
+          <span class="al2-modal-tag">选型结论 · vLLM vs SGLang</span>
+          <h3>默认用 vLLM，命中一条硬条件才换 SGLang</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <div class="arl-pain">
-          <b>选型原则</b>
-          <p>默认上 vLLM —— <mark>不是更快，是坑你自己能修</mark>。翻转条件<b>命中一条</b>才切 SGLang。</p>
+      <div class="arlx-body">
+        <p class="arlx-lead">前面五个坑，选哪个推理引擎会影响踩坑的方式。一句话结论：<b>默认上 vLLM——不是因为它更快，是因为它的坑你自己能修</b>。</p>
+
+        <p class="arlx-fw-title">两个引擎的整体取向</p>
+        <div class="arlx-fw2">
+          <div class="arlx-fw">
+            <header><b>vLLM</b><span class="arlx-pill is-good">默认之选</span></header>
+            <ul>
+              <li>很多事要<b>自己动手</b>（手动清缓存、自写同步扩展），但也因此<b>掌控力强、坑能自己填</b>。</li>
+              <li>生态最大、文档和社区问题最全，遇到问题查得到答案。</li>
+            </ul>
+          </div>
+          <div class="arlx-fw">
+            <header><b>SGLang</b><span class="arlx-pill is-warn">特定场景更优</span></header>
+            <ul>
+              <li>很多事<b>开箱即用</b>（自动清缓存、成品同步接口），超大模型上速度优势明显。</li>
+              <li>代价是集成层可能把细粒度控制<b>抹平</b>，出问题时不好深入调。</li>
+            </ul>
+          </div>
         </div>
-        <table class="arl-table">
-          <thead><tr><th>维度</th><th>vLLM（默认）</th><th>SGLang（翻转后）</th></tr></thead>
-          <tbody>
-            <tr><td>前缀缓存</td><td>手动 reset_prefix_cache()，官方标 REQUIRED</td><td>flush_cache 默认 True</td></tr>
-            <tr><td>权重同步</td><td>自写 WorkerExtension，API 曾破坏性改名</td><td>成品接口，1T 模型 P2P 53s→7.2s</td></tr>
-            <tr><td>显存让位</td><td>sleep level 1/2 + wake_up tags 细粒度</td><td>tagged release，但 verl 集成被抹平为单例</td></tr>
-            <tr><td>MoE EP&gt;1</td><td>collective_rpc 下发 update plan</td><td>高 EP 优先 P2P；但 from_tensor 有融合断言</td></tr>
-          </tbody>
-        </table>
-        <div class="arl-defense">
-          <b>四个翻转条件</b>
-          <span>① MoE 且 EP&gt;1 · ② 需要 partial rollout · ③ 百 B+ 权重同步开始主导 step · ④ 要复现的论文本来就用 slime / AReaL。四条都不命中，就留在 vLLM。</span>
+
+        <div class="arlx-take">
+          <b>什么时候才切 SGLang（命中一条即可）</b>
+          <p>① 用超大 MoE 模型且专家并行度高 · ② 需要「边生成边训练」的部分回滚 · ③ 模型大到<b>权重同步开始主导每步耗时</b> · ④ 要复现的论文本来就用 SGLang 系工具。四条都不沾，就安心留在 vLLM。</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-generic" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-7 · GENERIC RL METRICS</span>
-          <h3>通用 RL 指标：地基与更新层</h3>
+          <span class="al2-modal-tag">中间指标 · 通用 RL</span>
+          <h3>不管训什么任务，都该盯的四个指标</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <table class="arl-table arl-metric-table">
-          <thead><tr><th>指标</th><th>机制含义</th><th>异常信号</th><th>可信度</th></tr></thead>
-          <tbody>
-            <tr><td><b>policy entropy</b></td><td>探索预算总账，R = −a·e^H + b</td><td>持续单调下滑</td><td><span class="arl-badge">经验</span> 标准裁剪下纯随机 reward 也会降熵，熵降 ≠ 收敛</td></tr>
-            <tr><td><b>clip fraction (low/high 分开)</b></td><td>越界 token 拿零梯度；两侧对熵作用方向相反</td><td>高侧长期高位</td><td><span class="arl-badge arl-badge-warn">无公开阈值</span> 别编「业界标准 5%」，用自己历史基线</td></tr>
-            <tr><td><b>KL(π‖π_ref)</b></td><td>崩塌前兆；关掉惩罚也不能关掉监控</td><td>spike</td><td><span class="arl-badge arl-badge-warn">无公开阈值</span> 触发崩溃的 KL 量级跨任务无通用红线</td></tr>
-            <tr><td><b>零优势组占比 / ACR</b></td><td>直接决定这一步有没有梯度</td><td>随训练上升</td><td><span class="arl-badge arl-badge-quant">定量·机制</span> 二元奖励全对/全错组中心化优势严格为 0</td></tr>
-          </tbody>
-        </table>
-        <div class="arl-defense">
-          <b>诊断纪律</b>
-          <span>熵是可交易的预算，性能满足 R = −a·e^H + b；但熵在降不等于在收敛。clip fraction 一定拆 low / high，它们对熵作用方向相反。分不清【定量】与【经验】的人，会把别人博客里的 0.2 当成物理常数。</span>
+      <div class="arlx-body">
+        <p class="arlx-lead">奖励（reward）是最终结果，但它<b>动得最晚</b>。真正能提前预警的，是下面这几个反映「模型还在不在正常学习」的过程指标。<span class="arlx-mbadge is-quant">定量</span>=有明确判据，<span class="arlx-mbadge is-exp">经验</span>=看趋势、没有通用阈值。</p>
+
+        <div class="arlx-mcards">
+          <div class="arlx-mcard">
+            <div class="arlx-mname">策略熵<br><span class="arlx-mbadge is-exp">经验</span></div>
+            <div class="arlx-mtext">
+              <p>衡量模型还有多少<b>探索的劲头</b>。持续单调下滑要警惕。</p>
+              <p>但注意：<b>熵在降 ≠ 在收敛</b>——就算奖励是纯随机的，标准训练也会让熵往下掉。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">裁剪比例（分高低两侧）<br><span class="arlx-mbadge is-exp">经验</span></div>
+            <div class="arlx-mtext">
+              <p>被「裁剪」掉、拿不到梯度的更新占多少。高侧长期偏高是危险信号。</p>
+              <p>一定要<b>高低两侧分开看</b>，它们对探索的影响方向相反；别信「行业标准 5%」这种编出来的数。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">与参考模型的 KL 距离<br><span class="arlx-mbadge is-exp">经验</span></div>
+            <div class="arlx-mtext">
+              <p>模型偏离初始模型多远，<b>突然飙升是崩溃前兆</b>。</p>
+              <p>就算不用它做惩罚项，也<b>一定要继续监控</b>——不同任务的红线各不相同。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">零优势组占比<br><span class="arlx-mbadge is-quant">定量</span></div>
+            <div class="arlx-mtext">
+              <p>一组样本要么全对、要么全错时，这一步<b>根本没有梯度</b>、白训了。</p>
+              <p>这个比例随训练上升，说明数据难度和模型能力不匹配，该调数据了。</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-agentdelta" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-8 · AGENT-DELTA METRICS</span>
-          <h3>Agent RL 增量指标：信号到达层</h3>
+          <span class="al2-modal-tag">中间指标 · Agent 专属</span>
+          <h3>Agent 场景里，比奖励更早报警的指标</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <div class="arl-pain">
-          <b>为什么 reward 是最迟才动的曲线</b>
-          <p>轨迹先要没被截断、格式先要合法、沙箱先要没崩、verifier 先要判对、token 先要被正确 mask——任何一层坏掉 reward 会平会假涨，但都不告诉你原因。RAGEN 实测 <mark>reward std 与策略熵会先掉，早于平均 reward 退化</mark>。工程指标更早，是因为它们在因果链上游。</p>
+      <div class="arlx-body">
+        <p class="arlx-lead">Agent 任务要调用工具、跑很多轮，链条长、环节多。<b>任何一环坏掉，奖励都会假装没事或悄悄变差，却不告诉你原因。</b>所以要专门盯这些「上游」指标。</p>
+
+        <div class="arlx-mcards">
+          <div class="arlx-mcard">
+            <div class="arlx-mname">可训练 token 占比<br><span class="arlx-mbadge is-exp">经验</span></div>
+            <div class="arlx-mtext">
+              <p>整段对话里，<b>真正由模型生成、该拿去训练</b>的部分占多少。</p>
+              <p>这个比例突然跳变，几乎都是屏蔽逻辑写错了——先在小实验里存一个基线。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">截断率 / 上下文溢出<br><span class="arlx-mbadge is-quant">定量</span></div>
+            <div class="arlx-mtext">
+              <p>轨迹被<b>长度限制截断</b>，含义是「预算不够」，不是「模型不行」，别混为一谈。</p>
+              <p>溢出时会把最早的内容挤掉，可能连系统提示词一起丢——要单独画曲线盯着。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">长尾拖累 / 等待占比<br><span class="arlx-mbadge is-quant">定量</span></div>
+            <div class="arlx-mtext">
+              <p>一组里有一条特别长的轨迹，就会<b>拖住整批</b>，其余 GPU 干等。</p>
+              <p>大模型实验里训练器空等能高达六成——先判断是生成慢还是训练慢，再给超时。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">环境 / 判分器出错率<br><span class="arlx-mbadge is-quant">阈值=0</span></div>
+            <div class="arlx-mtext">
+              <p>判分器本身就是最大的噪声源：有的任务<b>误判率能到四五成</b>。</p>
+              <p><b>必须先测再训</b>——误判会直接喂养「刷分作弊」，是必须先堵住的源头。</p>
+            </div>
+          </div>
         </div>
-        <table class="arl-table arl-metric-table">
-          <thead><tr><th>指标</th><th>机制含义 / 异常</th><th>可信度</th><th>第一步动作</th></tr></thead>
-          <tbody>
-            <tr><td><b>可训练 token 占比</b></td><td>只有模型自己生成的该进 loss；占比骤降/骤升都是问题</td><td><span class="arl-badge arl-badge-warn">无公开阈值</span></td><td>小 run 上打印 mask 覆盖率存基线，任何阶跃都是实现问题</td></tr>
-            <tr><td><b>observation token 占比</b></td><td>环境「话多不多」，决定多少算力白算</td><td><span class="arl-badge arl-badge-warn">无公开阈值</span></td><td>查是否有工具返回超长未截断内容</td></tr>
-            <tr><td><b>截断率 / context overflow</b></td><td>截断的语义是预算不足非策略差；overflow 丢最老 token＝丢 system prompt</td><td><span class="arl-badge arl-badge-quant">定量·机制</span></td><td>截断轨迹单独画曲线；记录峰值 context 占用</td></tr>
-            <tr><td><b>per-turn entropy</b></td><td>整条轨迹熵把「决策点」和「抄工具输出」混在一起</td><td><span class="arl-badge arl-badge-quant">定量·机制</span></td><td>按 turn index 画熵热力图，确认高熵在决策轮</td></tr>
-            <tr><td><b>straggler / trainer wait</b></td><td>单条超长 rollout 阻塞整组；某 235B 实验 wait ratio 高达 <b>60%</b></td><td><span class="arl-badge arl-badge-quant">定量·实测</span></td><td>先判生成受限还是训练受限；设 rollout 超时</td></tr>
-            <tr><td><b>staleness 分布（异步）</b></td><td>生成版本 K 与完成版本 M 之差，分布宽度即偏策程度</td><td><span class="arl-badge arl-badge-warn">无公开阈值</span></td><td>画直方图，与 ratio 尾部联读</td></tr>
-          </tbody>
-        </table>
-        <div class="arl-anti">
-          <b>环境与 verifier 硬计数器（阈值一律为 0）</b>
-          <p>数学 RLVR 验证器假阴率可达 <b>38%</b>（大致能容忍 15% 随机反转）；浏览器 Agent 传统判定器假阳率 ≥ <b>45%</b>，专用验证器可降至接近 0%。FP 率必须<b>先测再训</b>——假阳是 reward hacking 的供给侧。</p>
+
+        <div class="arlx-take">
+          <!-- <b>一句话记住</b> -->
+          <p>这些工程指标之所以更早报警，是因为它们在因果链的<b>上游</b>；等奖励曲线开始掉，问题往往已经发生很久了。</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-lying" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-9 · LYING CURVES</span>
-          <h3>会骗人的指标：看着好，其实在坏</h3>
+          <span class="al2-modal-tag">中间指标 · 会骗人的曲线</span>
+          <h3>看着在变好，其实在变坏</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <table class="arl-table arl-metric-table">
-          <thead><tr><th>看着好</th><th>实际上</th><th>揭穿它的联读指标</th></tr></thead>
-          <tbody>
-            <tr><td>train reward 稳步上升</td><td>可能在 hack（偏爱长回答 / 自信语气 / 格式模板）</td><td>人工审查通过率 + <code>corr(length, reward)</code></td></tr>
-            <tr><td>response length 稳步增长</td><td>可能只是长度偏置</td><td>按 reward 正负<b>拆开</b>的长度曲线</td></tr>
-            <tr><td>pass@1 提升</td><td>能力边界可能在收窄（稀有正确轨迹被强化前消失）</td><td>固定探针集大 k pass@k；首次反转 step 记为告警线</td></tr>
-            <tr><td><b>KL 又小又平滑</b></td><td><b>可能根本没在学</b>——采样器一直用旧策略</td><td>staleness 直方图 + 生成/训练时间占比</td></tr>
-            <tr><td>格式合规率接近 100%</td><td>可能是格式套利</td><td>格式合规率 × 答案正确率交叉表</td></tr>
-            <tr><td>SFT 初始化 benchmark 很高</td><td>后续 RL 增益可能更小（重复样本高分 → −1.43% RL 增益）</td><td>SFT 唯一样本数与 epoch 数，而非只看分数</td></tr>
-          </tbody>
-        </table>
-        <div class="arl-selfcheck">
-          <b>因果链与它的断点</b>
-          <pre>[实现层] train-inference mismatch  极端 token logprob 差可达 1.0，可独立触发崩塌
-   ↓
-[更新层] clip-high 主导 → 策略熵单调下降（reward 随机也会降）
-   ↓
-[探索层] 探索预算烧光 → 稀有正确轨迹在被强化前消失
-   ↓
-[行为层] 行为确定化 → 低熵模板化：关键词堆砌 / 重复模板 / 长度操纵
-   ↓
-[结果层] train reward 上升，eval 与大 k pass@k 下降</pre>
-          <p><b>必须承认的断点</b>：这条链是<b>必要路径，不是充分路径</b>。TIM 可以不经过熵直接杀掉训练；verifier 假阳可以在熵完全正常时培养出 hacking。把「熵还在缓慢下降」当成「训练健康」的充分证据，就会在这两条旁路上翻车。</p>
+      <div class="arlx-body">
+        <p class="arlx-lead">有几条曲线特别会「装好人」：单看它涨你会以为训练很顺，实际上模型可能在<b>投机取巧刷分</b>。破解办法都是<b>再叠加一个指标一起看</b>。</p>
+
+        <div class="arlx-mcards">
+          <div class="arlx-mcard">
+            <div class="arlx-mname">奖励稳步上升</div>
+            <div class="arlx-mtext">
+              <p><b>可能在刷分</b>：模型学会用「更长、更自信、套模板」骗过判分器，而不是真答对。</p>
+              <p>联读：人工抽查通过率 + 「回答长度和奖励的相关性」。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">回答越来越长</div>
+            <div class="arlx-mtext">
+              <p><b>可能只是长度偏好</b>，不是内容变好。</p>
+              <p>联读：把答对的和答错的<b>分开画长度曲线</b>，看是不是错的也在变长。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">KL 距离又小又平</div>
+            <div class="arlx-mtext">
+              <p><b>可能根本没在学</b>——采样一直在用旧模型，模型其实没怎么更新。</p>
+              <p>联读：新旧版本差距的分布图 + 生成/训练的耗时占比。</p>
+            </div>
+          </div>
+          <div class="arlx-mcard">
+            <div class="arlx-mname">格式合规率接近 100%</div>
+            <div class="arlx-mtext">
+              <p><b>可能是格式套利</b>：格式全对但答案不一定对。</p>
+              <p>联读：把「格式合规」和「答案正确」做一张交叉表看。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="arlx-take">
+          <!-- <b>一条要牢记的顺序</b> -->
+          <p>训练发散时，排查顺序永远是：<b>先查实现有没有 bug → 再看数值尺度 → 再调学习步长 → 最后才回头改奖励设计</b>。上来就改奖励的人，多半是在给一个屏蔽 bug 打补丁。</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="al2-modal rsi-modal arl-modal" id="al2-panel-arl-dashboard" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="al2-modal-card rsi-modal-card">
+    <div class="al2-modal-card rsi-modal-card arlx-card">
       <header class="al2-modal-head">
         <div>
-          <span class="al2-modal-tag">L1-10 · MINIMAL DASHBOARD</span>
-          <h3>最小监控面板：12 条曲线 + 硬计数器</h3>
+          <span class="al2-modal-tag">中间指标 · 最小监控面板</span>
+          <h3>只带一块面板上线，该放哪几条</h3>
         </div>
         <button type="button" class="al2-modal-close" data-close>关闭 ✕</button>
       </header>
-      <div class="rsi-modal-body">
-        <div class="arl-pain">
-          <b>取舍原则</b>
-          <p>优先放「上游 + 会先动」的量，把下游结果指标压到最少。第 1 条永远是 <mark>rollout–trainer logprob 差</mark>——它能在其他曲线全部正常时单独杀掉一次 run。</p>
-        </div>
+      <div class="arlx-body">
+        <p class="arlx-lead">指标很多，但面板要克制。原则是：<b>优先放「会先动」的上游指标，把最终结果类压到最少</b>。按「从原因到结果」分三层，每层四条。</p>
+
         <div class="arl-dash-grid">
           <section class="arl-dash-layer">
-            <header>地基与更新层</header>
+            <header>第一层 · 模型还在正常更新吗</header>
             <ol>
-              <li><b>logprob 差</b> p50/p99/max<em>对齐两侧采样与数值实现</em></li>
-              <li><b>policy entropy</b><em>拟合自己的 R–exp(H) 判饱和</em></li>
-              <li><b>clip fraction</b> low/high<em>高侧升 → 改非对称裁剪或降步长</em></li>
-              <li><b>KL(π‖π_ref)</b><em>spike 是崩塌前兆</em></li>
+              <li><b>采样端 vs 训练端 概率差</b><em>最重要的一条，能单独毁掉一次训练</em></li>
+              <li><b>策略熵</b><em>探索劲头，判断是否过早收敛</em></li>
+              <li><b>裁剪比例（高/低分开）</b><em>高侧升 = 该调步长或裁剪</em></li>
+              <li><b>与参考模型的 KL 距离</b><em>突然飙升是崩溃前兆</em></li>
             </ol>
           </section>
           <section class="arl-dash-layer">
-            <header>信号到达层（主通道）</header>
+            <header>第二层 · 信号真的进到梯度了吗</header>
             <ol>
-              <li><b>可训练 token 占比</b><em>信号是否真进梯度的总闸门</em></li>
-              <li><b>截断 + overflow 率</b><em>overflow 会丢掉 system prompt</em></li>
-              <li><b>环境/工具成功率 + verifier FP</b><em>FP 是 hacking 供给侧</em></li>
-              <li><b>reward std + 零优势组占比</b><em>先查数据难度分布</em></li>
+              <li><b>可训练 token 占比</b><em>信号进不进梯度的总闸门</em></li>
+              <li><b>截断 + 溢出率</b><em>溢出会连系统提示词一起丢</em></li>
+              <li><b>环境成功率 + 判分器误判</b><em>误判是刷分作弊的源头</em></li>
+              <li><b>奖励方差 + 零优势组占比</b><em>先查数据难度分布</em></li>
             </ol>
           </section>
           <section class="arl-dash-layer">
-            <header>结果与系统层</header>
+            <header>第三层 · 结果与系统效率</header>
             <ol>
-              <li><b>length（按 reward 正负拆两条）</b><em>合并会把恶性增长平掉</em></li>
-              <li><b>pass@1 vs 探针 pass@k</b><em>抓「效率涨、边界缩」</em></li>
-              <li><b>trainer wait + p99 rollout 时长</b><em>决定同步/异步选择</em></li>
-              <li><b>staleness 直方图</b><em>「KL 小而平却不涨」的唯一解释</em></li>
+              <li><b>回答长度（对错分开）</b><em>合并会把恶性增长抹平</em></li>
+              <li><b>pass@1 与探针集 pass@k</b><em>抓「效率涨、能力缩」</em></li>
+              <li><b>训练器等待 + 长尾耗时</b><em>决定用同步还是异步</em></li>
+              <li><b>新旧版本差距分布</b><em>解释「KL 小却不涨」</em></li>
             </ol>
           </section>
         </div>
-        <div class="arl-two-col">
-          <div class="arl-anti">
-            <b>外挂硬计数器（阈值就是 0）</b>
-            <p>测试文件被修改的轨迹数 · 零工具调用却拿满分的轨迹数 · 越权/读答案类命令次数。理由：hacking 占比从 0 起跳，均值曲线看不到。</p>
-          </div>
-          <div class="arl-open">
-            <b>自建基线区（值得算，但不进 12 条）</b>
-            <span>ESS、importance ratio 尾部厚度、grad-norm spike 倍数、可容忍最大 staleness、observation token 占比、TIM 漂移分布。做法：跑一个已知好的 run → 记完整分布 p50/p90/p99/max → 告警定义为「偏离滚动中位数 k 倍」→ 固定估计量口径。</span>
-          </div>
-        </div>
+
+        <!-- <div class="arlx-take"> -->
+          <!-- <b>额外挂三个「阈值就是 0」的计数器</b> -->
+          <!-- <p>测试文件被偷改的次数 · 一次工具都没调却拿满分的次数 · 越权或偷看答案的命令次数。原因：作弊都是<b>从 0 开始冒头</b>的，平均曲线根本看不到，必须单独硬计数。</p> -->
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -4996,102 +5845,102 @@ print( loss_mask.sum() / attention_mask.sum() )    # agent 轨迹应显著 &lt; 
 
 
 <div id="ragent-cli-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/3" aria-label="关闭放大图">×</a>
+  <a class="image-lightbox-close" href="#/5" aria-label="关闭放大图">×</a>
   <img src="assets/images/r-agent-cli.png" alt="R-Agent CLI 示例放大图">
 </div>
 
 <div id="ragent-gui-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/3" aria-label="关闭放大图">×</a>
+  <a class="image-lightbox-close" href="#/5" aria-label="关闭放大图">×</a>
   <img src="assets/images/r-agent-gui.png" alt="R-Agent GUI 示例放大图">
 </div>
 
 <div id="moo-pareto-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/4" aria-label="关闭多目标优化概念图">×</a>
+  <a class="image-lightbox-close" href="#/6" aria-label="关闭多目标优化概念图">×</a>
   <img src="assets/images/multi-objective-pareto-frontier.jpeg" alt="多目标优化帕累托前沿概念图放大图">
 </div>
 
 <div id="moo-algorithm-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/4" aria-label="关闭多目标演化算法图">×</a>
+  <a class="image-lightbox-close" href="#/6" aria-label="关闭多目标演化算法图">×</a>
   <img src="assets/images/multi-objective-evolution-loop.jpeg" alt="多目标演化算法循环示意图放大图">
 </div>
 
 <div id="creation-memory-pipeline-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/6" aria-label="关闭 Creation Memory 流程图">×</a>
+  <a class="image-lightbox-close" href="#/8" aria-label="关闭 Creation Memory 流程图">×</a>
   <img src="assets/images/image_1785070442.png" alt="Doubao Creation Memory 处理流程图放大图">
 </div>
 
 <div id="creation-distillation-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/7" aria-label="关闭两阶段蒸馏流程图">×</a>
+  <a class="image-lightbox-close" href="#/8" aria-label="关闭两阶段蒸馏流程图">×</a>
   <img src="assets/images/image_1785067942.png" alt="两阶段 In-Context Distillation 流程图放大图">
 </div>
 
 <div id="memory-rl-task-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/9" aria-label="关闭用户记忆更新与创作推荐任务结构图">×</a>
+  <a class="image-lightbox-close" href="#/10" aria-label="关闭用户记忆更新与创作推荐任务结构图">×</a>
   <img src="assets/images/fig1_task_structure.png" alt="用户记忆更新与创作推荐任务结构图放大图">
 </div>
 
 <div id="memory-plan1-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Plan 1 单步 GRPO 图">×</a>
+  <a class="image-lightbox-close" href="#/12" aria-label="关闭 Plan 1 单步 GRPO 图">×</a>
   <iframe class="memory-plan-frame-zoom is-landscape" src="assets/plan1_grpo_ppt.html" title="Plan 1 单步 GRPO 方案放大视图"></iframe>
 </div>
 
 <div id="memory-plan2-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Plan 2 长轨迹 Agentic RL 图">×</a>
+  <a class="image-lightbox-close" href="#/12" aria-label="关闭 Plan 2 长轨迹 Agentic RL 图">×</a>
   <iframe class="memory-plan-frame-zoom is-landscape" src="assets/plan2_agentic_rl_ppt.html" title="Plan 2 长轨迹 Agentic RL 方案放大视图"></iframe>
 </div>
 
 <div id="memory-plan3-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Plan 3 随机窗口强化图">×</a>
+  <a class="image-lightbox-close" href="#/12" aria-label="关闭 Plan 3 随机窗口强化图">×</a>
   <iframe class="memory-plan-frame-zoom is-plan3" src="assets/plan3_reinforce_ppt.html" title="Plan 3 随机窗口强化步骤 1 和 2 放大视图"></iframe>
 </div>
 
 <div id="memory-exp-recall-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Memory Recall 实验图">×</a>
+  <a class="image-lightbox-close" href="#/15" aria-label="关闭 Memory Recall 实验图">×</a>
   <img src="assets/images/exp-memory-recall.png" alt="Memory Recall 实验曲线放大图">
 </div>
 
 <div id="memory-exp-chunk-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Reward Chunk 实验图">×</a>
+  <a class="image-lightbox-close" href="#/15" aria-label="关闭 Reward Chunk 实验图">×</a>
   <img src="assets/images/exp-reward-chunk.png" alt="Reward Chunk 实验曲线放大图">
 </div>
 
 <div id="memory-exp-same-model-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/10" aria-label="关闭 Same Model 实验图">×</a>
+  <a class="image-lightbox-close" href="#/15" aria-label="关闭 Same Model 实验图">×</a>
   <img src="assets/images/exp-same-model.png" alt="Same Model Cross-Play 实验矩阵放大图">
 </div>
 
 <div id="suggestion-dpo-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/8" aria-label="关闭 DPO 示例图">×</a>
+  <a class="image-lightbox-close" href="#/9" aria-label="关闭 DPO 示例图">×</a>
   <img src="assets/images/image-4.png" alt="Generative Suggestion Recommendation DPO 示例放大图">
 </div>
 
 <div id="suggestion-example-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/8" aria-label="关闭生成示例图">×</a>
+  <a class="image-lightbox-close" href="#/9" aria-label="关闭生成示例图">×</a>
   <img src="assets/images/image-2.png" alt="春日野餐创作建议示例放大图">
 </div>
 
 <div id="creator-loop-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/11" aria-label="关闭 AI Creator Productivity 系统总览图">×</a>
+  <a class="image-lightbox-close" href="#/16" aria-label="关闭 AI Creator Productivity 系统总览图">×</a>
   <img src="assets/images/edited_image_125253.png" alt="AI Creator Productivity 系统总览闭环图放大图">
 </div>
 
 <div id="ranking-dbmtl-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/12" aria-label="关闭 DBMTL EMSNet MMCN 结构图">×</a>
+  <a class="image-lightbox-close" href="#/17" aria-label="关闭 DBMTL EMSNet MMCN 结构图">×</a>
   <img src="assets/images/ppt_assets_fig1_dbmtl_emsnet_mmcn.png" alt="DBMTL EMSNet MMCN 精排整体结构图放大图">
 </div>
 
 <div id="ranking-mmoe-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/12" aria-label="关闭 MMoE 多专家结构图">×</a>
+  <a class="image-lightbox-close" href="#/17" aria-label="关闭 MMoE 多专家结构图">×</a>
   <img src="assets/images/ppt_assets_fig2_mmoe.png" alt="MMoE 多专家结构图放大图">
 </div>
 
 <div id="ranking-staytime-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/12" aria-label="关闭 Staytime WCE 分桶结构图">×</a>
+  <a class="image-lightbox-close" href="#/17" aria-label="关闭 Staytime WCE 分桶结构图">×</a>
   <img src="assets/images/ppt_assets_fig3_staytime_wce.png" alt="Staytime WCE 分桶结构图放大图">
 </div>
 
 <div id="ranking-mllm-zoom" class="image-lightbox">
-  <a class="image-lightbox-close" href="#/12" aria-label="关闭 MLLM UE 序列结构图">×</a>
+  <a class="image-lightbox-close" href="#/17" aria-label="关闭 MLLM UE 序列结构图">×</a>
   <img src="assets/images/ppt_assets_fig4_mllm_ue_seq.png" alt="MLLM UE 序列 Target Attention 和 Histogram Learning 结构图放大图">
 </div>
 
@@ -5112,8 +5961,50 @@ print( loss_mask.sum() / attention_mask.sum() )    # agent 轨迹应显著 &lt; 
   S 演讲者视图 · T 切换主题 · ← → 翻页 · F 全屏 · O 总览
 </div>
 
-<script src="assets/runtime.js?v=20260912-plan-columns-v17"></script>
+<script src="assets/runtime.js?v=20260922-opd-before-exp-v3"></script>
 <script>
+const docPreviewConfig = {
+  'data-cleaning': { title: 'SFT 数据集数据清洗规范总结' },
+  'reward-design': { title: 'Creation Memory V2 · Reward Design' },
+  'baseline-credit-assignment': { title: 'Baseline 与时序信用分配', assetBase: 'assets/docs/baseline-credit-assignment' },
+  'ppo-loss-infra': { title: 'PPO 损失函数与 Infra 工程优化' }
+};
+const docPreviewModal = document.getElementById('doc-preview-modal');
+const docPreviewTitle = docPreviewModal?.querySelector('[data-doc-title]');
+const docPreviewContent = docPreviewModal?.querySelector('[data-doc-content]');
+async function openDocPreview(key) {
+  const config = docPreviewConfig[key];
+  if (!config || !docPreviewModal || !docPreviewContent) return;
+  docPreviewTitle.textContent = config.title;
+  docPreviewModal.classList.add('is-open');
+  docPreviewModal.setAttribute('aria-hidden', 'false');
+  try {
+    const markdown = window.__DOC_PREVIEW_MARKDOWN__?.[key];
+    if (!markdown) throw new Error('Embedded document not found: ' + key);
+    const mathSafeMarkdown = markdown.replace(/\$\$([\s\S]*?)\$\$/g, (_, formula) => '\n<div class="display-math">\\[' + formula.trim() + '\\]</div>\n');
+    let renderedMarkdown = marked.parse(mathSafeMarkdown).replaceAll('src="assets/', 'src="assets/docs/assets/');
+    if (config.assetBase) renderedMarkdown = renderedMarkdown.replaceAll('src="images/', 'src="' + config.assetBase + '/images/');
+    docPreviewContent.innerHTML = renderedMarkdown;
+    docPreviewContent.scrollTop = 0;
+    if (window.MathJax?.typesetPromise) await MathJax.typesetPromise([docPreviewContent]);
+  } catch (error) {
+    docPreviewContent.innerHTML = '<p class="doc-preview-error">完整文档渲染失败：' + String(error.message || error) + '</p>';
+  }
+}
+function closeDocPreview() {
+  if (!docPreviewModal) return;
+  docPreviewModal.classList.remove('is-open');
+  docPreviewModal.setAttribute('aria-hidden', 'true');
+}
+document.querySelectorAll('[data-doc-preview]').forEach((button) => {
+  button.addEventListener('click', () => openDocPreview(button.getAttribute('data-doc-preview')));
+});
+const docOpen = new URLSearchParams(window.location.search).get('docOpen');
+if (docOpen) window.addEventListener('load', () => setTimeout(() => openDocPreview(docOpen), 250));
+docPreviewModal?.querySelector('[data-doc-close]')?.addEventListener('click', closeDocPreview);
+docPreviewModal?.addEventListener('click', (event) => { if (event.target === docPreviewModal) closeDocPreview(); });
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && docPreviewModal?.classList.contains('is-open')) closeDocPreview(); });
+
 document.querySelector('[data-moo-paper-close]')?.addEventListener('click', function () {
   this.closest('.moo-paper-list').removeAttribute('open');
 });
@@ -5236,12 +6127,17 @@ if (agentOpen) {
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
     if (window.__renderMermaid) window.__renderMermaid(modal);
+    requestAnimationFrame(() => {
+      if (window.MathJax?.typesetPromise) {
+        window.MathJax.typesetPromise([modal]).catch((error) => console.warn('MathJax panel render failed:', error));
+      }
+    });
   }
   function closePanel(modal) {
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
   }
-  document.querySelectorAll('.al2-open-btn, .al2-pillar, .al2-chips button, .arl-card, .arl-pit, .arl-verdict, .arl-metric, .arl-dashboard, .memory-rl-open').forEach((btn) => {
+  document.querySelectorAll('.al2-open-btn, .al2-pillar, .al2-chips button, .arl-card, .arl-pit, .arl-verdict, .arl-metric, .arl-dashboard, .memory-rl-open, .moo-align-chip, .agentic-memory-card, .opd-open').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       openPanel(btn.getAttribute('data-panel'));
